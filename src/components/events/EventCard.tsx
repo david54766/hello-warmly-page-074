@@ -10,6 +10,7 @@ import {
   type EventRow,
 } from "@/lib/events";
 import { StatusPill } from "@/components/app/DashboardCard";
+import { SaveButton } from "@/components/onboarding/SaveButton";
 
 export function EventCard({
   event,
@@ -60,11 +61,14 @@ export function EventCard({
             {rsvpStatus === "going" && <StatusPill label="You're in" tone="success" />}
             {rsvpStatus === "waitlist" && <StatusPill label="Waitlist" tone="warn" />}
           </div>
-          <Button size="sm" variant={locked ? "outline" : "default"} asChild>
-            <Link to="/events/$eventId" params={{ eventId: event.id }}>
-              {locked ? <><Lock className="size-3.5" />View</> : "View"}
-            </Link>
-          </Button>
+          <div className="flex items-center gap-1">
+            <SaveButton targetType="event" targetId={event.id} />
+            <Button size="sm" variant={locked ? "outline" : "default"} asChild>
+              <Link to="/events/$eventId" params={{ eventId: event.id }}>
+                {locked ? <><Lock className="size-3.5" />View</> : "View"}
+              </Link>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
