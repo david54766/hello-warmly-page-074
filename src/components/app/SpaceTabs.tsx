@@ -3,6 +3,7 @@ import { DashboardCard, EmptyState } from "./DashboardCard";
 import { SpaceMemberList, type SpaceMemberRow } from "./SpaceMemberList";
 import { Compass, Newspaper, GraduationCap, Calendar, Users, BookOpen, Sparkles } from "lucide-react";
 import type { Space } from "@/lib/spaces";
+import { FeedList } from "@/components/feed/FeedList";
 
 export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemberRow[] }) {
   return (
@@ -39,7 +40,13 @@ export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemb
       </TabsContent>
 
       <TabsContent value="feed">
-        <EmptyState icon={<Newspaper className="size-5" />} title="Feed is coming soon" description="Posts and discussions will live here." />
+        <FeedList
+          scopeSpaceId={space.id}
+          joinableSpaces={[space]}
+          showFilters
+          emptyTitle={`No posts in ${space.name} yet`}
+          emptyDescription="Be the first to start the conversation."
+        />
       </TabsContent>
       <TabsContent value="courses">
         <EmptyState icon={<GraduationCap className="size-5" />} title="Courses are coming soon" description="Lessons and modules will live here." />
