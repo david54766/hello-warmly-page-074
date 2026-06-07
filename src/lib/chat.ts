@@ -120,7 +120,7 @@ export async function listMyConversations(userId: string): Promise<ConversationS
     membersByConv.set(m.conversation_id, arr);
   });
 
-  const userIds = Array.from(new Set((allMems ?? []).map((m: any) => m.user_id)));
+  const userIds = Array.from(new Set((allMems ?? []).map((m: any) => m.user_id as string))) as string[];
   const profilesByUser = new Map<string, ProfileLite>();
   if (userIds.length) {
     const { data: profs } = await supabase.from("profiles").select("id,full_name,email,avatar_url").in("id", userIds);
