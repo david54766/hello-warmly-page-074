@@ -53,7 +53,7 @@ export function FeedList({
       case "following": arr = arr.filter((p) => p.author_id && followingIds.has(p.author_id)); break;
       case "posts": arr = arr.filter((p) => p.post_type === "quick_post"); break;
       case "articles": arr = arr.filter((p) => p.post_type === "article"); break;
-      case "questions": arr = arr.filter((p) => p.post_type === "question_placeholder"); break;
+      case "questions": arr = arr.filter((p) => p.post_type === "question"); break;
       case "from_admins": arr = arr.filter((p) => p.author_id && adminUserIds.has(p.author_id)); break;
       case "pinned": arr = arr.filter((p) => p.is_pinned); break;
       case "featured": arr = arr.filter((p) => p.is_featured); break;
