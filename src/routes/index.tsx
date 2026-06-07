@@ -15,8 +15,6 @@ export const Route = createFileRoute("/")({
 // IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background">
-      <h1 className="text-5xl font-bold text-foreground">Hello, World!</h1>
-    </main>
+    <main className="flex min-h-screen items-center justify-center bg-background" />
   );
 }
