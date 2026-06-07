@@ -74,6 +74,54 @@ export type Database = {
         }
         Relationships: []
       }
+      comments: {
+        Row: {
+          author_id: string | null
+          body: string
+          created_at: string
+          id: string
+          parent_comment_id: string | null
+          post_id: string
+          status: Database["public"]["Enums"]["comment_status"]
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          parent_comment_id?: string | null
+          post_id: string
+          status?: Database["public"]["Enums"]["comment_status"]
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          parent_comment_id?: string | null
+          post_id?: string
+          status?: Database["public"]["Enums"]["comment_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_settings: {
         Row: {
           cover_image_url: string | null
@@ -119,6 +167,65 @@ export type Database = {
         }
         Relationships: []
       }
+      posts: {
+        Row: {
+          attachment_urls: string[]
+          author_id: string | null
+          body: string
+          created_at: string
+          id: string
+          is_featured: boolean
+          is_pinned: boolean
+          media_urls: string[]
+          post_type: Database["public"]["Enums"]["post_type"]
+          space_id: string
+          status: Database["public"]["Enums"]["post_status"]
+          title: string | null
+          updated_at: string
+          visibility: Database["public"]["Enums"]["post_visibility"]
+        }
+        Insert: {
+          attachment_urls?: string[]
+          author_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          is_pinned?: boolean
+          media_urls?: string[]
+          post_type?: Database["public"]["Enums"]["post_type"]
+          space_id: string
+          status?: Database["public"]["Enums"]["post_status"]
+          title?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["post_visibility"]
+        }
+        Update: {
+          attachment_urls?: string[]
+          author_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          is_pinned?: boolean
+          media_urls?: string[]
+          post_type?: Database["public"]["Enums"]["post_type"]
+          space_id?: string
+          status?: Database["public"]["Enums"]["post_status"]
+          title?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["post_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -158,6 +265,69 @@ export type Database = {
           onboarding_completed?: boolean
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      reactions: {
+        Row: {
+          created_at: string
+          id: string
+          reaction_type: Database["public"]["Enums"]["reaction_type"]
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reaction_type: Database["public"]["Enums"]["reaction_type"]
+          target_id: string
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reaction_type?: Database["public"]["Enums"]["reaction_type"]
+          target_id?: string
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["report_target"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["report_target"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_id?: string
+          target_type?: Database["public"]["Enums"]["report_target"]
         }
         Relationships: []
       }
@@ -311,6 +481,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_space: {
+        Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
+      can_post_in_space: {
+        Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -334,6 +512,17 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      comment_status: "active" | "hidden" | "deleted"
+      post_status: "active" | "hidden" | "deleted"
+      post_type:
+        | "quick_post"
+        | "article"
+        | "question_placeholder"
+        | "event_announcement_placeholder"
+      post_visibility: "public" | "space_members" | "admins_only" | "hidden"
+      reaction_type: "like" | "love" | "celebrate" | "helpful"
+      report_status: "pending" | "resolved" | "dismissed"
+      report_target: "post" | "comment"
       space_access: "free" | "preview" | "paid_placeholder"
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
@@ -472,6 +661,18 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      comment_status: ["active", "hidden", "deleted"],
+      post_status: ["active", "hidden", "deleted"],
+      post_type: [
+        "quick_post",
+        "article",
+        "question_placeholder",
+        "event_announcement_placeholder",
+      ],
+      post_visibility: ["public", "space_members", "admins_only", "hidden"],
+      reaction_type: ["like", "love", "celebrate", "helpful"],
+      report_status: ["pending", "resolved", "dismissed"],
+      report_target: ["post", "comment"],
       space_access: ["free", "preview", "paid_placeholder"],
       space_member_role: ["space_host", "space_moderator", "member"],
       space_member_status: ["active", "pending", "banned"],
