@@ -19,6 +19,8 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedSpacesIndexRouteImport } from './routes/_authenticated/spaces.index'
+import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 
@@ -71,6 +73,18 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSpacesIndexRoute =
+  AuthenticatedSpacesIndexRouteImport.update({
+    id: '/spaces/',
+    path: '/spaces/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSpacesSpaceIdRoute =
+  AuthenticatedSpacesSpaceIdRouteImport.update({
+    id: '/spaces/$spaceId',
+    path: '/spaces/$spaceId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedComingSoonAreaRoute =
   AuthenticatedComingSoonAreaRouteImport.update({
     id: '/coming-soon/$area',
@@ -96,6 +110,8 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
+  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/spaces/': typeof AuthenticatedSpacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -109,6 +125,8 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
+  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/spaces': typeof AuthenticatedSpacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,6 +142,8 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
+  '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -139,6 +159,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/admin/settings'
     | '/coming-soon/$area'
+    | '/spaces/$spaceId'
+    | '/spaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -152,6 +174,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/admin/settings'
     | '/coming-soon/$area'
+    | '/spaces/$spaceId'
+    | '/spaces'
   id:
     | '__root__'
     | '/'
@@ -166,6 +190,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/admin/settings'
     | '/_authenticated/coming-soon/$area'
+    | '/_authenticated/spaces/$spaceId'
+    | '/_authenticated/spaces/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,6 +275,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/spaces/': {
+      id: '/_authenticated/spaces/'
+      path: '/spaces'
+      fullPath: '/spaces/'
+      preLoaderRoute: typeof AuthenticatedSpacesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/spaces/$spaceId': {
+      id: '/_authenticated/spaces/$spaceId'
+      path: '/spaces/$spaceId'
+      fullPath: '/spaces/$spaceId'
+      preLoaderRoute: typeof AuthenticatedSpacesSpaceIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/coming-soon/$area': {
       id: '/_authenticated/coming-soon/$area'
       path: '/coming-soon/$area'
@@ -283,6 +323,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
+  AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRoute
+  AuthenticatedSpacesIndexRoute: typeof AuthenticatedSpacesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -291,6 +333,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
+  AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRoute,
+  AuthenticatedSpacesIndexRoute: AuthenticatedSpacesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -307,3 +351,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
