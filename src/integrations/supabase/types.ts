@@ -418,6 +418,94 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          admin_announcements_enabled: boolean
+          comments_enabled: boolean
+          created_at: string
+          email_notifications_enabled: boolean
+          event_rsvps_enabled: boolean
+          id: string
+          lesson_progress_enabled: boolean
+          push_notifications_enabled: boolean
+          reactions_enabled: boolean
+          replies_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_announcements_enabled?: boolean
+          comments_enabled?: boolean
+          created_at?: string
+          email_notifications_enabled?: boolean
+          event_rsvps_enabled?: boolean
+          id?: string
+          lesson_progress_enabled?: boolean
+          push_notifications_enabled?: boolean
+          reactions_enabled?: boolean
+          replies_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_announcements_enabled?: boolean
+          comments_enabled?: boolean
+          created_at?: string
+          email_notifications_enabled?: boolean
+          event_rsvps_enabled?: boolean
+          id?: string
+          lesson_progress_enabled?: boolean
+          push_notifications_enabled?: boolean
+          reactions_enabled?: boolean
+          replies_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          actor_id: string | null
+          body: string | null
+          created_at: string
+          id: string
+          read_at: string | null
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["notification_target"] | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["notification_target"]
+            | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["notification_target"]
+            | null
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_settings: {
         Row: {
           cover_image_url: string | null
@@ -812,6 +900,18 @@ export type Database = {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
       }
+      create_notification: {
+        Args: {
+          _actor_id?: string
+          _body: string
+          _target_id?: string
+          _target_type?: Database["public"]["Enums"]["notification_target"]
+          _title: string
+          _type: Database["public"]["Enums"]["notification_type"]
+          _user_id: string
+        }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -825,6 +925,10 @@ export type Database = {
       }
       is_space_member: {
         Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
+      notif_pref: {
+        Args: { _flag: string; _user_id: string }
         Returns: boolean
       }
     }
@@ -850,6 +954,25 @@ export type Database = {
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_visibility: "visible" | "preview" | "locked" | "hidden"
+      notification_target:
+        | "post"
+        | "comment"
+        | "event"
+        | "lesson"
+        | "course"
+        | "space"
+        | "user"
+        | "announcement_placeholder"
+      notification_type:
+        | "comment_on_post"
+        | "reply_to_comment"
+        | "reaction_to_post"
+        | "reaction_to_comment"
+        | "event_rsvp_confirmation"
+        | "lesson_completed"
+        | "admin_announcement"
+        | "space_joined"
+        | "report_status_updated"
       post_status: "active" | "hidden" | "deleted"
       post_type:
         | "quick_post"
@@ -1020,6 +1143,27 @@ export const Constants = {
       event_visibility: ["public", "members_only", "space_members", "hidden"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_visibility: ["visible", "preview", "locked", "hidden"],
+      notification_target: [
+        "post",
+        "comment",
+        "event",
+        "lesson",
+        "course",
+        "space",
+        "user",
+        "announcement_placeholder",
+      ],
+      notification_type: [
+        "comment_on_post",
+        "reply_to_comment",
+        "reaction_to_post",
+        "reaction_to_comment",
+        "event_rsvp_confirmation",
+        "lesson_completed",
+        "admin_announcement",
+        "space_joined",
+        "report_status_updated",
+      ],
       post_status: ["active", "hidden", "deleted"],
       post_type: [
         "quick_post",

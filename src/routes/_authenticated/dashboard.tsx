@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
-import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight } from "lucide-react";
+import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight, Bell } from "lucide-react";
 import { fetchMembers, type MemberSummary } from "@/lib/members";
 import { MemberCard } from "@/components/members/MemberCard";
 import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
 import { supabase as sb } from "@/integrations/supabase/client";
 import type { Course, Lesson, LessonProgress } from "@/lib/courses";
 import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
+import { NotificationSummaryCard } from "@/components/notifications/NotificationSummaryCard";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -162,6 +163,7 @@ function Dashboard() {
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <NotificationSummaryCard />
         {cards.map((c) => (
           <DashboardCard key={c.title} title={c.title} icon={c.icon} comingSoon>
             <p className="text-sm text-muted-foreground">{c.msg}</p>

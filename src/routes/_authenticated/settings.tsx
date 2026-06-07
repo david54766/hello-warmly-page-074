@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bell, ChevronRight } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -75,6 +76,21 @@ function SettingsPage() {
           <Row label="Push notifications" hint="Coming soon — get notified on your devices.">
             <Switch checked={pushNotif} onCheckedChange={setPushNotif} disabled />
           </Row>
+          <Link
+            to="/settings/notifications"
+            className="flex items-center justify-between rounded-xl border px-4 py-3 hover:bg-accent transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="size-9 rounded-full bg-primary/10 text-primary grid place-items-center">
+                <Bell className="size-4" />
+              </div>
+              <div>
+                <div className="text-sm font-medium">In-app notification preferences</div>
+                <div className="text-xs text-muted-foreground">Choose which updates you want to receive.</div>
+              </div>
+            </div>
+            <ChevronRight className="size-4 text-muted-foreground" />
+          </Link>
         </CardContent>
       </Card>
 
