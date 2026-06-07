@@ -28,6 +28,7 @@ export interface Space {
   sort_order: number;
   created_by: string | null;
   is_archived: boolean;
+  chat_enabled: boolean;
   created_at: string;
   updated_at: string;
 }
