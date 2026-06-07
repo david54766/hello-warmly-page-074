@@ -16,8 +16,11 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedGettingStartedRouteImport } from './routes/_authenticated/getting-started'
+import { Route as AuthenticatedFollowingRouteImport } from './routes/_authenticated/following'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
 import { Route as AuthenticatedEventsRouteImport } from './routes/_authenticated/events'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -38,6 +41,7 @@ import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
+import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
 import { Route as AuthenticatedAdminMembersIndexRouteImport } from './routes/_authenticated/admin.members.index'
@@ -82,6 +86,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -93,6 +102,17 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedGettingStartedRoute =
+  AuthenticatedGettingStartedRouteImport.update({
+    id: '/getting-started',
+    path: '/getting-started',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFollowingRoute = AuthenticatedFollowingRouteImport.update({
+  id: '/following',
+  path: '/following',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
   id: '/feed',
   path: '/feed',
@@ -207,6 +227,12 @@ const AuthenticatedAdminCollectionsRoute =
     path: '/collections',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminChecklistRoute =
+  AuthenticatedAdminChecklistRouteImport.update({
+    id: '/checklist',
+    path: '/checklist',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAnalyticsRoute =
   AuthenticatedAdminAnalyticsRouteImport.update({
     id: '/analytics',
@@ -273,10 +299,14 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/events': typeof AuthenticatedEventsRouteWithChildren
   '/feed': typeof AuthenticatedFeedRoute
+  '/following': typeof AuthenticatedFollowingRoute
+  '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
+  '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
@@ -312,10 +342,14 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/events': typeof AuthenticatedEventsRouteWithChildren
   '/feed': typeof AuthenticatedFeedRoute
+  '/following': typeof AuthenticatedFollowingRoute
+  '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
+  '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
@@ -353,10 +387,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/events': typeof AuthenticatedEventsRouteWithChildren
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
+  '/_authenticated/following': typeof AuthenticatedFollowingRoute
+  '/_authenticated/getting-started': typeof AuthenticatedGettingStartedRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
+  '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/_authenticated/admin/posts': typeof AuthenticatedAdminPostsRoute
@@ -394,10 +432,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/events'
     | '/feed'
+    | '/following'
+    | '/getting-started'
     | '/notifications'
     | '/profile'
+    | '/saved'
     | '/settings'
     | '/admin/analytics'
+    | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
     | '/admin/posts'
@@ -433,10 +475,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/events'
     | '/feed'
+    | '/following'
+    | '/getting-started'
     | '/notifications'
     | '/profile'
+    | '/saved'
     | '/settings'
     | '/admin/analytics'
+    | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
     | '/admin/posts'
@@ -473,10 +519,14 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/events'
     | '/_authenticated/feed'
+    | '/_authenticated/following'
+    | '/_authenticated/getting-started'
     | '/_authenticated/notifications'
     | '/_authenticated/profile'
+    | '/_authenticated/saved'
     | '/_authenticated/settings'
     | '/_authenticated/admin/analytics'
+    | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/moderation'
     | '/_authenticated/admin/posts'
@@ -562,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -574,6 +631,20 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/getting-started': {
+      id: '/_authenticated/getting-started'
+      path: '/getting-started'
+      fullPath: '/getting-started'
+      preLoaderRoute: typeof AuthenticatedGettingStartedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/following': {
+      id: '/_authenticated/following'
+      path: '/following'
+      fullPath: '/following'
+      preLoaderRoute: typeof AuthenticatedFollowingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/feed': {
@@ -716,6 +787,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCollectionsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/checklist': {
+      id: '/_authenticated/admin/checklist'
+      path: '/checklist'
+      fullPath: '/admin/checklist'
+      preLoaderRoute: typeof AuthenticatedAdminChecklistRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/analytics': {
       id: '/_authenticated/admin/analytics'
       path: '/analytics'
@@ -784,6 +862,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
+  AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
@@ -800,6 +879,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
+  AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
@@ -849,8 +929,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEventsRoute: typeof AuthenticatedEventsRouteWithChildren
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
+  AuthenticatedFollowingRoute: typeof AuthenticatedFollowingRoute
+  AuthenticatedGettingStartedRoute: typeof AuthenticatedGettingStartedRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
   AuthenticatedCoursesCourseIdRoute: typeof AuthenticatedCoursesCourseIdRoute
@@ -869,8 +952,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEventsRoute: AuthenticatedEventsRouteWithChildren,
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
+  AuthenticatedFollowingRoute: AuthenticatedFollowingRoute,
+  AuthenticatedGettingStartedRoute: AuthenticatedGettingStartedRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
   AuthenticatedCoursesCourseIdRoute: AuthenticatedCoursesCourseIdRoute,

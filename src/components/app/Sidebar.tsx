@@ -1,19 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard,
-  Users2,
-  Newspaper,
-  GraduationCap,
-  Calendar,
-  UserCircle2,
-  BookOpen,
-  MessageSquare,
-  CreditCard,
-  Sparkles,
-  Shield,
-  User,
-  Settings,
-  type LucideIcon,
+  LayoutDashboard, Users2, Newspaper, GraduationCap, Calendar, UserCircle2,
+  BookOpen, MessageSquare, CreditCard, Sparkles, Shield, User, Settings,
+  Bookmark, UserPlus, type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
@@ -28,6 +17,8 @@ const items: NavItem[] = [
   { label: "Courses", to: "/courses", icon: GraduationCap },
   { label: "Events", to: "/events", icon: Calendar },
   { label: "Members", to: "/members", icon: UserCircle2 },
+  { label: "Following", to: "/following", icon: UserPlus },
+  { label: "Saved", to: "/saved", icon: Bookmark },
   { label: "Chat", to: "/chat", icon: MessageSquare },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },

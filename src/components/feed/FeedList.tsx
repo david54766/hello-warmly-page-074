@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MessageSquare } from "lucide-react";
 import { useFeedData } from "@/lib/useFeedData";
 import type { Space } from "@/lib/spaces";
+import { useEffect } from "react";
+import { fetchFollowing } from "@/lib/onboarding";
 
 export function FeedList({
   scopeSpaceId,
@@ -32,6 +34,8 @@ export function FeedList({
   const [filter, setFilter] = useState<FeedFilterValue>("all");
   const [sort, setSort] = useState<FeedSort>("newest");
   const [spaceFilter, setSpaceFilter] = useState("");
+  const [followingIds, setFollowingIds] = useState<Set<string>>(new Set());
+  useEffect(() => { if (user) fetchFollowing(user.id).then((ids) => setFollowingIds(new Set(ids))); }, [user]);
 
   const spacesById = useMemo(() => new Map(spaces.map((s) => [s.id, s])), [spaces]);
   const reactionCountsByPost = useMemo(() => {
@@ -46,6 +50,7 @@ export function FeedList({
     let arr = posts.slice();
     if (spaceFilter) arr = arr.filter((p) => p.space_id === spaceFilter);
     switch (filter) {
+      case "following": arr = arr.filter((p) => p.author_id && followingIds.has(p.author_id)); break;
       case "posts": arr = arr.filter((p) => p.post_type === "quick_post"); break;
       case "articles": arr = arr.filter((p) => p.post_type === "article"); break;
       case "questions": arr = arr.filter((p) => p.post_type === "question_placeholder"); break;
@@ -75,7 +80,7 @@ export function FeedList({
       });
     }
     return arr;
-  }, [posts, filter, search, sort, spaceFilter, adminUserIds, user, reactionCountsByPost]);
+  }, [posts, filter, search, sort, spaceFilter, adminUserIds, user, reactionCountsByPost, followingIds]);
 
   return (
     <div className="space-y-4">

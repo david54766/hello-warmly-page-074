@@ -15,6 +15,8 @@ import { supabase as sb } from "@/integrations/supabase/client";
 import type { Course, Lesson, LessonProgress } from "@/lib/courses";
 import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
 import { NotificationSummaryCard } from "@/components/notifications/NotificationSummaryCard";
+import { WelcomeChecklistWidget } from "@/components/onboarding/WelcomeChecklistWidget";
+import { SuggestedMembersCard } from "@/components/onboarding/SuggestedMembersCard";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -90,6 +92,8 @@ function Dashboard() {
         <p className="text-muted-foreground mt-1">Here's what's happening in your community today.</p>
       </header>
 
+      <WelcomeChecklistWidget />
+
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold flex items-center gap-2"><Users2 className="size-5" />Featured Spaces</h2>
@@ -164,6 +168,13 @@ function Dashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <NotificationSummaryCard />
+        <SuggestedMembersCard />
+        <DashboardCard title="Saved Content" icon={<Bookmark className="size-4" />}>
+          <p className="text-sm text-muted-foreground">Quickly return to posts, lessons, events, and resources you've saved.</p>
+          <div className="mt-3">
+            <Button size="sm" variant="outline" asChild><Link to="/saved">Open Saved <ArrowRight className="size-4 ml-1" /></Link></Button>
+          </div>
+        </DashboardCard>
         {cards.map((c) => (
           <DashboardCard key={c.title} title={c.title} icon={c.icon} comingSoon>
             <p className="text-sm text-muted-foreground">{c.msg}</p>

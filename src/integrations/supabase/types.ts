@@ -396,6 +396,27 @@ export type Database = {
           },
         ]
       }
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           completed_at: string | null
@@ -891,6 +912,30 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_items: {
+        Row: {
+          created_at: string
+          id: string
+          target_id: string
+          target_type: Database["public"]["Enums"]["saved_target_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          target_id: string
+          target_type: Database["public"]["Enums"]["saved_target_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          target_id?: string
+          target_type?: Database["public"]["Enums"]["saved_target_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       space_members: {
         Row: {
           id: string
@@ -1039,6 +1084,83 @@ export type Database = {
         }
         Relationships: []
       }
+      welcome_checklist_items: {
+        Row: {
+          action_type: Database["public"]["Enums"]["checklist_action_type"]
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          sort_order: number
+          target_id: string | null
+          target_type:
+            | Database["public"]["Enums"]["checklist_target_type"]
+            | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          action_type: Database["public"]["Enums"]["checklist_action_type"]
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["checklist_target_type"]
+            | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          action_type?: Database["public"]["Enums"]["checklist_action_type"]
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["checklist_target_type"]
+            | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      welcome_checklist_progress: {
+        Row: {
+          checklist_item_id: string
+          completed_at: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          checklist_item_id: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          checklist_item_id?: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "welcome_checklist_progress_checklist_item_id_fkey"
+            columns: ["checklist_item_id"]
+            isOneToOne: false
+            referencedRelation: "welcome_checklist_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -1067,6 +1189,13 @@ export type Database = {
       can_post_in_space: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
+      }
+      complete_checklist_action: {
+        Args: {
+          _action: Database["public"]["Enums"]["checklist_action_type"]
+          _user_id: string
+        }
+        Returns: undefined
       }
       create_notification: {
         Args: {
@@ -1111,6 +1240,25 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      checklist_action_type:
+        | "complete_profile"
+        | "join_space"
+        | "create_first_post"
+        | "comment_on_post"
+        | "follow_member"
+        | "rsvp_event"
+        | "start_course"
+        | "complete_lesson"
+        | "update_notifications"
+      checklist_target_type:
+        | "profile"
+        | "space"
+        | "post"
+        | "event"
+        | "course"
+        | "lesson"
+        | "settings"
+        | "member"
       comment_status: "active" | "hidden" | "deleted"
       conversation_type: "direct" | "group" | "space"
       course_access: "free" | "preview" | "paid_placeholder"
@@ -1174,6 +1322,13 @@ export type Database = {
         | "lesson"
         | "message"
       rsvp_status: "going" | "not_going" | "waitlist"
+      saved_target_type:
+        | "post"
+        | "course"
+        | "lesson"
+        | "event"
+        | "space"
+        | "resource_placeholder"
       space_access: "free" | "preview" | "paid_placeholder"
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
@@ -1312,6 +1467,27 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      checklist_action_type: [
+        "complete_profile",
+        "join_space",
+        "create_first_post",
+        "comment_on_post",
+        "follow_member",
+        "rsvp_event",
+        "start_course",
+        "complete_lesson",
+        "update_notifications",
+      ],
+      checklist_target_type: [
+        "profile",
+        "space",
+        "post",
+        "event",
+        "course",
+        "lesson",
+        "settings",
+        "member",
+      ],
       comment_status: ["active", "hidden", "deleted"],
       conversation_type: ["direct", "group", "space"],
       course_access: ["free", "preview", "paid_placeholder"],
@@ -1381,6 +1557,14 @@ export const Constants = {
         "message",
       ],
       rsvp_status: ["going", "not_going", "waitlist"],
+      saved_target_type: [
+        "post",
+        "course",
+        "lesson",
+        "event",
+        "space",
+        "resource_placeholder",
+      ],
       space_access: ["free", "preview", "paid_placeholder"],
       space_member_role: ["space_host", "space_moderator", "member"],
       space_member_status: ["active", "pending", "banned"],
