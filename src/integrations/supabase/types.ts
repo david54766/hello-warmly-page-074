@@ -526,41 +526,53 @@ export type Database = {
         Row: {
           avatar_url: string | null
           bio: string | null
+          cover_image_url: string | null
           created_at: string
           email: string | null
           full_name: string | null
+          headline: string | null
           id: string
           last_active_at: string | null
           location: string | null
           onboarding_completed: boolean
+          social_links_json: Json
           status: string
           updated_at: string
+          website_url: string | null
         }
         Insert: {
           avatar_url?: string | null
           bio?: string | null
+          cover_image_url?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
+          headline?: string | null
           id: string
           last_active_at?: string | null
           location?: string | null
           onboarding_completed?: boolean
+          social_links_json?: Json
           status?: string
           updated_at?: string
+          website_url?: string | null
         }
         Update: {
           avatar_url?: string | null
           bio?: string | null
+          cover_image_url?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
+          headline?: string | null
           id?: string
           last_active_at?: string | null
           location?: string | null
           onboarding_completed?: boolean
+          social_links_json?: Json
           status?: string
           updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
       }

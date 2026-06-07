@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
 import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight } from "lucide-react";
+import { fetchMembers, type MemberSummary } from "@/lib/members";
+import { MemberCard } from "@/components/members/MemberCard";
 import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
 import { supabase as sb } from "@/integrations/supabase/client";
 import type { Course, Lesson, LessonProgress } from "@/lib/courses";
@@ -24,6 +26,7 @@ function Dashboard() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [memberRows, setMemberRows] = useState<{ space_id: string; user_id: string }[]>([]);
   const [continueData, setContinueData] = useState<{ course: Course; lesson: Lesson; total: number; completed: number } | null>(null);
+  const [newestMembers, setNewestMembers] = useState<MemberSummary[]>([]);
 
   const load = async () => {
     setLoading(true);
@@ -39,6 +42,13 @@ function Dashboard() {
   };
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    (async () => {
+      const m = await fetchMembers();
+      setNewestMembers(m.filter((x) => x.status === "active").slice(0, 4));
+    })();
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -70,7 +80,6 @@ function Dashboard() {
   const featured = spaces.slice(0, 4);
 
   const cards = [
-    { title: "Suggested Members", icon: <UserCircle2 className="size-4" />, msg: "People you may want to follow." },
     { title: "Saved Resources", icon: <Bookmark className="size-4" />, msg: "Bookmarks and downloads." },
   ];
   return (
@@ -134,6 +143,22 @@ function Dashboard() {
           </Button>
         </div>
         <UpcomingEventsWidget limit={3} />
+      </section>
+
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold flex items-center gap-2"><UserCircle2 className="size-5" />Newest Members</h2>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/members">All members <ArrowRight className="size-4 ml-1" /></Link>
+          </Button>
+        </div>
+        {newestMembers.length === 0 ? (
+          <EmptyState icon={<UserCircle2 className="size-5" />} title="No members yet" description="As people join, they'll appear here." />
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {newestMembers.map((m) => <MemberCard key={m.id} member={m} />)}
+          </div>
+        )}
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

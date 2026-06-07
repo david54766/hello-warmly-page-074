@@ -1,12 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Users2, Newspaper, Calendar, User } from "lucide-react";
+import { Home, Users2, Newspaper, UserCircle2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { label: "Home", to: "/dashboard", icon: Home },
   { label: "Spaces", to: "/spaces", icon: Users2 },
   { label: "Feed", to: "/feed", icon: Newspaper },
-  { label: "Events", to: "/events", icon: Calendar },
+  { label: "Members", to: "/members", icon: UserCircle2 },
   { label: "Profile", to: "/profile", icon: User },
 ];
 

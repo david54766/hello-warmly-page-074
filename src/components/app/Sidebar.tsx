@@ -26,7 +26,7 @@ const items: NavItem[] = [
   { label: "Feed", to: "/feed", icon: Newspaper },
   { label: "Courses", to: "/courses", icon: GraduationCap },
   { label: "Events", to: "/events", icon: Calendar },
-  { label: "Members", to: "/coming-soon/members", icon: UserCircle2, comingSoon: true },
+  { label: "Members", to: "/members", icon: UserCircle2 },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "Chat", to: "/coming-soon/chat", icon: MessageSquare, comingSoon: true },
   { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },
