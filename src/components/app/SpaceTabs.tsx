@@ -4,6 +4,7 @@ import { SpaceMemberList, type SpaceMemberRow } from "./SpaceMemberList";
 import { Compass, Newspaper, GraduationCap, Calendar, Users, BookOpen, Sparkles } from "lucide-react";
 import type { Space } from "@/lib/spaces";
 import { FeedList } from "@/components/feed/FeedList";
+import { SpaceCoursesTab } from "./SpaceCoursesTab";
 
 export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemberRow[] }) {
   return (
@@ -49,7 +50,7 @@ export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemb
         />
       </TabsContent>
       <TabsContent value="courses">
-        <EmptyState icon={<GraduationCap className="size-5" />} title="Courses are coming soon" description="Lessons and modules will live here." />
+        <SpaceCoursesTab spaceId={space.id} />
       </TabsContent>
       <TabsContent value="events">
         <EmptyState icon={<Calendar className="size-5" />} title="Events are coming soon" description="Live sessions and RSVPs will live here." />
