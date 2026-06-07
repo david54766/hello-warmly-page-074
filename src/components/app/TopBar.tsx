@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User, Settings, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 export function TopBar() {
   const { profile, user, isAdmin, signOut } = useAuth();
@@ -40,6 +41,7 @@ export function TopBar() {
         <span className="font-semibold">MemberHub</span>
       </Link>
       <div className="flex-1" />
+      <NotificationBell />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="rounded-full p-0 size-9">
