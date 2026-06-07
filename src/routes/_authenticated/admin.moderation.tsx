@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin/moderation")({
 });
 
 type ReportStatus = "open" | "under_review" | "resolved" | "dismissed" | "pending";
-type ReportTarget = "post" | "comment" | "user" | "event" | "course" | "lesson";
+type ReportTarget = "post" | "comment" | "user" | "event" | "course" | "lesson" | "message";
 type Report = {
   id: string;
   reporter_id: string | null;
@@ -38,6 +38,7 @@ function ModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [postTitles, setPostTitles] = useState<Map<string, { id: string; title: string }>>(new Map());
   const [commentBodies, setCommentBodies] = useState<Map<string, { id: string; post_id: string; body: string }>>(new Map());
+  const [messageBodies, setMessageBodies] = useState<Map<string, { id: string; conversation_id: string; body: string; status: string }>>(new Map());
   const [reporters, setReporters] = useState<Map<string, string>>(new Map());
   const [targetNames, setTargetNames] = useState<Map<string, string>>(new Map());
   const [notesDraft, setNotesDraft] = useState<Record<string, string>>({});
@@ -51,12 +52,12 @@ function ModerationPage() {
     setReports(r);
 
     const ids = (t: ReportTarget) => r.filter((x) => x.target_type === t).map((x) => x.target_id);
-    const postIds = ids("post"), commentIds = ids("comment"), userIds = ids("user");
+    const postIds = ids("post"), commentIds = ids("comment"), userIds = ids("user"), messageIds = ids("message");
     const eventIds = ids("event"), courseIds = ids("course"), lessonIds = ids("lesson");
     const reporterIds = Array.from(new Set(r.map((x) => x.reporter_id).filter((x): x is string => !!x)));
     const sb: any = supabase;
 
-    const [postsRes, commentsRes, profsRes, usersRes, eventsRes, coursesRes, lessonsRes] = await Promise.all([
+    const [postsRes, commentsRes, profsRes, usersRes, eventsRes, coursesRes, lessonsRes, messagesRes] = await Promise.all([
       postIds.length ? supabase.from("posts").select("id,title,body").in("id", postIds) : Promise.resolve({ data: [] as any[] }),
       commentIds.length ? supabase.from("comments").select("id,post_id,body").in("id", commentIds) : Promise.resolve({ data: [] as any[] }),
       reporterIds.length ? supabase.from("profiles").select("id,full_name,email").in("id", reporterIds) : Promise.resolve({ data: [] as any[] }),
@@ -64,10 +65,12 @@ function ModerationPage() {
       eventIds.length ? sb.from("events").select("id,title").in("id", eventIds) : Promise.resolve({ data: [] }),
       courseIds.length ? supabase.from("courses").select("id,title").in("id", courseIds) : Promise.resolve({ data: [] as any[] }),
       lessonIds.length ? supabase.from("lessons").select("id,title").in("id", lessonIds) : Promise.resolve({ data: [] as any[] }),
+      messageIds.length ? sb.from("messages").select("id,conversation_id,body,status").in("id", messageIds) : Promise.resolve({ data: [] }),
     ]);
 
     setPostTitles(new Map((postsRes.data ?? []).map((p: any) => [p.id, { id: p.id, title: p.title || p.body.slice(0, 60) || "Untitled" }])));
     setCommentBodies(new Map((commentsRes.data ?? []).map((c: any) => [c.id, c])));
+    setMessageBodies(new Map((messagesRes.data ?? []).map((m: any) => [m.id, m])));
     setReporters(new Map((profsRes.data ?? []).map((p: any) => [p.id, p.full_name || p.email || "Member"])));
     const names = new Map<string, string>();
     (usersRes.data ?? []).forEach((p: any) => names.set(p.id, p.full_name || p.email || "Member"));
@@ -100,10 +103,10 @@ function ModerationPage() {
   };
 
   const hideTarget = async (r: Report) => {
-    if (r.target_type !== "post" && r.target_type !== "comment") {
-      return toast.error("Hide is only available for posts and comments");
+    if (r.target_type !== "post" && r.target_type !== "comment" && r.target_type !== "message") {
+      return toast.error("Hide is only available for posts, comments, and messages");
     }
-    const table = r.target_type === "post" ? "posts" : "comments";
+    const table = r.target_type === "post" ? "posts" : r.target_type === "comment" ? "comments" : "messages";
     const { error } = await (supabase as any).from(table).update({ status: "hidden" }).eq("id", r.target_id);
     if (error) return toast.error(error.message);
     await updateStatus(r, "resolved");
@@ -137,6 +140,10 @@ function ModerationPage() {
       return { to: "/courses/$courseId", params: { courseId: r.target_id }, label: targetNames.get(r.target_id) ?? "Course" };
     if (r.target_type === "lesson")
       return { to: "/lessons/$lessonId", params: { lessonId: r.target_id }, label: targetNames.get(r.target_id) ?? "Lesson" };
+    if (r.target_type === "message") {
+      const m = messageBodies.get(r.target_id);
+      return m ? { to: "/chat", params: {}, label: (m.body || "").slice(0, 120) || "[empty message]" } : null;
+    }
     return null;
   };
 
@@ -146,7 +153,7 @@ function ModerationPage() {
     <ul className="space-y-2">
       {list.map((r) => {
         const link = targetLink(r);
-        const canHide = r.target_type === "post" || r.target_type === "comment";
+        const canHide = r.target_type === "post" || r.target_type === "comment" || r.target_type === "message";
         const isActive = isOpen(r.status) || r.status === "under_review";
         return (
           <li key={r.id}>
