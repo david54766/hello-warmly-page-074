@@ -18,6 +18,7 @@ const ICONS: Record<NotificationType, React.ComponentType<{ className?: string }
   admin_announcement: Megaphone,
   space_joined: Users2,
   report_status_updated: ShieldAlert,
+  new_message: MessageSquare,
 };
 
 export function NotificationItem({
