@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -76,6 +76,7 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/posts"><MessageSquare className="size-4 mr-2" />Posts</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/moderation"><Shield className="size-4 mr-2" />Moderation</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/analytics"><BarChart3 className="size-4 mr-2" />Analytics</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/checklist"><ListChecks className="size-4 mr-2" />Onboarding</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>

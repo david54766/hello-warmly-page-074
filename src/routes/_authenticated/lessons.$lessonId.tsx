@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/app/DashboardCard";
 import { LessonViewer } from "@/components/courses/LessonViewer";
 import { LessonNavigation } from "@/components/courses/LessonNavigation";
 import { LockedContentCard } from "@/components/courses/LockedContentCard";
+import { SaveButton } from "@/components/onboarding/SaveButton";
 import { CheckCircle2, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Course, CourseSection, Lesson, LessonProgress } from "@/lib/courses";
@@ -146,8 +147,13 @@ function LessonPage() {
       </nav>
 
       <header className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight">{lesson.title}</h1>
-        {section && <p className="text-sm text-muted-foreground">Section · {section.title}</p>}
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight">{lesson.title}</h1>
+            {section && <p className="text-sm text-muted-foreground">Section · {section.title}</p>}
+          </div>
+          <SaveButton targetType="lesson" targetId={lesson.id} variant="button" />
+        </div>
       </header>
 
       {isLocked ? (

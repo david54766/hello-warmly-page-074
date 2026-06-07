@@ -7,6 +7,7 @@ import { highestRole, memberInitials, relativeTime, type MemberSummary } from "@
 import { RolePill } from "./RolePill";
 import { StatusPill } from "./StatusPill";
 import { MessageMemberButton } from "@/components/chat/MessageMemberButton";
+import { FollowButton } from "@/components/onboarding/FollowButton";
 
 export function MemberCard({ member, showStatus }: { member: MemberSummary; showStatus?: boolean }) {
   const role = highestRole(member.roles);
@@ -40,6 +41,7 @@ export function MemberCard({ member, showStatus }: { member: MemberSummary; show
           <Button asChild variant="outline" size="sm" className="flex-1">
             <Link to="/members/$userId" params={{ userId: member.id }}>View profile</Link>
           </Button>
+          <FollowButton userId={member.id} />
           <MessageMemberButton memberId={member.id} />
         </div>
       </CardContent>

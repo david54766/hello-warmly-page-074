@@ -6,6 +6,7 @@ import { highestRole, memberInitials, type MemberSummary } from "@/lib/members";
 import { RolePill } from "./RolePill";
 import { StatusPill } from "./StatusPill";
 import { MessageMemberButton } from "@/components/chat/MessageMemberButton";
+import { FollowButton } from "@/components/onboarding/FollowButton";
 
 export function ProfileHeader({
   member,
@@ -42,6 +43,7 @@ export function ProfileHeader({
             {isSelf && (
               <Button asChild size="sm" variant="outline"><Link to="/profile"><Edit3 className="size-4 mr-1.5" />Edit profile</Link></Button>
             )}
+            {!isSelf && <FollowButton userId={member.id} />}
             {!isSelf && <MessageMemberButton memberId={member.id} variant="default" />}
             {isAdmin && !isSelf && (
               <Button asChild size="sm" variant="outline"><Link to="/admin/members/$userId" params={{ userId: member.id }}><Shield className="size-4 mr-1.5" />Admin actions</Link></Button>
