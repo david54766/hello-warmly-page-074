@@ -32,7 +32,9 @@ import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
+import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_authenticated/admin.courses.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
+import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/_authenticated/admin.courses.$courseId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -159,10 +161,22 @@ const AuthenticatedAdminSpacesIndexRoute =
     path: '/spaces/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminCoursesIndexRoute =
+  AuthenticatedAdminCoursesIndexRouteImport.update({
+    id: '/courses/',
+    path: '/courses/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminSpacesSpaceIdRoute =
   AuthenticatedAdminSpacesSpaceIdRouteImport.update({
     id: '/spaces/$spaceId',
     path: '/spaces/$spaceId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCoursesCourseIdRoute =
+  AuthenticatedAdminCoursesCourseIdRouteImport.update({
+    id: '/courses/$courseId',
+    path: '/courses/$courseId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 
@@ -188,7 +202,9 @@ export interface FileRoutesByFullPath {
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -213,7 +229,9 @@ export interface FileRoutesByTo {
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
+  '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/courses': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/spaces': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesById {
@@ -240,7 +258,9 @@ export interface FileRoutesById {
   '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/_authenticated/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/_authenticated/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRouteTypes {
@@ -267,7 +287,9 @@ export interface FileRouteTypes {
     | '/spaces/$spaceId'
     | '/courses/'
     | '/spaces/'
+    | '/admin/courses/$courseId'
     | '/admin/spaces/$spaceId'
+    | '/admin/courses/'
     | '/admin/spaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -292,7 +314,9 @@ export interface FileRouteTypes {
     | '/spaces/$spaceId'
     | '/courses'
     | '/spaces'
+    | '/admin/courses/$courseId'
     | '/admin/spaces/$spaceId'
+    | '/admin/courses'
     | '/admin/spaces'
   id:
     | '__root__'
@@ -318,7 +342,9 @@ export interface FileRouteTypes {
     | '/_authenticated/spaces/$spaceId'
     | '/_authenticated/courses/'
     | '/_authenticated/spaces/'
+    | '/_authenticated/admin/courses/$courseId'
     | '/_authenticated/admin/spaces/$spaceId'
+    | '/_authenticated/admin/courses/'
     | '/_authenticated/admin/spaces/'
   fileRoutesById: FileRoutesById
 }
@@ -494,11 +520,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSpacesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/courses/': {
+      id: '/_authenticated/admin/courses/'
+      path: '/courses'
+      fullPath: '/admin/courses/'
+      preLoaderRoute: typeof AuthenticatedAdminCoursesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/spaces/$spaceId': {
       id: '/_authenticated/admin/spaces/$spaceId'
       path: '/spaces/$spaceId'
       fullPath: '/admin/spaces/$spaceId'
       preLoaderRoute: typeof AuthenticatedAdminSpacesSpaceIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/courses/$courseId': {
+      id: '/_authenticated/admin/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/admin/courses/$courseId'
+      preLoaderRoute: typeof AuthenticatedAdminCoursesCourseIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
   }
@@ -509,7 +549,9 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
+  AuthenticatedAdminCoursesIndexRoute: typeof AuthenticatedAdminCoursesIndexRoute
   AuthenticatedAdminSpacesIndexRoute: typeof AuthenticatedAdminSpacesIndexRoute
 }
 
@@ -518,7 +560,10 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+  AuthenticatedAdminCoursesCourseIdRoute:
+    AuthenticatedAdminCoursesCourseIdRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
+  AuthenticatedAdminCoursesIndexRoute: AuthenticatedAdminCoursesIndexRoute,
   AuthenticatedAdminSpacesIndexRoute: AuthenticatedAdminSpacesIndexRoute,
 }
 
