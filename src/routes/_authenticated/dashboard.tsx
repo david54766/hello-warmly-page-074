@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
-import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight, Bell } from "lucide-react";
+import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight, Bell, Trophy, Award } from "lucide-react";
 import { fetchMembers, type MemberSummary } from "@/lib/members";
 import { MemberCard } from "@/components/members/MemberCard";
 import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
@@ -17,6 +17,8 @@ import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
 import { NotificationSummaryCard } from "@/components/notifications/NotificationSummaryCard";
 import { WelcomeChecklistWidget } from "@/components/onboarding/WelcomeChecklistWidget";
 import { SuggestedMembersCard } from "@/components/onboarding/SuggestedMembersCard";
+import { PointsDisplay } from "@/components/gamification/PointsDisplay";
+import { fetchUserPointsTotal } from "@/lib/gamification";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -30,6 +32,7 @@ function Dashboard() {
   const [memberRows, setMemberRows] = useState<{ space_id: string; user_id: string }[]>([]);
   const [continueData, setContinueData] = useState<{ course: Course; lesson: Lesson; total: number; completed: number } | null>(null);
   const [newestMembers, setNewestMembers] = useState<MemberSummary[]>([]);
+  const [myPoints, setMyPoints] = useState(0);
 
   const load = async () => {
     setLoading(true);
@@ -52,6 +55,8 @@ function Dashboard() {
       setNewestMembers(m.filter((x) => x.status === "active").slice(0, 4));
     })();
   }, []);
+
+  useEffect(() => { if (user) fetchUserPointsTotal(user.id).then(setMyPoints); }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -168,6 +173,15 @@ function Dashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <NotificationSummaryCard />
+        <DashboardCard title="My Points" icon={<Trophy className="size-4" />}>
+          <div className="flex items-center justify-between">
+            <PointsDisplay points={myPoints} size="lg" />
+            <Button size="sm" variant="outline" asChild><Link to="/achievements"><Award className="size-4 mr-1" />My achievements</Link></Button>
+          </div>
+          <div className="mt-3">
+            <Button size="sm" variant="ghost" asChild><Link to="/leaderboard">View leaderboard <ArrowRight className="size-4 ml-1" /></Link></Button>
+          </div>
+        </DashboardCard>
         <SuggestedMembersCard />
         <DashboardCard title="Saved Content" icon={<Bookmark className="size-4" />}>
           <p className="text-sm text-muted-foreground">Quickly return to posts, lessons, events, and resources you've saved.</p>
