@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const { isAdmin, loading } = useAuth();
   const navigate = useNavigate();
-  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0 });
+  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0, events: 0, upcomingEvents: 0, rsvps: 0 });
   const [recent, setRecent] = useState<Space[]>([]);
 
   useEffect(() => {
@@ -26,13 +26,17 @@ function AdminPage() {
     if (!isAdmin) return;
     (async () => {
       const weekAgo = new Date(Date.now() - 7 * 86400_000).toISOString();
-      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }] = await Promise.all([
+      const nowIso = new Date().toISOString();
+      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }, { count: eventsCount }, { count: upcomingCount }, { count: rsvpCount }] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("created_at", weekAgo),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("last_active_at", weekAgo),
         supabase.from("spaces").select("*", { count: "exact", head: true }).eq("is_archived", false),
         supabase.from("collections").select("*", { count: "exact", head: true }),
         supabase.from("spaces").select("*").order("created_at", { ascending: false }).limit(5),
+        (supabase as any).from("events").select("*", { count: "exact", head: true }),
+        (supabase as any).from("events").select("*", { count: "exact", head: true }).gte("end_time", nowIso),
+        (supabase as any).from("event_rsvps").select("*", { count: "exact", head: true }),
       ]);
       setStats({
         total: total ?? 0,
@@ -40,6 +44,9 @@ function AdminPage() {
         active: active ?? 0,
         spaces: spacesCount ?? 0,
         collections: collectionsCount ?? 0,
+        events: eventsCount ?? 0,
+        upcomingEvents: upcomingCount ?? 0,
+        rsvps: rsvpCount ?? 0,
       });
       setRecent((recentSpaces ?? []) as Space[]);
     })();
@@ -57,18 +64,22 @@ function AdminPage() {
         <div className="flex flex-wrap gap-2">
           <Button asChild><Link to="/admin/spaces"><Plus className="size-4 mr-1.5" />Create Space</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/collections"><Plus className="size-4 mr-1.5" />Create Collection</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/events"><Calendar className="size-4 mr-2" />Events</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/posts"><MessageSquare className="size-4 mr-2" />Posts</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/moderation"><Shield className="size-4 mr-2" />Moderation</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <AdminStatCard label="Total Members" value={stats.total} icon={<Users className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="New Members (7d)" value={stats.newWeek} icon={<UserPlus className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="Active Members (7d)" value={stats.active} icon={<Activity className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="Total Spaces" value={stats.spaces} icon={<Users2 className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="Collections" value={stats.collections} icon={<FolderTree className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Total Events" value={stats.events} icon={<Calendar className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Upcoming Events" value={stats.upcomingEvents} icon={<CalendarCheck className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Total RSVPs" value={stats.rsvps} icon={<UserPlus className="size-4 text-muted-foreground" />} />
       </div>
 
       <section className="space-y-3">
@@ -115,7 +126,6 @@ function AdminPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { t: "Courses", i: <GraduationCap className="size-4" /> },
-            { t: "Events", i: <Calendar className="size-4" /> },
             { t: "Payments", i: <CreditCard className="size-4" /> },
             { t: "Automations", i: <Bot className="size-4" /> },
             { t: "AI Assistant", i: <Sparkles className="size-4" /> },

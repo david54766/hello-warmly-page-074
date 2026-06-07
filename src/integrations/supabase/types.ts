@@ -208,6 +208,112 @@ export type Database = {
         }
         Relationships: []
       }
+      event_rsvps: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          status: Database["public"]["Enums"]["rsvp_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          status?: Database["public"]["Enums"]["rsvp_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          status?: Database["public"]["Enums"]["rsvp_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          access_level: Database["public"]["Enums"]["event_access"]
+          cover_image_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_time: string
+          event_type: Database["public"]["Enums"]["event_type"]
+          id: string
+          location: string | null
+          rsvp_limit: number | null
+          space_id: string
+          start_time: string
+          status: Database["public"]["Enums"]["event_status"]
+          timezone: string
+          title: string
+          updated_at: string
+          virtual_link: string | null
+          visibility: Database["public"]["Enums"]["event_visibility"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["event_access"]
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time: string
+          event_type?: Database["public"]["Enums"]["event_type"]
+          id?: string
+          location?: string | null
+          rsvp_limit?: number | null
+          space_id: string
+          start_time: string
+          status?: Database["public"]["Enums"]["event_status"]
+          timezone?: string
+          title: string
+          updated_at?: string
+          virtual_link?: string | null
+          visibility?: Database["public"]["Enums"]["event_visibility"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["event_access"]
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_time?: string
+          event_type?: Database["public"]["Enums"]["event_type"]
+          id?: string
+          location?: string | null
+          rsvp_limit?: number | null
+          space_id?: string
+          start_time?: string
+          status?: Database["public"]["Enums"]["event_status"]
+          timezone?: string
+          title?: string
+          updated_at?: string
+          virtual_link?: string | null
+          visibility?: Database["public"]["Enums"]["event_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_progress: {
         Row: {
           completed_at: string | null
@@ -675,6 +781,10 @@ export type Database = {
         Args: { _course_id: string; _user_id: string }
         Returns: boolean
       }
+      can_access_event: {
+        Args: { _event_id: string; _user_id: string }
+        Returns: boolean
+      }
       can_access_lesson: {
         Args: { _lesson_id: string; _user_id: string }
         Returns: boolean
@@ -713,6 +823,16 @@ export type Database = {
       comment_status: "active" | "hidden" | "deleted"
       course_access: "free" | "preview" | "paid_placeholder"
       course_visibility: "public" | "members_only" | "space_members" | "hidden"
+      event_access: "free" | "preview" | "paid_placeholder"
+      event_status: "draft" | "published" | "canceled" | "completed"
+      event_type:
+        | "in_person"
+        | "virtual"
+        | "workshop"
+        | "community_call"
+        | "course_session"
+        | "livestream_placeholder"
+      event_visibility: "public" | "members_only" | "space_members" | "hidden"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_visibility: "visible" | "preview" | "locked" | "hidden"
       post_status: "active" | "hidden" | "deleted"
@@ -725,6 +845,7 @@ export type Database = {
       reaction_type: "like" | "love" | "celebrate" | "helpful"
       report_status: "pending" | "resolved" | "dismissed"
       report_target: "post" | "comment"
+      rsvp_status: "going" | "not_going" | "waitlist"
       space_access: "free" | "preview" | "paid_placeholder"
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
@@ -866,6 +987,17 @@ export const Constants = {
       comment_status: ["active", "hidden", "deleted"],
       course_access: ["free", "preview", "paid_placeholder"],
       course_visibility: ["public", "members_only", "space_members", "hidden"],
+      event_access: ["free", "preview", "paid_placeholder"],
+      event_status: ["draft", "published", "canceled", "completed"],
+      event_type: [
+        "in_person",
+        "virtual",
+        "workshop",
+        "community_call",
+        "course_session",
+        "livestream_placeholder",
+      ],
+      event_visibility: ["public", "members_only", "space_members", "hidden"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_visibility: ["visible", "preview", "locked", "hidden"],
       post_status: ["active", "hidden", "deleted"],
@@ -879,6 +1011,7 @@ export const Constants = {
       reaction_type: ["like", "love", "celebrate", "helpful"],
       report_status: ["pending", "resolved", "dismissed"],
       report_target: ["post", "comment"],
+      rsvp_status: ["going", "not_going", "waitlist"],
       space_access: ["free", "preview", "paid_placeholder"],
       space_member_role: ["space_host", "space_moderator", "member"],
       space_member_status: ["active", "pending", "banned"],

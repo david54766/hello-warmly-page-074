@@ -5,6 +5,7 @@ import { Compass, Newspaper, GraduationCap, Calendar, Users, BookOpen, Sparkles 
 import type { Space } from "@/lib/spaces";
 import { FeedList } from "@/components/feed/FeedList";
 import { SpaceCoursesTab } from "./SpaceCoursesTab";
+import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
 
 export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemberRow[] }) {
   return (
@@ -53,7 +54,7 @@ export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemb
         <SpaceCoursesTab spaceId={space.id} />
       </TabsContent>
       <TabsContent value="events">
-        <EmptyState icon={<Calendar className="size-5" />} title="Events are coming soon" description="Live sessions and RSVPs will live here." />
+        <UpcomingEventsWidget spaceId={space.id} limit={10} />
       </TabsContent>
       <TabsContent value="members">
         <SpaceMemberList members={members} />

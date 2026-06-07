@@ -25,7 +25,7 @@ const items: NavItem[] = [
   { label: "Spaces", to: "/spaces", icon: Users2 },
   { label: "Feed", to: "/feed", icon: Newspaper },
   { label: "Courses", to: "/courses", icon: GraduationCap },
-  { label: "Events", to: "/coming-soon/events", icon: Calendar, comingSoon: true },
+  { label: "Events", to: "/events", icon: Calendar },
   { label: "Members", to: "/coming-soon/members", icon: UserCircle2, comingSoon: true },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "Chat", to: "/coming-soon/chat", icon: MessageSquare, comingSoon: true },

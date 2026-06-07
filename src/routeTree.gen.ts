@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated/feed'
+import { Route as AuthenticatedEventsRouteImport } from './routes/_authenticated/events'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedSpacesIndexRouteImport } from './routes/_authenticated/spaces.index'
@@ -25,6 +26,7 @@ import { Route as AuthenticatedCoursesIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedPostsPostIdRouteImport } from './routes/_authenticated/posts.$postId'
 import { Route as AuthenticatedLessonsLessonIdRouteImport } from './routes/_authenticated/lessons.$lessonId'
+import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events.$eventId'
 import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_authenticated/courses.$courseId'
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
@@ -32,8 +34,10 @@ import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
+import { Route as AuthenticatedAdminEventsIndexRouteImport } from './routes/_authenticated/admin.events.index'
 import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_authenticated/admin.courses.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
+import { Route as AuthenticatedAdminEventsEventIdRouteImport } from './routes/_authenticated/admin.events.$eventId'
 import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/_authenticated/admin.courses.$courseId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -80,6 +84,11 @@ const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
   path: '/feed',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEventsRoute = AuthenticatedEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -119,6 +128,12 @@ const AuthenticatedLessonsLessonIdRoute =
     id: '/lessons/$lessonId',
     path: '/lessons/$lessonId',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEventsEventIdRoute =
+  AuthenticatedEventsEventIdRouteImport.update({
+    id: '/$eventId',
+    path: '/$eventId',
+    getParentRoute: () => AuthenticatedEventsRoute,
   } as any)
 const AuthenticatedCoursesCourseIdRoute =
   AuthenticatedCoursesCourseIdRouteImport.update({
@@ -161,6 +176,12 @@ const AuthenticatedAdminSpacesIndexRoute =
     path: '/spaces/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminEventsIndexRoute =
+  AuthenticatedAdminEventsIndexRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminCoursesIndexRoute =
   AuthenticatedAdminCoursesIndexRouteImport.update({
     id: '/courses/',
@@ -171,6 +192,12 @@ const AuthenticatedAdminSpacesSpaceIdRoute =
   AuthenticatedAdminSpacesSpaceIdRouteImport.update({
     id: '/spaces/$spaceId',
     path: '/spaces/$spaceId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEventsEventIdRoute =
+  AuthenticatedAdminEventsEventIdRouteImport.update({
+    id: '/events/$eventId',
+    path: '/events/$eventId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminCoursesCourseIdRoute =
@@ -188,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/events': typeof AuthenticatedEventsRouteWithChildren
   '/feed': typeof AuthenticatedFeedRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -197,14 +225,17 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
+  '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
+  '/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -215,6 +246,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/events': typeof AuthenticatedEventsRouteWithChildren
   '/feed': typeof AuthenticatedFeedRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -224,14 +256,17 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
+  '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses': typeof AuthenticatedAdminCoursesIndexRoute
+  '/admin/events': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/spaces': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesById {
@@ -244,6 +279,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/events': typeof AuthenticatedEventsRouteWithChildren
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
@@ -253,14 +289,17 @@ export interface FileRoutesById {
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/_authenticated/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
+  '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/_authenticated/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/_authenticated/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
   '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
+  '/_authenticated/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/_authenticated/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
+  '/_authenticated/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/_authenticated/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRouteTypes {
@@ -273,6 +312,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/admin'
     | '/dashboard'
+    | '/events'
     | '/feed'
     | '/profile'
     | '/settings'
@@ -282,14 +322,17 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/coming-soon/$area'
     | '/courses/$courseId'
+    | '/events/$eventId'
     | '/lessons/$lessonId'
     | '/posts/$postId'
     | '/spaces/$spaceId'
     | '/courses/'
     | '/spaces/'
     | '/admin/courses/$courseId'
+    | '/admin/events/$eventId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses/'
+    | '/admin/events/'
     | '/admin/spaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -300,6 +343,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/admin'
     | '/dashboard'
+    | '/events'
     | '/feed'
     | '/profile'
     | '/settings'
@@ -309,14 +353,17 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/coming-soon/$area'
     | '/courses/$courseId'
+    | '/events/$eventId'
     | '/lessons/$lessonId'
     | '/posts/$postId'
     | '/spaces/$spaceId'
     | '/courses'
     | '/spaces'
     | '/admin/courses/$courseId'
+    | '/admin/events/$eventId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses'
+    | '/admin/events'
     | '/admin/spaces'
   id:
     | '__root__'
@@ -328,6 +375,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
+    | '/_authenticated/events'
     | '/_authenticated/feed'
     | '/_authenticated/profile'
     | '/_authenticated/settings'
@@ -337,14 +385,17 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/settings'
     | '/_authenticated/coming-soon/$area'
     | '/_authenticated/courses/$courseId'
+    | '/_authenticated/events/$eventId'
     | '/_authenticated/lessons/$lessonId'
     | '/_authenticated/posts/$postId'
     | '/_authenticated/spaces/$spaceId'
     | '/_authenticated/courses/'
     | '/_authenticated/spaces/'
     | '/_authenticated/admin/courses/$courseId'
+    | '/_authenticated/admin/events/$eventId'
     | '/_authenticated/admin/spaces/$spaceId'
     | '/_authenticated/admin/courses/'
+    | '/_authenticated/admin/events/'
     | '/_authenticated/admin/spaces/'
   fileRoutesById: FileRoutesById
 }
@@ -422,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFeedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/events': {
+      id: '/_authenticated/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -470,6 +528,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/lessons/$lessonId'
       preLoaderRoute: typeof AuthenticatedLessonsLessonIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
+      path: '/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
+      parentRoute: typeof AuthenticatedEventsRoute
     }
     '/_authenticated/courses/$courseId': {
       id: '/_authenticated/courses/$courseId'
@@ -520,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSpacesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/events/': {
+      id: '/_authenticated/admin/events/'
+      path: '/events'
+      fullPath: '/admin/events/'
+      preLoaderRoute: typeof AuthenticatedAdminEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/courses/': {
       id: '/_authenticated/admin/courses/'
       path: '/courses'
@@ -532,6 +604,13 @@ declare module '@tanstack/react-router' {
       path: '/spaces/$spaceId'
       fullPath: '/admin/spaces/$spaceId'
       preLoaderRoute: typeof AuthenticatedAdminSpacesSpaceIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/events/$eventId': {
+      id: '/_authenticated/admin/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/admin/events/$eventId'
+      preLoaderRoute: typeof AuthenticatedAdminEventsEventIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/courses/$courseId': {
@@ -550,8 +629,10 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
+  AuthenticatedAdminEventsEventIdRoute: typeof AuthenticatedAdminEventsEventIdRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
   AuthenticatedAdminCoursesIndexRoute: typeof AuthenticatedAdminCoursesIndexRoute
+  AuthenticatedAdminEventsIndexRoute: typeof AuthenticatedAdminEventsIndexRoute
   AuthenticatedAdminSpacesIndexRoute: typeof AuthenticatedAdminSpacesIndexRoute
 }
 
@@ -562,17 +643,31 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminCoursesCourseIdRoute:
     AuthenticatedAdminCoursesCourseIdRoute,
+  AuthenticatedAdminEventsEventIdRoute: AuthenticatedAdminEventsEventIdRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
   AuthenticatedAdminCoursesIndexRoute: AuthenticatedAdminCoursesIndexRoute,
+  AuthenticatedAdminEventsIndexRoute: AuthenticatedAdminEventsIndexRoute,
   AuthenticatedAdminSpacesIndexRoute: AuthenticatedAdminSpacesIndexRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
   AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
 
+interface AuthenticatedEventsRouteChildren {
+  AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRoute
+}
+
+const AuthenticatedEventsRouteChildren: AuthenticatedEventsRouteChildren = {
+  AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRoute,
+}
+
+const AuthenticatedEventsRouteWithChildren =
+  AuthenticatedEventsRoute._addFileChildren(AuthenticatedEventsRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEventsRoute: typeof AuthenticatedEventsRouteWithChildren
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
@@ -588,6 +683,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEventsRoute: AuthenticatedEventsRouteWithChildren,
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
