@@ -8,6 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
 import { BookOpen, Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight } from "lucide-react";
+import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
+import { supabase as sb } from "@/integrations/supabase/client";
+import type { Course, Lesson, LessonProgress } from "@/lib/courses";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -19,6 +22,7 @@ function Dashboard() {
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [memberRows, setMemberRows] = useState<{ space_id: string; user_id: string }[]>([]);
+  const [continueData, setContinueData] = useState<{ course: Course; lesson: Lesson; total: number; completed: number } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -35,6 +39,25 @@ function Dashboard() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data: prog } = await sb.from("lesson_progress").select("*").eq("user_id", user.id).order("last_viewed_at", { ascending: false });
+      const progress = (prog ?? []) as LessonProgress[];
+      const incomplete = progress.find((p) => p.status !== "completed");
+      if (!incomplete) return setContinueData(null);
+      const { data: l } = await sb.from("lessons").select("*").eq("id", incomplete.lesson_id).maybeSingle();
+      if (!l) return setContinueData(null);
+      const { data: c } = await sb.from("courses").select("*").eq("id", l.course_id).maybeSingle();
+      if (!c) return setContinueData(null);
+      const { data: courseLessons } = await sb.from("lessons").select("id").eq("course_id", l.course_id);
+      const total = (courseLessons ?? []).length;
+      const courseLessonIds = new Set((courseLessons ?? []).map((x) => x.id));
+      const completed = progress.filter((p) => p.status === "completed" && courseLessonIds.has(p.lesson_id)).length;
+      setContinueData({ course: c as Course, lesson: l as Lesson, total, completed });
+    })();
+  }, [user]);
+
   const counts = useMemo(() => {
     const m = new Map<string, number>();
     memberRows.forEach((r) => m.set(r.space_id, (m.get(r.space_id) ?? 0) + 1));
@@ -46,7 +69,6 @@ function Dashboard() {
   const featured = spaces.slice(0, 4);
 
   const cards = [
-    { title: "Continue Learning", icon: <BookOpen className="size-4" />, msg: "Your courses will appear here." },
     { title: "Upcoming Events", icon: <Calendar className="size-4" />, msg: "Live sessions and meetups." },
     { title: "Suggested Members", icon: <UserCircle2 className="size-4" />, msg: "People you may want to follow." },
     { title: "Saved Resources", icon: <Bookmark className="size-4" />, msg: "Bookmarks and downloads." },
