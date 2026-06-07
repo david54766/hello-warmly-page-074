@@ -17,6 +17,7 @@ export function FeedList({
   emptyTitle,
   emptyDescription,
   showFilters = true,
+  hashtagFilter,
 }: {
   /** When set, only posts in this space are loaded and composed. */
   scopeSpaceId?: string;
@@ -25,9 +26,11 @@ export function FeedList({
   emptyTitle?: string;
   emptyDescription?: string;
   showFilters?: boolean;
+  /** If set, only posts tagged with this hashtag are shown. */
+  hashtagFilter?: string;
 }) {
   const { user } = useAuth();
-  const { loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, refresh } =
+  const { loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, hashtagsByPost, questionDetailsByPost, refresh } =
     useFeedData({ spaceId: scopeSpaceId });
 
   const [search, setSearch] = useState("");
@@ -49,11 +52,17 @@ export function FeedList({
   const filtered = useMemo(() => {
     let arr = posts.slice();
     if (spaceFilter) arr = arr.filter((p) => p.space_id === spaceFilter);
+    if (hashtagFilter) {
+      const tag = hashtagFilter.toLowerCase();
+      arr = arr.filter((p) => (hashtagsByPost.get(p.id) ?? []).includes(tag));
+    }
     switch (filter) {
       case "following": arr = arr.filter((p) => p.author_id && followingIds.has(p.author_id)); break;
       case "posts": arr = arr.filter((p) => p.post_type === "quick_post"); break;
       case "articles": arr = arr.filter((p) => p.post_type === "article"); break;
       case "questions": arr = arr.filter((p) => p.post_type === "question"); break;
+      case "unanswered": arr = arr.filter((p) => p.post_type === "question" && !(questionDetailsByPost.get(p.id)?.is_answered)); break;
+      case "polls": arr = arr.filter((p) => p.post_type === "poll"); break;
       case "from_admins": arr = arr.filter((p) => p.author_id && adminUserIds.has(p.author_id)); break;
       case "pinned": arr = arr.filter((p) => p.is_pinned); break;
       case "featured": arr = arr.filter((p) => p.is_featured); break;
@@ -62,7 +71,9 @@ export function FeedList({
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       arr = arr.filter((p) =>
-        (p.title?.toLowerCase().includes(q) ?? false) || p.body.toLowerCase().includes(q)
+        (p.title?.toLowerCase().includes(q) ?? false) ||
+        p.body.toLowerCase().includes(q) ||
+        (hashtagsByPost.get(p.id) ?? []).some((t) => t.includes(q.replace(/^#/, "")))
       );
     }
     if (sort === "top") {
@@ -80,7 +91,7 @@ export function FeedList({
       });
     }
     return arr;
-  }, [posts, filter, search, sort, spaceFilter, adminUserIds, user, reactionCountsByPost, followingIds]);
+  }, [posts, filter, search, sort, spaceFilter, adminUserIds, user, reactionCountsByPost, followingIds, hashtagFilter, hashtagsByPost, questionDetailsByPost]);
 
   return (
     <div className="space-y-4">
@@ -124,6 +135,8 @@ export function FeedList({
               reactions={reactions.filter((r) => r.target_type === "post" && r.target_id === p.id)}
               commentCount={commentCounts.get(p.id) ?? 0}
               onChange={refresh}
+              hashtags={hashtagsByPost.get(p.id) ?? []}
+              isAnswered={questionDetailsByPost.get(p.id)?.is_answered ?? false}
             />
           ))}
         </div>
