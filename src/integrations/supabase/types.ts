@@ -607,6 +607,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          moderator_notes: string | null
           reason: string
           reporter_id: string | null
           reviewed_at: string | null
@@ -618,6 +619,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          moderator_notes?: string | null
           reason: string
           reporter_id?: string | null
           reviewed_at?: string | null
@@ -629,6 +631,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          moderator_notes?: string | null
           reason?: string
           reporter_id?: string | null
           reviewed_at?: string | null
@@ -855,8 +858,13 @@ export type Database = {
         | "event_announcement_placeholder"
       post_visibility: "public" | "space_members" | "admins_only" | "hidden"
       reaction_type: "like" | "love" | "celebrate" | "helpful"
-      report_status: "pending" | "resolved" | "dismissed"
-      report_target: "post" | "comment"
+      report_status:
+        | "pending"
+        | "resolved"
+        | "dismissed"
+        | "open"
+        | "under_review"
+      report_target: "post" | "comment" | "user" | "event" | "course" | "lesson"
       rsvp_status: "going" | "not_going" | "waitlist"
       space_access: "free" | "preview" | "paid_placeholder"
       space_member_role: "space_host" | "space_moderator" | "member"
@@ -1021,8 +1029,14 @@ export const Constants = {
       ],
       post_visibility: ["public", "space_members", "admins_only", "hidden"],
       reaction_type: ["like", "love", "celebrate", "helpful"],
-      report_status: ["pending", "resolved", "dismissed"],
-      report_target: ["post", "comment"],
+      report_status: [
+        "pending",
+        "resolved",
+        "dismissed",
+        "open",
+        "under_review",
+      ],
+      report_target: ["post", "comment", "user", "event", "course", "lesson"],
       rsvp_status: ["going", "not_going", "waitlist"],
       space_access: ["free", "preview", "paid_placeholder"],
       space_member_role: ["space_host", "space_moderator", "member"],
