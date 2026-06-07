@@ -6,6 +6,7 @@ import { getIcon, isLocked, type Space } from "@/lib/spaces";
 import { PrivacyPill } from "./PrivacyPill";
 import { AccessPill } from "./AccessPill";
 import { JoinSpaceButton } from "./JoinSpaceButton";
+import { SaveButton } from "@/components/onboarding/SaveButton";
 
 export function SpaceCard({
   space,
@@ -60,6 +61,7 @@ export function SpaceCard({
             <Link to="/spaces/$spaceId" params={{ spaceId: space.id }}>View</Link>
           </Button>
           <JoinSpaceButton space={space} isMember={isMember} onChange={onJoinChange} size="sm" />
+          <SaveButton targetType="space" targetId={space.id} />
         </div>
       </CardContent>
     </Card>
