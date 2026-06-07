@@ -47,7 +47,6 @@ function Dashboard() {
 
   const cards = [
     { title: "Continue Learning", icon: <BookOpen className="size-4" />, msg: "Your courses will appear here." },
-    { title: "Latest Discussions", icon: <MessageSquare className="size-4" />, msg: "Conversations from your spaces." },
     { title: "Upcoming Events", icon: <Calendar className="size-4" />, msg: "Live sessions and meetups." },
     { title: "Suggested Members", icon: <UserCircle2 className="size-4" />, msg: "People you may want to follow." },
     { title: "Saved Resources", icon: <Bookmark className="size-4" />, msg: "Bookmarks and downloads." },
@@ -86,6 +85,23 @@ function Dashboard() {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold flex items-center gap-2"><MessageSquare className="size-5" />Latest Discussions</h2>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/feed">Open feed <ArrowRight className="size-4 ml-1" /></Link>
+          </Button>
+        </div>
+        <DashboardCard title="Community Feed" icon={<MessageSquare className="size-4" />}>
+          <p className="text-sm text-muted-foreground">
+            Catch up on the newest posts, questions, and announcements across the Spaces you've joined.
+          </p>
+          <div className="mt-3">
+            <Button size="sm" asChild><Link to="/feed">View community feed</Link></Button>
+          </div>
+        </DashboardCard>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
