@@ -19,6 +19,9 @@ import { WelcomeChecklistWidget } from "@/components/onboarding/WelcomeChecklist
 import { SuggestedMembersCard } from "@/components/onboarding/SuggestedMembersCard";
 import { PointsDisplay } from "@/components/gamification/PointsDisplay";
 import { fetchUserPointsTotal } from "@/lib/gamification";
+import { ActivePollsWidget } from "@/components/feed/ActivePollsWidget";
+import { UnansweredQuestionsWidget } from "@/components/feed/UnansweredQuestionsWidget";
+import { TrendingHashtagsCard } from "@/components/feed/TrendingHashtagsCard";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -173,6 +176,9 @@ function Dashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <NotificationSummaryCard />
+        <ActivePollsWidget />
+        <UnansweredQuestionsWidget />
+        <TrendingHashtagsCard />
         <DashboardCard title="My Points" icon={<Trophy className="size-4" />}>
           <div className="flex items-center justify-between">
             <PointsDisplay points={myPoints} size="lg" />
