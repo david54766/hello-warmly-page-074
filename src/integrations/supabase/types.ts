@@ -122,6 +122,196 @@ export type Database = {
           },
         ]
       }
+      course_sections: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_sections_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          access_level: Database["public"]["Enums"]["course_access"]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_archived: boolean
+          overview_content: string | null
+          sort_order: number
+          space_id: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          visibility: Database["public"]["Enums"]["course_visibility"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["course_access"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          overview_content?: string | null
+          sort_order?: number
+          space_id: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["course_visibility"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["course_access"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          overview_content?: string | null
+          sort_order?: number
+          space_id?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["course_visibility"]
+        }
+        Relationships: []
+      }
+      lesson_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_viewed_at: string
+          lesson_id: string
+          status: Database["public"]["Enums"]["lesson_progress_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_viewed_at?: string
+          lesson_id: string
+          status?: Database["public"]["Enums"]["lesson_progress_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_viewed_at?: string
+          lesson_id?: string
+          status?: Database["public"]["Enums"]["lesson_progress_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lessons: {
+        Row: {
+          attachments: string[]
+          completion_required: boolean
+          content: string
+          course_id: string
+          created_at: string
+          id: string
+          preview_enabled: boolean
+          section_id: string | null
+          sort_order: number
+          title: string
+          updated_at: string
+          video_url: string | null
+          visibility: Database["public"]["Enums"]["lesson_visibility"]
+        }
+        Insert: {
+          attachments?: string[]
+          completion_required?: boolean
+          content?: string
+          course_id: string
+          created_at?: string
+          id?: string
+          preview_enabled?: boolean
+          section_id?: string | null
+          sort_order?: number
+          title: string
+          updated_at?: string
+          video_url?: string | null
+          visibility?: Database["public"]["Enums"]["lesson_visibility"]
+        }
+        Update: {
+          attachments?: string[]
+          completion_required?: boolean
+          content?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          preview_enabled?: boolean
+          section_id?: string | null
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+          visibility?: Database["public"]["Enums"]["lesson_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lessons_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "course_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_settings: {
         Row: {
           cover_image_url: string | null
@@ -481,6 +671,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_course: {
+        Args: { _course_id: string; _user_id: string }
+        Returns: boolean
+      }
+      can_access_lesson: {
+        Args: { _lesson_id: string; _user_id: string }
+        Returns: boolean
+      }
       can_access_space: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
@@ -513,6 +711,10 @@ export type Database = {
         | "member"
         | "limited_member"
       comment_status: "active" | "hidden" | "deleted"
+      course_access: "free" | "preview" | "paid_placeholder"
+      course_visibility: "public" | "members_only" | "space_members" | "hidden"
+      lesson_progress_status: "not_started" | "in_progress" | "completed"
+      lesson_visibility: "visible" | "preview" | "locked" | "hidden"
       post_status: "active" | "hidden" | "deleted"
       post_type:
         | "quick_post"
@@ -662,6 +864,10 @@ export const Constants = {
         "limited_member",
       ],
       comment_status: ["active", "hidden", "deleted"],
+      course_access: ["free", "preview", "paid_placeholder"],
+      course_visibility: ["public", "members_only", "space_members", "hidden"],
+      lesson_progress_status: ["not_started", "in_progress", "completed"],
+      lesson_visibility: ["visible", "preview", "locked", "hidden"],
       post_status: ["active", "hidden", "deleted"],
       post_type: [
         "quick_post",
