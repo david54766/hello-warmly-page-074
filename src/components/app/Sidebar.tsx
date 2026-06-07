@@ -1,0 +1,94 @@
+import { Link, useRouterState } from "@tanstack/react-router";
+import {
+  LayoutDashboard,
+  Users2,
+  Newspaper,
+  GraduationCap,
+  Calendar,
+  UserCircle2,
+  BookOpen,
+  MessageSquare,
+  CreditCard,
+  Sparkles,
+  Shield,
+  User,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
+
+type NavItem = { label: string; to: string; icon: LucideIcon; comingSoon?: boolean; adminOnly?: boolean };
+
+const items: NavItem[] = [
+  { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
+  { label: "Spaces", to: "/coming-soon/spaces", icon: Users2, comingSoon: true },
+  { label: "Feed", to: "/coming-soon/feed", icon: Newspaper, comingSoon: true },
+  { label: "Courses", to: "/coming-soon/courses", icon: GraduationCap, comingSoon: true },
+  { label: "Events", to: "/coming-soon/events", icon: Calendar, comingSoon: true },
+  { label: "Members", to: "/coming-soon/members", icon: UserCircle2, comingSoon: true },
+  { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
+  { label: "Chat", to: "/coming-soon/chat", icon: MessageSquare, comingSoon: true },
+  { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },
+  { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },
+];
+
+const footerItems: NavItem[] = [
+  { label: "Profile", to: "/profile", icon: User },
+  { label: "Settings", to: "/settings", icon: Settings },
+];
+
+export function Sidebar() {
+  const { isAdmin } = useAuth();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  return (
+    <aside className="hidden md:flex w-64 flex-col border-r border-border bg-sidebar h-screen sticky top-0">
+      <div className="px-6 h-16 flex items-center border-b border-border">
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">M</div>
+          <span className="font-semibold tracking-tight">MemberHub</span>
+        </Link>
+      </div>
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+        {items.map((it) => (
+          <NavLink key={it.to} item={it} active={pathname === it.to || pathname.startsWith(it.to + "/")} />
+        ))}
+        {isAdmin && (
+          <NavLink
+            item={{ label: "Admin", to: "/admin", icon: Shield }}
+            active={pathname.startsWith("/admin")}
+          />
+        )}
+      </nav>
+      <div className="border-t border-border px-3 py-3 space-y-1">
+        {footerItems.map((it) => (
+          <NavLink key={it.to} item={it} active={pathname === it.to} />
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+function NavLink({ item, active }: { item: NavItem; active: boolean }) {
+  const Icon = item.icon;
+  return (
+    <Link
+      to={item.to}
+      className={cn(
+        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+        active
+          ? "bg-primary/10 text-primary"
+          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+      )}
+    >
+      <Icon className="size-4 shrink-0" />
+      <span className="flex-1 truncate">{item.label}</span>
+      {item.comingSoon && (
+        <span className="text-[10px] uppercase tracking-wide rounded-full bg-muted px-1.5 py-0.5 text-muted-foreground">
+          Soon
+        </span>
+      )}
+    </Link>
+  );
+}
