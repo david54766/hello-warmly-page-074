@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, Lock, Play, ArrowRight } from "lucide-react";
 import { COURSE_ACCESS_LABELS, isCourseLocked, type Course } from "@/lib/courses";
 import { CourseProgressBar } from "./CourseProgressBar";
+import { SaveButton } from "@/components/onboarding/SaveButton";
 
 export function CourseCard({
   course,
@@ -46,17 +47,20 @@ export function CourseCard({
           )}
         </div>
         <CourseProgressBar total={lessonCount} completed={completedCount} />
-        <Button variant={started ? "default" : "outline"} size="sm" asChild>
-          <Link to="/courses/$courseId" params={{ courseId: course.id }}>
-            {locked ? (
-              <>Preview <ArrowRight className="size-4 ml-1" /></>
-            ) : started ? (
-              <><Play className="size-4 mr-1.5" />Continue</>
-            ) : (
-              <>View course <ArrowRight className="size-4 ml-1" /></>
-            )}
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant={started ? "default" : "outline"} size="sm" asChild className="flex-1">
+            <Link to="/courses/$courseId" params={{ courseId: course.id }}>
+              {locked ? (
+                <>Preview <ArrowRight className="size-4 ml-1" /></>
+              ) : started ? (
+                <><Play className="size-4 mr-1.5" />Continue</>
+              ) : (
+                <>View course <ArrowRight className="size-4 ml-1" /></>
+              )}
+            </Link>
+          </Button>
+          <SaveButton targetType="course" targetId={course.id} />
+        </div>
       </CardContent>
     </Card>
   );
