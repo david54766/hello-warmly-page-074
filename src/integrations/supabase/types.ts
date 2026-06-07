@@ -44,6 +44,36 @@ export type Database = {
         }
         Relationships: []
       }
+      collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       platform_settings: {
         Row: {
           cover_image_url: string | null
@@ -131,6 +161,100 @@ export type Database = {
         }
         Relationships: []
       }
+      space_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: Database["public"]["Enums"]["space_member_role"]
+          space_id: string
+          status: Database["public"]["Enums"]["space_member_status"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["space_member_role"]
+          space_id: string
+          status?: Database["public"]["Enums"]["space_member_status"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["space_member_role"]
+          space_id?: string
+          status?: Database["public"]["Enums"]["space_member_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "space_members_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spaces: {
+        Row: {
+          access_level: Database["public"]["Enums"]["space_access"]
+          collection_id: string | null
+          cover_image_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_archived: boolean
+          name: string
+          privacy_level: Database["public"]["Enums"]["space_privacy"]
+          sort_order: number
+          tagline: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["space_access"]
+          collection_id?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_archived?: boolean
+          name: string
+          privacy_level?: Database["public"]["Enums"]["space_privacy"]
+          sort_order?: number
+          tagline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["space_access"]
+          collection_id?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_archived?: boolean
+          name?: string
+          privacy_level?: Database["public"]["Enums"]["space_privacy"]
+          sort_order?: number
+          tagline?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spaces_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           created_at: string
@@ -194,6 +318,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_space_host: {
+        Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_space_member: {
+        Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role:
@@ -202,6 +334,10 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      space_access: "free" | "preview" | "paid_placeholder"
+      space_member_role: "space_host" | "space_moderator" | "member"
+      space_member_status: "active" | "pending" | "banned"
+      space_privacy: "public" | "members_only" | "private" | "hidden"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -336,6 +472,10 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      space_access: ["free", "preview", "paid_placeholder"],
+      space_member_role: ["space_host", "space_moderator", "member"],
+      space_member_status: ["active", "pending", "banned"],
+      space_privacy: ["public", "members_only", "private", "hidden"],
     },
   },
 } as const
