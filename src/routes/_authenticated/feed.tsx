@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { FeedList } from "@/components/feed/FeedList";
+import { TrendingHashtagsCard } from "@/components/feed/TrendingHashtagsCard";
 import type { Space } from "@/lib/spaces";
 
 export const Route = createFileRoute("/_authenticated/feed")({
@@ -38,6 +39,7 @@ function FeedPage() {
         </p>
       </header>
       <FeedList joinableSpaces={joinable} />
+      <TrendingHashtagsCard limit={12} />
     </div>
   );
 }
