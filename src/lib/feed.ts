@@ -1,4 +1,4 @@
-export type PostType = "quick_post" | "article" | "question_placeholder" | "event_announcement_placeholder";
+export type PostType = "quick_post" | "article" | "question" | "poll" | "event_announcement";
 export type PostVisibility = "public" | "space_members" | "admins_only" | "hidden";
 export type PostStatus = "active" | "hidden" | "deleted";
 export type CommentStatus = "active" | "hidden" | "deleted";
@@ -57,8 +57,9 @@ export interface Report {
 export const POST_TYPE_LABELS: Record<PostType, string> = {
   quick_post: "Quick post",
   article: "Article",
-  question_placeholder: "Question",
-  event_announcement_placeholder: "Event",
+  question: "Question",
+  poll: "Poll",
+  event_announcement: "Event",
 };
 
 export const VISIBILITY_LABELS: Record<PostVisibility, string> = {
@@ -82,4 +83,67 @@ export function timeAgo(iso: string) {
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   if (diff < 7 * 86400) return `${Math.floor(diff / 86400)}d ago`;
   return new Date(iso).toLocaleDateString();
+}
+
+// ---- Hashtag helpers --------------------------------------------------------
+
+/** Match #word hashtags (letters, numbers, underscores; 2–32 chars). */
+const HASHTAG_RE = /(^|\s)#([a-z0-9_]{2,32})/gi;
+
+export function parseHashtags(text: string): string[] {
+  if (!text) return [];
+  const found = new Set<string>();
+  for (const m of text.matchAll(HASHTAG_RE)) {
+    found.add(m[2].toLowerCase());
+  }
+  return Array.from(found).slice(0, 10);
+}
+
+export function normalizeHashtag(raw: string): string | null {
+  const v = raw.trim().replace(/^#/, "").toLowerCase();
+  if (!/^[a-z0-9_]{2,32}$/.test(v)) return null;
+  return v;
+}
+
+// ---- Poll / question types --------------------------------------------------
+
+export interface Poll {
+  id: string;
+  post_id: string;
+  question: string;
+  allow_multiple: boolean;
+  closes_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+export interface PollOption {
+  id: string;
+  poll_id: string;
+  option_text: string;
+  sort_order: number;
+}
+export interface PollVote {
+  id: string;
+  poll_id: string;
+  option_id: string;
+  user_id: string;
+  created_at: string;
+}
+export interface QuestionDetails {
+  id: string;
+  post_id: string;
+  is_answered: boolean;
+  best_answer_comment_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+export interface Hashtag {
+  id: string;
+  name: string;
+  usage_count: number;
+}
+export interface PostHashtag {
+  id: string;
+  post_id: string;
+  hashtag_id: string;
 }
