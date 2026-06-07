@@ -44,6 +44,45 @@ export type Database = {
         }
         Relationships: []
       }
+      badges: {
+        Row: {
+          active: boolean
+          badge_type: Database["public"]["Enums"]["badge_type"]
+          created_at: string
+          description: string | null
+          icon_url: string | null
+          id: string
+          name: string
+          points_value: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          badge_type?: Database["public"]["Enums"]["badge_type"]
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          name: string
+          points_value?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          badge_type?: Database["public"]["Enums"]["badge_type"]
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          name?: string
+          points_value?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collections: {
         Row: {
           created_at: string
@@ -417,6 +456,27 @@ export type Database = {
         }
         Relationships: []
       }
+      leaderboard_snapshots: {
+        Row: {
+          created_at: string
+          data_json: Json
+          id: string
+          period: Database["public"]["Enums"]["leaderboard_period"]
+        }
+        Insert: {
+          created_at?: string
+          data_json: Json
+          id?: string
+          period: Database["public"]["Enums"]["leaderboard_period"]
+        }
+        Update: {
+          created_at?: string
+          data_json?: Json
+          id?: string
+          period?: Database["public"]["Enums"]["leaderboard_period"]
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           completed_at: string | null
@@ -733,6 +793,36 @@ export type Database = {
         }
         Relationships: []
       }
+      points_ledger: {
+        Row: {
+          created_at: string
+          id: string
+          points: number
+          reason: string | null
+          source_id: string | null
+          source_type: Database["public"]["Enums"]["points_source_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          points: number
+          reason?: string | null
+          source_id?: string | null
+          source_type: Database["public"]["Enums"]["points_source_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          points?: number
+          reason?: string | null
+          source_id?: string | null
+          source_type?: Database["public"]["Enums"]["points_source_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           attachment_urls: string[]
@@ -1033,6 +1123,47 @@ export type Database = {
           },
         ]
       }
+      user_badges: {
+        Row: {
+          award_reason: string | null
+          awarded_at: string
+          awarded_by: string | null
+          badge_id: string
+          id: string
+          source_id: string | null
+          source_type: string | null
+          user_id: string
+        }
+        Insert: {
+          award_reason?: string | null
+          awarded_at?: string
+          awarded_by?: string | null
+          badge_id: string
+          id?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id: string
+        }
+        Update: {
+          award_reason?: string | null
+          awarded_at?: string
+          awarded_by?: string | null
+          badge_id?: string
+          id?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           created_at: string
@@ -1166,6 +1297,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      award_badge_by_slug: {
+        Args: {
+          _awarded_by?: string
+          _reason?: string
+          _slug: string
+          _user_id: string
+        }
+        Returns: string
+      }
+      award_points: {
+        Args: {
+          _dedupe?: boolean
+          _points: number
+          _reason: string
+          _source_id?: string
+          _source_type: Database["public"]["Enums"]["points_source_type"]
+          _user_id: string
+        }
+        Returns: string
+      }
       can_access_conversation: {
         Args: { _conversation_id: string; _user_id: string }
         Returns: boolean
@@ -1240,6 +1391,13 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      badge_type:
+        | "manual"
+        | "milestone"
+        | "course"
+        | "event"
+        | "community"
+        | "special"
       checklist_action_type:
         | "complete_profile"
         | "join_space"
@@ -1273,6 +1431,7 @@ export type Database = {
         | "course_session"
         | "livestream_placeholder"
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
+      leaderboard_period: "all_time" | "month" | "week"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_visibility: "visible" | "preview" | "locked" | "hidden"
       message_reaction_type: "like" | "love" | "celebrate" | "helpful"
@@ -1299,6 +1458,22 @@ export type Database = {
         | "space_joined"
         | "report_status_updated"
         | "new_message"
+        | "badge_awarded"
+        | "points_awarded"
+        | "milestone_reached"
+      points_source_type:
+        | "profile_complete"
+        | "space_joined"
+        | "post_created"
+        | "comment_created"
+        | "reaction_received"
+        | "event_rsvp"
+        | "course_started"
+        | "lesson_completed"
+        | "checklist_completed"
+        | "follow_member"
+        | "manual"
+        | "badge_awarded"
       post_status: "active" | "hidden" | "deleted"
       post_type:
         | "quick_post"
@@ -1467,6 +1642,14 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      badge_type: [
+        "manual",
+        "milestone",
+        "course",
+        "event",
+        "community",
+        "special",
+      ],
       checklist_action_type: [
         "complete_profile",
         "join_space",
@@ -1503,6 +1686,7 @@ export const Constants = {
         "livestream_placeholder",
       ],
       event_visibility: ["public", "members_only", "space_members", "hidden"],
+      leaderboard_period: ["all_time", "month", "week"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_visibility: ["visible", "preview", "locked", "hidden"],
       message_reaction_type: ["like", "love", "celebrate", "helpful"],
@@ -1530,6 +1714,23 @@ export const Constants = {
         "space_joined",
         "report_status_updated",
         "new_message",
+        "badge_awarded",
+        "points_awarded",
+        "milestone_reached",
+      ],
+      points_source_type: [
+        "profile_complete",
+        "space_joined",
+        "post_created",
+        "comment_created",
+        "reaction_received",
+        "event_rsvp",
+        "course_started",
+        "lesson_completed",
+        "checklist_completed",
+        "follow_member",
+        "manual",
+        "badge_awarded",
       ],
       post_status: ["active", "hidden", "deleted"],
       post_type: [

@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Users2, Newspaper, GraduationCap, Calendar, UserCircle2,
   BookOpen, MessageSquare, CreditCard, Sparkles, Shield, User, Settings,
-  Bookmark, UserPlus, type LucideIcon,
+  Bookmark, UserPlus, Trophy, Award, type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,8 @@ const items: NavItem[] = [
   { label: "Following", to: "/following", icon: UserPlus },
   { label: "Saved", to: "/saved", icon: Bookmark },
   { label: "Chat", to: "/chat", icon: MessageSquare },
+  { label: "Leaderboard", to: "/leaderboard", icon: Trophy },
+  { label: "Achievements", to: "/achievements", icon: Award },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },
   { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },
