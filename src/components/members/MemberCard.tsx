@@ -6,6 +6,7 @@ import { MapPin, Users2 } from "lucide-react";
 import { highestRole, memberInitials, relativeTime, type MemberSummary } from "@/lib/members";
 import { RolePill } from "./RolePill";
 import { StatusPill } from "./StatusPill";
+import { MessageMemberButton } from "@/components/chat/MessageMemberButton";
 
 export function MemberCard({ member, showStatus }: { member: MemberSummary; showStatus?: boolean }) {
   const role = highestRole(member.roles);
@@ -35,10 +36,11 @@ export function MemberCard({ member, showStatus }: { member: MemberSummary; show
           <span className="inline-flex items-center gap-1"><Users2 className="size-3" />{member.spaces_joined} space{member.spaces_joined === 1 ? "" : "s"}</span>
           <span>Active {relativeTime(member.last_active_at)}</span>
         </div>
-        <div className="mt-4">
-          <Button asChild variant="outline" size="sm" className="w-full">
+        <div className="mt-4 flex gap-2">
+          <Button asChild variant="outline" size="sm" className="flex-1">
             <Link to="/members/$userId" params={{ userId: member.id }}>View profile</Link>
           </Button>
+          <MessageMemberButton memberId={member.id} />
         </div>
       </CardContent>
     </Card>
