@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
-import { BookOpen, Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight } from "lucide-react";
+import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight } from "lucide-react";
 import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
 import { supabase as sb } from "@/integrations/supabase/client";
 import type { Course, Lesson, LessonProgress } from "@/lib/courses";
+import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -69,7 +70,6 @@ function Dashboard() {
   const featured = spaces.slice(0, 4);
 
   const cards = [
-    { title: "Upcoming Events", icon: <Calendar className="size-4" />, msg: "Live sessions and meetups." },
     { title: "Suggested Members", icon: <UserCircle2 className="size-4" />, msg: "People you may want to follow." },
     { title: "Saved Resources", icon: <Bookmark className="size-4" />, msg: "Bookmarks and downloads." },
   ];
@@ -124,6 +124,16 @@ function Dashboard() {
             <Button size="sm" asChild><Link to="/feed">View community feed</Link></Button>
           </div>
         </DashboardCard>
+      </section>
+
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold flex items-center gap-2"><Calendar className="size-5" />Upcoming Events</h2>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/events">All events <ArrowRight className="size-4 ml-1" /></Link>
+          </Button>
+        </div>
+        <UpcomingEventsWidget limit={3} />
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
