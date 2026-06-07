@@ -1,12 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Users2, Newspaper, UserCircle2, User } from "lucide-react";
+import { Home, Users2, Newspaper, MessageSquare, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UnreadChatBadge } from "@/components/chat/UnreadChatBadge";
 
 const items = [
   { label: "Home", to: "/dashboard", icon: Home },
   { label: "Spaces", to: "/spaces", icon: Users2 },
   { label: "Feed", to: "/feed", icon: Newspaper },
-  { label: "Members", to: "/members", icon: UserCircle2 },
+  { label: "Chat", to: "/chat", icon: MessageSquare },
   { label: "Profile", to: "/profile", icon: User },
 ];
 
@@ -26,7 +27,10 @@ export function MobileBottomNav() {
                   active ? "text-primary" : "text-muted-foreground"
                 )}
               >
-                <Icon className="size-5" />
+                <span className="relative">
+                  <Icon className="size-5" />
+                  {to === "/chat" && <span className="absolute -top-1 -right-2"><UnreadChatBadge /></span>}
+                </span>
                 {label}
               </Link>
             </li>

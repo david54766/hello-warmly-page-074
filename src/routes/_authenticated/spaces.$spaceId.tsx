@@ -96,7 +96,7 @@ function SpaceDetail() {
         isMember={isMember}
         onJoinChange={load}
       />
-      <SpaceTabs space={space} members={members} />
+      <SpaceTabs space={space} members={members} isMember={isMember} />
     </div>
   );
 }

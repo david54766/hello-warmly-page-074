@@ -1,13 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardCard, EmptyState } from "./DashboardCard";
 import { SpaceMemberList, type SpaceMemberRow } from "./SpaceMemberList";
-import { Compass, Newspaper, GraduationCap, Calendar, Users, BookOpen, Sparkles } from "lucide-react";
+import { Compass, Newspaper, GraduationCap, Calendar, Users, BookOpen, Sparkles, MessageSquare } from "lucide-react";
 import type { Space } from "@/lib/spaces";
 import { FeedList } from "@/components/feed/FeedList";
 import { SpaceCoursesTab } from "./SpaceCoursesTab";
 import { UpcomingEventsWidget } from "@/components/events/UpcomingEventsWidget";
+import { SpaceChatPanel } from "@/components/chat/SpaceChatPanel";
 
-export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemberRow[] }) {
+export function SpaceTabs({ space, members, isMember }: { space: Space; members: SpaceMemberRow[]; isMember: boolean }) {
   return (
     <Tabs defaultValue="discovery" className="space-y-4">
       <TabsList className="flex flex-wrap h-auto">
@@ -15,6 +16,7 @@ export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemb
         <TabsTrigger value="feed"><Newspaper className="size-4 mr-1.5" />Feed</TabsTrigger>
         <TabsTrigger value="courses"><GraduationCap className="size-4 mr-1.5" />Courses</TabsTrigger>
         <TabsTrigger value="events"><Calendar className="size-4 mr-1.5" />Events</TabsTrigger>
+        <TabsTrigger value="chat"><MessageSquare className="size-4 mr-1.5" />Chat</TabsTrigger>
         <TabsTrigger value="members"><Users className="size-4 mr-1.5" />Members</TabsTrigger>
         <TabsTrigger value="resources"><BookOpen className="size-4 mr-1.5" />Resources</TabsTrigger>
       </TabsList>
@@ -55,6 +57,9 @@ export function SpaceTabs({ space, members }: { space: Space; members: SpaceMemb
       </TabsContent>
       <TabsContent value="events">
         <UpcomingEventsWidget spaceId={space.id} limit={10} />
+      </TabsContent>
+      <TabsContent value="chat">
+        <SpaceChatPanel spaceId={space.id} enabled={space.chat_enabled} isMember={isMember} />
       </TabsContent>
       <TabsContent value="members">
         <SpaceMemberList members={members} />

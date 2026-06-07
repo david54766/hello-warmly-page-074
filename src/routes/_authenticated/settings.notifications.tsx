@@ -79,6 +79,9 @@ function NotificationPreferencesPage() {
               <Row label="Lesson progress" hint="When you complete a lesson.">
                 <Switch checked={prefs.lesson_progress_enabled} onCheckedChange={(v) => update({ lesson_progress_enabled: v })} />
               </Row>
+              <Row label="Direct & group messages" hint="When you receive a new chat message.">
+                <Switch checked={prefs.messages_enabled} onCheckedChange={(v) => update({ messages_enabled: v })} />
+              </Row>
               <Row label="Admin announcements" hint="Important platform updates from the team.">
                 <Switch checked={prefs.admin_announcements_enabled} onCheckedChange={(v) => update({ admin_announcements_enabled: v })} />
               </Row>

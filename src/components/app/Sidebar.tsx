@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { UnreadChatBadge } from "@/components/chat/UnreadChatBadge";
 
 type NavItem = { label: string; to: string; icon: LucideIcon; comingSoon?: boolean; adminOnly?: boolean };
 
@@ -27,8 +28,8 @@ const items: NavItem[] = [
   { label: "Courses", to: "/courses", icon: GraduationCap },
   { label: "Events", to: "/events", icon: Calendar },
   { label: "Members", to: "/members", icon: UserCircle2 },
+  { label: "Chat", to: "/chat", icon: MessageSquare },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
-  { label: "Chat", to: "/coming-soon/chat", icon: MessageSquare, comingSoon: true },
   { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },
   { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },
 ];
@@ -84,6 +85,7 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
     >
       <Icon className="size-4 shrink-0" />
       <span className="flex-1 truncate">{item.label}</span>
+      {item.to === "/chat" && <UnreadChatBadge />}
       {item.comingSoon && (
         <span className="text-[10px] uppercase tracking-wide rounded-full bg-muted px-1.5 py-0.5 text-muted-foreground">
           Soon

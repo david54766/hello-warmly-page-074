@@ -9,7 +9,8 @@ export type NotificationType =
   | "lesson_completed"
   | "admin_announcement"
   | "space_joined"
-  | "report_status_updated";
+  | "report_status_updated"
+  | "new_message";
 
 export type NotificationTarget =
   | "post"
@@ -19,6 +20,8 @@ export type NotificationTarget =
   | "course"
   | "space"
   | "user"
+  | "conversation"
+  | "message"
   | "announcement_placeholder";
 
 export type Notification = {
@@ -44,6 +47,7 @@ export type NotificationPreferences = {
   admin_announcements_enabled: boolean;
   email_notifications_enabled: boolean;
   push_notifications_enabled: boolean;
+  messages_enabled: boolean;
 };
 
 const sb = supabase as any;
@@ -111,6 +115,7 @@ export const DEFAULT_PREFERENCES = (userId: string): NotificationPreferences => 
   admin_announcements_enabled: true,
   email_notifications_enabled: false,
   push_notifications_enabled: false,
+  messages_enabled: true,
 });
 
 export function timeAgo(iso: string): string {
@@ -144,6 +149,8 @@ export function targetLink(
       return { to: "/spaces/$spaceId", params: { spaceId: n.target_id } };
     case "user":
       return { to: "/members/$userId", params: { userId: n.target_id } };
+    case "conversation":
+      return { to: "/chat", params: {} };
     default:
       return null;
   }
@@ -159,4 +166,5 @@ export const NOTIFICATION_TYPE_LABELS: Record<NotificationType, string> = {
   admin_announcement: "Announcements",
   space_joined: "Spaces",
   report_status_updated: "Moderation",
+  new_message: "Messages",
 };

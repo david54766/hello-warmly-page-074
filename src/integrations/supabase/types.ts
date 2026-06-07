@@ -122,6 +122,88 @@ export type Database = {
           },
         ]
       }
+      conversation_members: {
+        Row: {
+          archived: boolean
+          conversation_id: string
+          created_at: string
+          id: string
+          joined_at: string
+          last_read_at: string | null
+          muted: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          archived?: boolean
+          conversation_id: string
+          created_at?: string
+          id?: string
+          joined_at?: string
+          last_read_at?: string | null
+          muted?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          archived?: boolean
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          joined_at?: string
+          last_read_at?: string | null
+          muted?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_members_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          space_id: string | null
+          title: string | null
+          type: Database["public"]["Enums"]["conversation_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          space_id?: string | null
+          title?: string | null
+          type: Database["public"]["Enums"]["conversation_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          space_id?: string | null
+          title?: string | null
+          type?: Database["public"]["Enums"]["conversation_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: true
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_sections: {
         Row: {
           course_id: string
@@ -418,6 +500,82 @@ export type Database = {
           },
         ]
       }
+      message_reactions: {
+        Row: {
+          created_at: string
+          id: string
+          message_id: string
+          reaction_type: Database["public"]["Enums"]["message_reaction_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_id: string
+          reaction_type: Database["public"]["Enums"]["message_reaction_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_id?: string
+          reaction_type?: Database["public"]["Enums"]["message_reaction_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          deleted_at: string | null
+          id: string
+          media_urls: string[]
+          sender_id: string
+          status: Database["public"]["Enums"]["message_status"]
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          conversation_id: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          media_urls?: string[]
+          sender_id: string
+          status?: Database["public"]["Enums"]["message_status"]
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          media_urls?: string[]
+          sender_id?: string
+          status?: Database["public"]["Enums"]["message_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_preferences: {
         Row: {
           admin_announcements_enabled: boolean
@@ -427,6 +585,7 @@ export type Database = {
           event_rsvps_enabled: boolean
           id: string
           lesson_progress_enabled: boolean
+          messages_enabled: boolean
           push_notifications_enabled: boolean
           reactions_enabled: boolean
           replies_enabled: boolean
@@ -441,6 +600,7 @@ export type Database = {
           event_rsvps_enabled?: boolean
           id?: string
           lesson_progress_enabled?: boolean
+          messages_enabled?: boolean
           push_notifications_enabled?: boolean
           reactions_enabled?: boolean
           replies_enabled?: boolean
@@ -455,6 +615,7 @@ export type Database = {
           event_rsvps_enabled?: boolean
           id?: string
           lesson_progress_enabled?: boolean
+          messages_enabled?: boolean
           push_notifications_enabled?: boolean
           reactions_enabled?: boolean
           replies_enabled?: boolean
@@ -768,6 +929,7 @@ export type Database = {
       spaces: {
         Row: {
           access_level: Database["public"]["Enums"]["space_access"]
+          chat_enabled: boolean
           collection_id: string | null
           cover_image_url: string | null
           created_at: string
@@ -784,6 +946,7 @@ export type Database = {
         }
         Insert: {
           access_level?: Database["public"]["Enums"]["space_access"]
+          chat_enabled?: boolean
           collection_id?: string | null
           cover_image_url?: string | null
           created_at?: string
@@ -800,6 +963,7 @@ export type Database = {
         }
         Update: {
           access_level?: Database["public"]["Enums"]["space_access"]
+          chat_enabled?: boolean
           collection_id?: string | null
           cover_image_url?: string | null
           created_at?: string
@@ -880,6 +1044,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_conversation: {
+        Args: { _conversation_id: string; _user_id: string }
+        Returns: boolean
+      }
       can_access_course: {
         Args: { _course_id: string; _user_id: string }
         Returns: boolean
@@ -919,6 +1087,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_conversation_member: {
+        Args: { _conversation_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_space_host: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
@@ -940,6 +1112,7 @@ export type Database = {
         | "member"
         | "limited_member"
       comment_status: "active" | "hidden" | "deleted"
+      conversation_type: "direct" | "group" | "space"
       course_access: "free" | "preview" | "paid_placeholder"
       course_visibility: "public" | "members_only" | "space_members" | "hidden"
       event_access: "free" | "preview" | "paid_placeholder"
@@ -954,6 +1127,8 @@ export type Database = {
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_visibility: "visible" | "preview" | "locked" | "hidden"
+      message_reaction_type: "like" | "love" | "celebrate" | "helpful"
+      message_status: "active" | "deleted" | "hidden"
       notification_target:
         | "post"
         | "comment"
@@ -963,6 +1138,8 @@ export type Database = {
         | "space"
         | "user"
         | "announcement_placeholder"
+        | "conversation"
+        | "message"
       notification_type:
         | "comment_on_post"
         | "reply_to_comment"
@@ -973,6 +1150,7 @@ export type Database = {
         | "admin_announcement"
         | "space_joined"
         | "report_status_updated"
+        | "new_message"
       post_status: "active" | "hidden" | "deleted"
       post_type:
         | "quick_post"
@@ -987,7 +1165,14 @@ export type Database = {
         | "dismissed"
         | "open"
         | "under_review"
-      report_target: "post" | "comment" | "user" | "event" | "course" | "lesson"
+      report_target:
+        | "post"
+        | "comment"
+        | "user"
+        | "event"
+        | "course"
+        | "lesson"
+        | "message"
       rsvp_status: "going" | "not_going" | "waitlist"
       space_access: "free" | "preview" | "paid_placeholder"
       space_member_role: "space_host" | "space_moderator" | "member"
@@ -1128,6 +1313,7 @@ export const Constants = {
         "limited_member",
       ],
       comment_status: ["active", "hidden", "deleted"],
+      conversation_type: ["direct", "group", "space"],
       course_access: ["free", "preview", "paid_placeholder"],
       course_visibility: ["public", "members_only", "space_members", "hidden"],
       event_access: ["free", "preview", "paid_placeholder"],
@@ -1143,6 +1329,8 @@ export const Constants = {
       event_visibility: ["public", "members_only", "space_members", "hidden"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_visibility: ["visible", "preview", "locked", "hidden"],
+      message_reaction_type: ["like", "love", "celebrate", "helpful"],
+      message_status: ["active", "deleted", "hidden"],
       notification_target: [
         "post",
         "comment",
@@ -1152,6 +1340,8 @@ export const Constants = {
         "space",
         "user",
         "announcement_placeholder",
+        "conversation",
+        "message",
       ],
       notification_type: [
         "comment_on_post",
@@ -1163,6 +1353,7 @@ export const Constants = {
         "admin_announcement",
         "space_joined",
         "report_status_updated",
+        "new_message",
       ],
       post_status: ["active", "hidden", "deleted"],
       post_type: [
@@ -1180,7 +1371,15 @@ export const Constants = {
         "open",
         "under_review",
       ],
-      report_target: ["post", "comment", "user", "event", "course", "lesson"],
+      report_target: [
+        "post",
+        "comment",
+        "user",
+        "event",
+        "course",
+        "lesson",
+        "message",
+      ],
       rsvp_status: ["going", "not_going", "waitlist"],
       space_access: ["free", "preview", "paid_placeholder"],
       space_member_role: ["space_host", "space_moderator", "member"],

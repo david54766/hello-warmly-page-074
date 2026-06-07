@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -34,6 +35,7 @@ export function AdminSpaceForm({
   const [privacy, setPrivacy] = useState<SpacePrivacy>(initial?.privacy_level ?? "public");
   const [access, setAccess] = useState<SpaceAccess>(initial?.access_level ?? "free");
   const [sortOrder, setSortOrder] = useState(String(initial?.sort_order ?? 0));
+  const [chatEnabled, setChatEnabled] = useState<boolean>(initial?.chat_enabled ?? true);
   const [busy, setBusy] = useState(false);
 
   const save = async () => {
@@ -49,6 +51,7 @@ export function AdminSpaceForm({
       privacy_level: privacy,
       access_level: access,
       sort_order: Number(sortOrder) || 0,
+      chat_enabled: chatEnabled,
     };
     const { error } = initial
       ? await supabase.from("spaces").update(payload).eq("id", initial.id)
@@ -128,6 +131,13 @@ export function AdminSpaceForm({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div>
+              <Label className="text-sm">Chat enabled</Label>
+              <p className="text-xs text-muted-foreground">Lets Space members chat in real time.</p>
+            </div>
+            <Switch checked={chatEnabled} onCheckedChange={setChatEnabled} />
           </div>
         </div>
         <DialogFooter>
