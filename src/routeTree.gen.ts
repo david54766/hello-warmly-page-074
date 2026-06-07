@@ -41,6 +41,7 @@ import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_auth
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
+import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenticated/admin.points'
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
@@ -230,6 +231,12 @@ const AuthenticatedAdminPostsRoute = AuthenticatedAdminPostsRouteImport.update({
   path: '/posts',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminPointsRoute =
+  AuthenticatedAdminPointsRouteImport.update({
+    id: '/points',
+    path: '/points',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminModerationRoute =
   AuthenticatedAdminModerationRouteImport.update({
     id: '/moderation',
@@ -333,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
+  '/admin/points': typeof AuthenticatedAdminPointsRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
@@ -379,6 +387,7 @@ export interface FileRoutesByTo {
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
+  '/admin/points': typeof AuthenticatedAdminPointsRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
@@ -427,6 +436,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
+  '/_authenticated/admin/points': typeof AuthenticatedAdminPointsRoute
   '/_authenticated/admin/posts': typeof AuthenticatedAdminPostsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
@@ -475,6 +485,7 @@ export interface FileRouteTypes {
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
+    | '/admin/points'
     | '/admin/posts'
     | '/admin/settings'
     | '/coming-soon/$area'
@@ -521,6 +532,7 @@ export interface FileRouteTypes {
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
+    | '/admin/points'
     | '/admin/posts'
     | '/admin/settings'
     | '/coming-soon/$area'
@@ -568,6 +580,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/moderation'
+    | '/_authenticated/admin/points'
     | '/_authenticated/admin/posts'
     | '/_authenticated/admin/settings'
     | '/_authenticated/coming-soon/$area'
@@ -826,6 +839,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPostsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/points': {
+      id: '/_authenticated/admin/points'
+      path: '/points'
+      fullPath: '/admin/points'
+      preLoaderRoute: typeof AuthenticatedAdminPointsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/moderation': {
       id: '/_authenticated/admin/moderation'
       path: '/moderation'
@@ -926,6 +946,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
+  AuthenticatedAdminPointsRoute: typeof AuthenticatedAdminPointsRoute
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
@@ -944,6 +965,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
+  AuthenticatedAdminPointsRoute: AuthenticatedAdminPointsRoute,
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminCoursesCourseIdRoute:
