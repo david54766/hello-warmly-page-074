@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import type { Space } from "@/lib/spaces";
 
 export type FeedFilterValue =
-  | "all" | "following" | "posts" | "articles" | "questions" | "from_admins" | "pinned" | "featured" | "my_posts";
+  | "all" | "following" | "posts" | "articles" | "questions" | "unanswered" | "polls" | "from_admins" | "pinned" | "featured" | "my_posts";
 
 export type FeedSort = "newest" | "top";
 
@@ -15,6 +15,8 @@ const FILTERS: { value: FeedFilterValue; label: string }[] = [
   { value: "posts", label: "Posts" },
   { value: "articles", label: "Articles" },
   { value: "questions", label: "Questions" },
+  { value: "unanswered", label: "Unanswered" },
+  { value: "polls", label: "Polls" },
   { value: "from_admins", label: "From Admins" },
   { value: "pinned", label: "Pinned" },
   { value: "featured", label: "Featured" },

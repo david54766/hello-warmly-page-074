@@ -10,6 +10,9 @@ import { MessageSquare, MoreHorizontal, Pin, Star, Flag, EyeOff, Eye, Trash2, Al
 import { PostTypePill } from "./PostTypePill";
 import { ReactionBar } from "./ReactionBar";
 import { ReportModal } from "./ReportModal";
+import { PollCard } from "./PollCard";
+import { HashtagList } from "./HashtagPill";
+import { AnsweredBadge } from "./BestAnswerBadge";
 import { SaveButton } from "@/components/onboarding/SaveButton";
 import { timeAgo, type Post, type Reaction } from "@/lib/feed";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +30,8 @@ export function PostCard({
   commentCount,
   onChange,
   linkToDetail = true,
+  hashtags = [],
+  isAnswered = false,
 }: {
   post: Post;
   space?: PostCardSpace | null;
@@ -35,6 +40,8 @@ export function PostCard({
   commentCount: number;
   onChange: () => void;
   linkToDetail?: boolean;
+  hashtags?: string[];
+  isAnswered?: boolean;
 }) {
   const { user, isAdmin, roles } = useAuth();
   const [reportOpen, setReportOpen] = useState(false);
@@ -94,6 +101,7 @@ export function PostCard({
             </div>
             <div className="flex flex-wrap items-center gap-1.5 mt-1">
               <PostTypePill type={post.post_type} />
+              {post.post_type === "question" && isAnswered && <AnsweredBadge />}
               {post.is_pinned && (
                 <span className="inline-flex items-center gap-1 text-[11px] font-medium rounded-full px-2 py-0.5 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
                   <Pin className="size-3" />Pinned
@@ -163,6 +171,10 @@ export function PostCard({
         {post.body && (
           <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed line-clamp-6">{post.body}</p>
         )}
+
+        {post.post_type === "poll" && <PollCard postId={post.id} />}
+
+        {hashtags.length > 0 && <HashtagList tags={hashtags} />}
 
         {post.media_urls.length > 0 && (
           <div className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-3 text-xs text-muted-foreground">

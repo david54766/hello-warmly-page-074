@@ -36,6 +36,7 @@ import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes
 import { Route as AuthenticatedPostsPostIdRouteImport } from './routes/_authenticated/posts.$postId'
 import { Route as AuthenticatedMembersUserIdRouteImport } from './routes/_authenticated/members.$userId'
 import { Route as AuthenticatedLessonsLessonIdRouteImport } from './routes/_authenticated/lessons.$lessonId'
+import { Route as AuthenticatedHashtagsTagRouteImport } from './routes/_authenticated/hashtags.$tag'
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events.$eventId'
 import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_authenticated/courses.$courseId'
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
@@ -202,6 +203,12 @@ const AuthenticatedLessonsLessonIdRoute =
     path: '/lessons/$lessonId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedHashtagsTagRoute =
+  AuthenticatedHashtagsTagRouteImport.update({
+    id: '/hashtags/$tag',
+    path: '/hashtags/$tag',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedEventsEventIdRoute =
   AuthenticatedEventsEventIdRouteImport.update({
     id: '/$eventId',
@@ -346,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/hashtags/$tag': typeof AuthenticatedHashtagsTagRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
@@ -393,6 +401,7 @@ export interface FileRoutesByTo {
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/hashtags/$tag': typeof AuthenticatedHashtagsTagRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
@@ -442,6 +451,7 @@ export interface FileRoutesById {
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/_authenticated/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/_authenticated/hashtags/$tag': typeof AuthenticatedHashtagsTagRoute
   '/_authenticated/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/_authenticated/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/_authenticated/posts/$postId': typeof AuthenticatedPostsPostIdRoute
@@ -491,6 +501,7 @@ export interface FileRouteTypes {
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
+    | '/hashtags/$tag'
     | '/lessons/$lessonId'
     | '/members/$userId'
     | '/posts/$postId'
@@ -538,6 +549,7 @@ export interface FileRouteTypes {
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
+    | '/hashtags/$tag'
     | '/lessons/$lessonId'
     | '/members/$userId'
     | '/posts/$postId'
@@ -586,6 +598,7 @@ export interface FileRouteTypes {
     | '/_authenticated/coming-soon/$area'
     | '/_authenticated/courses/$courseId'
     | '/_authenticated/events/$eventId'
+    | '/_authenticated/hashtags/$tag'
     | '/_authenticated/lessons/$lessonId'
     | '/_authenticated/members/$userId'
     | '/_authenticated/posts/$postId'
@@ -802,6 +815,13 @@ declare module '@tanstack/react-router' {
       path: '/lessons/$lessonId'
       fullPath: '/lessons/$lessonId'
       preLoaderRoute: typeof AuthenticatedLessonsLessonIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hashtags/$tag': {
+      id: '/_authenticated/hashtags/$tag'
+      path: '/hashtags/$tag'
+      fullPath: '/hashtags/$tag'
+      preLoaderRoute: typeof AuthenticatedHashtagsTagRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/events/$eventId': {
@@ -1023,6 +1043,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
   AuthenticatedCoursesCourseIdRoute: typeof AuthenticatedCoursesCourseIdRoute
+  AuthenticatedHashtagsTagRoute: typeof AuthenticatedHashtagsTagRoute
   AuthenticatedLessonsLessonIdRoute: typeof AuthenticatedLessonsLessonIdRoute
   AuthenticatedMembersUserIdRoute: typeof AuthenticatedMembersUserIdRoute
   AuthenticatedPostsPostIdRoute: typeof AuthenticatedPostsPostIdRoute
@@ -1048,6 +1069,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
   AuthenticatedCoursesCourseIdRoute: AuthenticatedCoursesCourseIdRoute,
+  AuthenticatedHashtagsTagRoute: AuthenticatedHashtagsTagRoute,
   AuthenticatedLessonsLessonIdRoute: AuthenticatedLessonsLessonIdRoute,
   AuthenticatedMembersUserIdRoute: AuthenticatedMembersUserIdRoute,
   AuthenticatedPostsPostIdRoute: AuthenticatedPostsPostIdRoute,

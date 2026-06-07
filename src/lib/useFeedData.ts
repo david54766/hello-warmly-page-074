@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { Post, Reaction } from "@/lib/feed";
+import type { Post, Reaction, QuestionDetails } from "@/lib/feed";
 import type { Space } from "@/lib/spaces";
+import { fetchHashtagsForPosts, fetchQuestionDetailsForPosts } from "@/lib/postExtras";
 
 export interface AuthorLite { id: string; full_name: string | null; email: string | null; avatar_url: string | null }
 
@@ -13,6 +14,8 @@ export interface FeedState {
   reactions: Reaction[];
   commentCounts: Map<string, number>;
   adminUserIds: Set<string>;
+  hashtagsByPost: Map<string, string[]>;
+  questionDetailsByPost: Map<string, QuestionDetails>;
   refresh: () => Promise<void>;
 }
 
@@ -29,6 +32,8 @@ export function useFeedData(opts: { spaceId?: string } = {}): FeedState {
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const [commentCounts, setCommentCounts] = useState<Map<string, number>>(new Map());
   const [adminUserIds, setAdminUserIds] = useState<Set<string>>(new Set());
+  const [hashtagsByPost, setHashtagsByPost] = useState<Map<string, string[]>>(new Map());
+  const [questionDetailsByPost, setQuestionDetailsByPost] = useState<Map<string, QuestionDetails>>(new Map());
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -48,7 +53,8 @@ export function useFeedData(opts: { spaceId?: string } = {}): FeedState {
     const authorIds = Array.from(new Set(ps.map((p) => p.author_id).filter((x): x is string => !!x)));
     const postIds = ps.map((p) => p.id);
 
-    const [spRes, authRes, reactRes, commRes, adminRes] = await Promise.all([
+    const questionIds = ps.filter((p) => p.post_type === "question").map((p) => p.id);
+    const [spRes, authRes, reactRes, commRes, adminRes, hashtagMap, qdMap] = await Promise.all([
       spaceIds.length
         ? supabase.from("spaces").select("*").in("id", spaceIds)
         : Promise.resolve({ data: [] as Space[] }),
@@ -62,6 +68,8 @@ export function useFeedData(opts: { spaceId?: string } = {}): FeedState {
         ? supabase.from("comments").select("post_id").in("post_id", postIds).eq("status", "active")
         : Promise.resolve({ data: [] as { post_id: string }[] }),
       supabase.from("user_roles").select("user_id,role").in("role", ["platform_admin", "moderator"]),
+      fetchHashtagsForPosts(postIds),
+      fetchQuestionDetailsForPosts(questionIds),
     ]);
 
     setSpaces((spRes.data ?? []) as Space[]);
@@ -71,13 +79,15 @@ export function useFeedData(opts: { spaceId?: string } = {}): FeedState {
     (commRes.data ?? []).forEach((c) => cc.set(c.post_id, (cc.get(c.post_id) ?? 0) + 1));
     setCommentCounts(cc);
     setAdminUserIds(new Set((adminRes.data ?? []).map((r) => r.user_id)));
+    setHashtagsByPost(hashtagMap);
+    setQuestionDetailsByPost(qdMap);
     setLoading(false);
   }, [opts.spaceId]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
   return useMemo(
-    () => ({ loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, refresh }),
-    [loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, refresh]
+    () => ({ loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, hashtagsByPost, questionDetailsByPost, refresh }),
+    [loading, posts, spaces, authors, reactions, commentCounts, adminUserIds, hashtagsByPost, questionDetailsByPost, refresh]
   );
 }

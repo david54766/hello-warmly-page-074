@@ -8,8 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/app/DashboardCard";
 import { PostCard } from "@/components/feed/PostCard";
 import { CommentThread, type CommentAuthor } from "@/components/feed/CommentThread";
-import type { Post, Comment, Reaction } from "@/lib/feed";
+import type { Post, Comment, Reaction, QuestionDetails } from "@/lib/feed";
 import type { Space } from "@/lib/spaces";
+import { fetchPostHashtags, fetchQuestionDetails } from "@/lib/postExtras";
 import { ArrowLeft, MessageSquare } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/posts/$postId")({
@@ -26,6 +27,8 @@ function PostDetailPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const [authors, setAuthors] = useState<Map<string, CommentAuthor>>(new Map());
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [questionDetails, setQuestionDetails] = useState<QuestionDetails | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -60,6 +63,12 @@ function PostDetailPage() {
       ? await supabase.from("profiles").select("id,full_name,email,avatar_url").in("id", authorIds)
       : { data: [] as CommentAuthor[] };
     setAuthors(new Map(((profs ?? []) as CommentAuthor[]).map((a) => [a.id, a])));
+    const [tags, qd] = await Promise.all([
+      fetchPostHashtags(postId),
+      p.post_type === "question" ? fetchQuestionDetails(postId) : Promise.resolve(null),
+    ]);
+    setHashtags(tags);
+    setQuestionDetails(qd);
     setLoading(false);
   }, [postId]);
 
@@ -103,6 +112,8 @@ function PostDetailPage() {
         commentCount={comments.length}
         onChange={load}
         linkToDetail={false}
+        hashtags={hashtags}
+        isAnswered={questionDetails?.is_answered ?? false}
       />
       <Card className="rounded-2xl">
         <CardContent className="pt-5 space-y-4">
@@ -115,6 +126,9 @@ function PostDetailPage() {
             reactions={reactions}
             authors={authors}
             onChange={load}
+            postAuthorId={post.author_id}
+            postType={post.post_type}
+            bestAnswerCommentId={questionDetails?.best_answer_comment_id ?? null}
           />
         </CardContent>
       </Card>

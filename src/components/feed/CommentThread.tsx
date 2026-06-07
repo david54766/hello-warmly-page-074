@@ -5,14 +5,17 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Flag, Trash2, EyeOff, Eye, MessageSquareReply } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { CommentForm } from "./CommentForm";
 import { ReactionBar } from "./ReactionBar";
 import { ReportModal } from "./ReportModal";
-import { timeAgo, type Comment, type Reaction } from "@/lib/feed";
+import { BestAnswerBadge } from "./BestAnswerBadge";
+import { timeAgo, type Comment, type Reaction, type PostType } from "@/lib/feed";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/app/DashboardCard";
+import { setBestAnswer, clearBestAnswer } from "@/lib/postExtras";
 
 export interface CommentAuthor { id: string; full_name: string | null; email: string | null; avatar_url: string | null }
 
@@ -22,12 +25,18 @@ export function CommentThread({
   reactions,
   authors,
   onChange,
+  postAuthorId = null,
+  postType,
+  bestAnswerCommentId = null,
 }: {
   postId: string;
   comments: Comment[];
   reactions: Reaction[];
   authors: Map<string, CommentAuthor>;
   onChange: () => void;
+  postAuthorId?: string | null;
+  postType?: PostType;
+  bestAnswerCommentId?: string | null;
 }) {
   const roots = useMemo(() => comments.filter((c) => !c.parent_comment_id), [comments]);
   const childrenByParent = useMemo(() => {
@@ -57,6 +66,9 @@ export function CommentThread({
               postId={postId}
               onChange={onChange}
               depth={0}
+              postAuthorId={postAuthorId}
+              postType={postType}
+              bestAnswerCommentId={bestAnswerCommentId}
             />
           ))}
         </ul>
@@ -67,6 +79,7 @@ export function CommentThread({
 
 function CommentItem({
   comment, authors, reactions, childrenByParent, postId, onChange, depth,
+  postAuthorId, postType, bestAnswerCommentId,
 }: {
   comment: Comment;
   authors: Map<string, CommentAuthor>;
@@ -75,10 +88,15 @@ function CommentItem({
   postId: string;
   onChange: () => void;
   depth: number;
+  postAuthorId?: string | null;
+  postType?: PostType;
+  bestAnswerCommentId?: string | null;
 }) {
   const { user, isAdmin, roles } = useAuth();
   const isMod = isAdmin || roles.includes("moderator");
   const isAuthor = user?.id === comment.author_id;
+  const canMarkBest = postType === "question" && depth === 0 && (user?.id === postAuthorId || isAdmin);
+  const isBest = bestAnswerCommentId === comment.id;
   const [replying, setReplying] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const author = authors.get(comment.author_id ?? "");
@@ -100,6 +118,12 @@ function CommentItem({
     toast.success(status === "hidden" ? "Hidden" : "Restored");
     onChange();
   };
+  const toggleBest = async () => {
+    const { error } = isBest ? await clearBestAnswer(postId) : await setBestAnswer(postId, comment.id);
+    if (error) return toast.error(error.message);
+    toast.success(isBest ? "Best answer cleared" : "Marked as best answer");
+    onChange();
+  };
 
   return (
     <li className={depth > 0 ? "pl-4 sm:pl-6 border-l border-border" : ""}>
@@ -109,9 +133,12 @@ function CommentItem({
           <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <div className="rounded-2xl bg-muted/60 px-3 py-2">
+          <div className={`rounded-2xl px-3 py-2 ${isBest ? "bg-emerald-50 dark:bg-emerald-950/30 ring-1 ring-emerald-300/60 dark:ring-emerald-700/50" : "bg-muted/60"}`}>
             <div className="flex items-center justify-between gap-2">
-              <div className="text-sm font-medium truncate">{name}</div>
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="text-sm font-medium truncate">{name}</div>
+                {isBest && <BestAnswerBadge />}
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="size-6 -mr-1"><MoreHorizontal className="size-3.5" /></Button>
@@ -130,6 +157,12 @@ function CommentItem({
                   {(isAuthor || isAdmin) && (
                     <DropdownMenuItem onClick={remove} className="text-destructive focus:text-destructive">
                       <Trash2 className="size-4 mr-2" />Delete
+                    </DropdownMenuItem>
+                  )}
+                  {canMarkBest && (
+                    <DropdownMenuItem onClick={toggleBest}>
+                      <CheckCircle2 className="size-4 mr-2" />
+                      {isBest ? "Unmark best answer" : "Mark as best answer"}
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
@@ -170,6 +203,9 @@ function CommentItem({
                   postId={postId}
                   onChange={onChange}
                   depth={depth + 1}
+                  postAuthorId={postAuthorId}
+                  postType={postType}
+                  bestAnswerCommentId={bestAnswerCommentId}
                 />
               ))}
             </ul>
