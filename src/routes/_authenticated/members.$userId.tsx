@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchMember, fetchActivity, formatJoined, type MemberSummary, type ActivitySummary } from "@/lib/members";
 import { ProfileHeader } from "@/components/members/ProfileHeader";
 import { ProfileActivitySummary } from "@/components/members/ProfileActivitySummary";
+import { MemberAchievementPanel } from "@/components/gamification/MemberAchievementPanel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -78,6 +79,7 @@ function MemberDetail() {
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           {activity && <ProfileActivitySummary data={activity} />}
+          <MemberAchievementPanel userId={member.id} />
 
           <Card className="rounded-2xl">
             <CardHeader><CardTitle>Recent posts</CardTitle></CardHeader>
