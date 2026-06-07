@@ -22,7 +22,7 @@ type NavItem = { label: string; to: string; icon: LucideIcon; comingSoon?: boole
 
 const items: NavItem[] = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
-  { label: "Spaces", to: "/coming-soon/spaces", icon: Users2, comingSoon: true },
+  { label: "Spaces", to: "/spaces", icon: Users2 },
   { label: "Feed", to: "/coming-soon/feed", icon: Newspaper, comingSoon: true },
   { label: "Courses", to: "/coming-soon/courses", icon: GraduationCap, comingSoon: true },
   { label: "Events", to: "/coming-soon/events", icon: Calendar, comingSoon: true },
