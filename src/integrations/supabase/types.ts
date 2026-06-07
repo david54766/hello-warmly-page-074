@@ -456,6 +456,30 @@ export type Database = {
         }
         Relationships: []
       }
+      hashtags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          usage_count: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+          usage_count?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          usage_count?: number
+        }
+        Relationships: []
+      }
       leaderboard_snapshots: {
         Row: {
           created_at: string
@@ -823,6 +847,136 @@ export type Database = {
         }
         Relationships: []
       }
+      poll_options: {
+        Row: {
+          created_at: string
+          id: string
+          option_text: string
+          poll_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option_text: string
+          poll_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option_text?: string
+          poll_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poll_options_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      poll_votes: {
+        Row: {
+          created_at: string
+          id: string
+          option_id: string
+          poll_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option_id: string
+          poll_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option_id?: string
+          poll_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poll_votes_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "poll_options"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "poll_votes_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      polls: {
+        Row: {
+          allow_multiple: boolean
+          closes_at: string | null
+          created_at: string
+          id: string
+          post_id: string
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          allow_multiple?: boolean
+          closes_at?: string | null
+          created_at?: string
+          id?: string
+          post_id: string
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          allow_multiple?: boolean
+          closes_at?: string | null
+          created_at?: string
+          id?: string
+          post_id?: string
+          question?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      post_hashtags: {
+        Row: {
+          created_at: string
+          hashtag_id: string
+          id: string
+          post_id: string
+        }
+        Insert: {
+          created_at?: string
+          hashtag_id: string
+          id?: string
+          post_id: string
+        }
+        Update: {
+          created_at?: string
+          hashtag_id?: string
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_hashtags_hashtag_id_fkey"
+            columns: ["hashtag_id"]
+            isOneToOne: false
+            referencedRelation: "hashtags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           attachment_urls: string[]
@@ -933,6 +1087,33 @@ export type Database = {
           status?: string
           updated_at?: string
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      question_details: {
+        Row: {
+          best_answer_comment_id: string | null
+          created_at: string
+          id: string
+          is_answered: boolean
+          post_id: string
+          updated_at: string
+        }
+        Insert: {
+          best_answer_comment_id?: string | null
+          created_at?: string
+          id?: string
+          is_answered?: boolean
+          post_id: string
+          updated_at?: string
+        }
+        Update: {
+          best_answer_comment_id?: string | null
+          created_at?: string
+          id?: string
+          is_answered?: boolean
+          post_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1461,6 +1642,9 @@ export type Database = {
         | "badge_awarded"
         | "points_awarded"
         | "milestone_reached"
+        | "question_answered"
+        | "best_answer_selected"
+        | "poll_vote_received"
       points_source_type:
         | "profile_complete"
         | "space_joined"
@@ -1474,12 +1658,18 @@ export type Database = {
         | "follow_member"
         | "manual"
         | "badge_awarded"
+        | "question_created"
+        | "question_answered"
+        | "best_answer"
+        | "poll_created"
+        | "poll_voted"
       post_status: "active" | "hidden" | "deleted"
       post_type:
         | "quick_post"
         | "article"
-        | "question_placeholder"
-        | "event_announcement_placeholder"
+        | "question"
+        | "event_announcement"
+        | "poll"
       post_visibility: "public" | "space_members" | "admins_only" | "hidden"
       reaction_type: "like" | "love" | "celebrate" | "helpful"
       report_status:
@@ -1717,6 +1907,9 @@ export const Constants = {
         "badge_awarded",
         "points_awarded",
         "milestone_reached",
+        "question_answered",
+        "best_answer_selected",
+        "poll_vote_received",
       ],
       points_source_type: [
         "profile_complete",
@@ -1731,13 +1924,19 @@ export const Constants = {
         "follow_member",
         "manual",
         "badge_awarded",
+        "question_created",
+        "question_answered",
+        "best_answer",
+        "poll_created",
+        "poll_voted",
       ],
       post_status: ["active", "hidden", "deleted"],
       post_type: [
         "quick_post",
         "article",
-        "question_placeholder",
-        "event_announcement_placeholder",
+        "question",
+        "event_announcement",
+        "poll",
       ],
       post_visibility: ["public", "space_members", "admins_only", "hidden"],
       reaction_type: ["like", "love", "celebrate", "helpful"],
