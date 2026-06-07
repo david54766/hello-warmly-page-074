@@ -26,6 +26,7 @@ import { Route as AuthenticatedMembersIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedCoursesIndexRouteImport } from './routes/_authenticated/courses.index'
 import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedPostsPostIdRouteImport } from './routes/_authenticated/posts.$postId'
+import { Route as AuthenticatedMembersUserIdRouteImport } from './routes/_authenticated/members.$userId'
 import { Route as AuthenticatedLessonsLessonIdRouteImport } from './routes/_authenticated/lessons.$lessonId'
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events.$eventId'
 import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_authenticated/courses.$courseId'
@@ -128,6 +129,12 @@ const AuthenticatedPostsPostIdRoute =
   AuthenticatedPostsPostIdRouteImport.update({
     id: '/posts/$postId',
     path: '/posts/$postId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMembersUserIdRoute =
+  AuthenticatedMembersUserIdRouteImport.update({
+    id: '/members/$userId',
+    path: '/members/$userId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedLessonsLessonIdRoute =
@@ -234,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
+  '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
@@ -266,6 +274,7 @@ export interface FileRoutesByTo {
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
+  '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
@@ -300,6 +309,7 @@ export interface FileRoutesById {
   '/_authenticated/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/_authenticated/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
+  '/_authenticated/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/_authenticated/posts/$postId': typeof AuthenticatedPostsPostIdRoute
   '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/events/$eventId'
     | '/lessons/$lessonId'
+    | '/members/$userId'
     | '/posts/$postId'
     | '/spaces/$spaceId'
     | '/courses/'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/events/$eventId'
     | '/lessons/$lessonId'
+    | '/members/$userId'
     | '/posts/$postId'
     | '/spaces/$spaceId'
     | '/courses'
@@ -399,6 +411,7 @@ export interface FileRouteTypes {
     | '/_authenticated/courses/$courseId'
     | '/_authenticated/events/$eventId'
     | '/_authenticated/lessons/$lessonId'
+    | '/_authenticated/members/$userId'
     | '/_authenticated/posts/$postId'
     | '/_authenticated/spaces/$spaceId'
     | '/_authenticated/courses/'
@@ -540,6 +553,13 @@ declare module '@tanstack/react-router' {
       path: '/posts/$postId'
       fullPath: '/posts/$postId'
       preLoaderRoute: typeof AuthenticatedPostsPostIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/members/$userId': {
+      id: '/_authenticated/members/$userId'
+      path: '/members/$userId'
+      fullPath: '/members/$userId'
+      preLoaderRoute: typeof AuthenticatedMembersUserIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/lessons/$lessonId': {
@@ -694,6 +714,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
   AuthenticatedCoursesCourseIdRoute: typeof AuthenticatedCoursesCourseIdRoute
   AuthenticatedLessonsLessonIdRoute: typeof AuthenticatedLessonsLessonIdRoute
+  AuthenticatedMembersUserIdRoute: typeof AuthenticatedMembersUserIdRoute
   AuthenticatedPostsPostIdRoute: typeof AuthenticatedPostsPostIdRoute
   AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRoute
   AuthenticatedCoursesIndexRoute: typeof AuthenticatedCoursesIndexRoute
@@ -711,6 +732,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
   AuthenticatedCoursesCourseIdRoute: AuthenticatedCoursesCourseIdRoute,
   AuthenticatedLessonsLessonIdRoute: AuthenticatedLessonsLessonIdRoute,
+  AuthenticatedMembersUserIdRoute: AuthenticatedMembersUserIdRoute,
   AuthenticatedPostsPostIdRoute: AuthenticatedPostsPostIdRoute,
   AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRoute,
   AuthenticatedCoursesIndexRoute: AuthenticatedCoursesIndexRoute,
