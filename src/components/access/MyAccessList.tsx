@@ -5,10 +5,11 @@ import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ACCESS_SOURCE_LABELS, type AccessGrant } from "@/lib/access";
 import { TARGET_TYPE_LABELS } from "@/lib/plans";
+import { AccessExpirationBadge } from "./AccessExpirationBadge";
 
 const db = supabase as any;
 
-interface NamedItem { id: string; name: string; type: AccessGrant["target_type"]; source: string; }
+interface NamedItem { id: string; name: string; type: AccessGrant["target_type"]; source: string; grant: AccessGrant; }
 
 export function MyAccessList({ grants }: { grants: AccessGrant[] }) {
   const [resolved, setResolved] = useState<NamedItem[]>([]);
@@ -16,9 +17,9 @@ export function MyAccessList({ grants }: { grants: AccessGrant[] }) {
   useEffect(() => {
     (async () => {
       const items: NamedItem[] = [];
-      for (const g of grants.filter((x) => x.active)) {
+      for (const g of grants) {
         if (g.target_type === "platform") {
-          items.push({ id: "platform", name: "Entire platform", type: "platform", source: ACCESS_SOURCE_LABELS[g.access_source] });
+          items.push({ id: "platform", name: "Entire platform", type: "platform", source: ACCESS_SOURCE_LABELS[g.access_source], grant: g });
           continue;
         }
         if (!g.target_id) continue;
@@ -26,7 +27,7 @@ export function MyAccessList({ grants }: { grants: AccessGrant[] }) {
         if (!table) continue;
         const col = g.target_type === "course" || g.target_type === "event" ? "title" : "name";
         const { data } = await db.from(table).select(`id, ${col}`).eq("id", g.target_id).maybeSingle();
-        if (data) items.push({ id: data.id, name: data[col] ?? "Untitled", type: g.target_type, source: ACCESS_SOURCE_LABELS[g.access_source] });
+        if (data) items.push({ id: data.id, name: data[col] ?? "Untitled", type: g.target_type, source: ACCESS_SOURCE_LABELS[g.access_source], grant: g });
       }
       setResolved(items);
     })();
@@ -44,7 +45,7 @@ export function MyAccessList({ grants }: { grants: AccessGrant[] }) {
           it.type === "course" ? `/courses/${it.id}` :
           it.type === "event" ? `/events/${it.id}` : null;
         return (
-          <li key={`${it.type}-${it.id}`}>
+          <li key={`${it.type}-${it.id}-${it.grant.id}`}>
             <Card className="rounded-xl">
               <CardContent className="pt-4 flex items-center gap-3">
                 <Badge variant="outline">{TARGET_TYPE_LABELS[it.type]}</Badge>
@@ -52,7 +53,13 @@ export function MyAccessList({ grants }: { grants: AccessGrant[] }) {
                   {to ? (
                     <Link to={to} className="font-medium hover:underline truncate block">{it.name}</Link>
                   ) : <span className="font-medium truncate block">{it.name}</span>}
+                  {it.grant.ends_at && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Ends {new Date(it.grant.ends_at).toLocaleDateString()}
+                    </p>
+                  )}
                 </div>
+                <AccessExpirationBadge grant={it.grant} />
                 <Badge variant="secondary" className="rounded-full">{it.source}</Badge>
               </CardContent>
             </Card>
