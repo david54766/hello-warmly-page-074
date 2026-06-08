@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { deleteSegment, refreshSegment, updateSegment, type Segment } from "@/lib/segments";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import { RefreshCw, Trash2 } from "lucide-react";
 
@@ -13,10 +13,10 @@ export function SegmentTable({ segments, onChange }: { segments: Segment[]; onCh
     setBusy(id);
     try {
       const n = await refreshSegment(id);
-      toast({ title: "Segment refreshed", description: `${n} member${n === 1 ? "" : "s"} matched.` });
+      toast.success(`Segment refreshed — ${n} member${n === 1 ? "" : "s"} matched`);
       onChange();
     } catch (e: any) {
-      toast({ title: "Refresh failed", description: e.message, variant: "destructive" });
+      toast.error(e?.message ?? "Refresh failed");
     } finally { setBusy(null); }
   };
 
