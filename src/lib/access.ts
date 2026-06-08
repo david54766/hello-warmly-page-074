@@ -108,6 +108,29 @@ export async function deleteGrant(id: string) {
   if (error) throw error;
 }
 
+// -------- Grant expiration helpers --------
+export function isGrantExpired(g: AccessGrant): boolean {
+  return !!g.ends_at && new Date(g.ends_at) <= new Date();
+}
+
+export function isGrantActive(g: AccessGrant): boolean {
+  if (!g.active) return false;
+  if (g.starts_at && new Date(g.starts_at) > new Date()) return false;
+  if (isGrantExpired(g)) return false;
+  return true;
+}
+
+export function isGrantExpiringSoon(g: AccessGrant, withinDays = 14): boolean {
+  if (!g.ends_at || !isGrantActive(g)) return false;
+  const ms = new Date(g.ends_at).getTime() - Date.now();
+  return ms > 0 && ms <= withinDays * 86400_000;
+}
+
+export async function extendGrant(id: string, newEndsAt: string) {
+  const { error } = await db.from("access_grants").update({ ends_at: newEndsAt, active: true }).eq("id", id);
+  if (error) throw error;
+}
+
 // -------- Bundles --------
 export async function fetchActiveBundles(): Promise<Bundle[]> {
   const { data } = await db.from("bundles").select("*").eq("active", true).order("sort_order");
