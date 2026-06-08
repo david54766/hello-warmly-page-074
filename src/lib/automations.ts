@@ -178,3 +178,70 @@ export async function countLogsByStatus(status: AutomationLogStatus): Promise<nu
   const { count } = await db.from("automation_logs").select("*", { count: "exact", head: true }).eq("status", status);
   return count ?? 0;
 }
+
+// ---- Phase 4B runner helpers ----
+
+export interface TestResultRow {
+  condition?: AutomationCondition;
+  action?: AutomationAction;
+  passed?: boolean;
+  result?: { status: string; message?: string };
+}
+
+export interface TestAutomationResult {
+  status: AutomationLogStatus;
+  all_conditions_passed: boolean;
+  conditions: { condition: AutomationCondition; passed: boolean }[];
+  actions: { action: AutomationAction; result: { status: string; message?: string } }[];
+  error?: string;
+}
+
+export async function testAutomation(automationId: string, userId: string): Promise<TestAutomationResult> {
+  const { data, error } = await db.rpc("test_automation", { _automation_id: automationId, _user_id: userId });
+  if (error) throw error;
+  return data as TestAutomationResult;
+}
+
+export async function fetchAutomationStats(automationId: string): Promise<{
+  success: number; failed: number; skipped: number; lastRunAt: string | null; lastError: string | null;
+}> {
+  const [s, f, k, last, err] = await Promise.all([
+    db.from("automation_logs").select("*", { count: "exact", head: true }).eq("automation_id", automationId).eq("status", "success"),
+    db.from("automation_logs").select("*", { count: "exact", head: true }).eq("automation_id", automationId).eq("status", "failed"),
+    db.from("automation_logs").select("*", { count: "exact", head: true }).eq("automation_id", automationId).eq("status", "skipped"),
+    db.from("automation_logs").select("created_at").eq("automation_id", automationId).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+    db.from("automation_logs").select("error_message,created_at").eq("automation_id", automationId).eq("status", "failed").order("created_at", { ascending: false }).limit(1).maybeSingle(),
+  ]);
+  return {
+    success: s.count ?? 0,
+    failed: f.count ?? 0,
+    skipped: k.count ?? 0,
+    lastRunAt: last.data?.created_at ?? null,
+    lastError: err.data?.error_message ?? null,
+  };
+}
+
+export interface MemberOption { id: string; full_name: string | null; email: string | null; }
+
+export async function searchMembers(query: string, limit = 10): Promise<MemberOption[]> {
+  let q = db.from("profiles").select("id, full_name, email").limit(limit);
+  if (query && query.trim()) q = q.or(`full_name.ilike.%${query}%,email.ilike.%${query}%`);
+  const { data } = await q;
+  return (data ?? []) as MemberOption[];
+}
+
+export function automationSafetyWarnings(a: Pick<Automation, "conditions_json" | "actions_json">): string[] {
+  const warnings: string[] = [];
+  const actions = a.actions_json ?? [];
+  if ((a.conditions_json ?? []).length === 0) {
+    warnings.push("No conditions set — this will run for every matching event.");
+  }
+  const accessChanging = actions.filter((x) => ["grant_access", "revoke_access", "remove_from_space", "invite_to_space"].includes(x.type));
+  if (accessChanging.length >= 2) warnings.push("Multiple access-changing actions — review carefully.");
+  if (actions.some((x) => x.type === "remove_from_space")) warnings.push("Removes members from a Space.");
+  if (actions.some((x) => x.type === "revoke_access")) warnings.push("Revokes member access.");
+  if (actions.some((x) => x.type === "notify_admin" || x.type === "send_notification") && (a.conditions_json ?? []).length === 0) {
+    warnings.push("Broad notification with no conditions — risk of notification spam.");
+  }
+  return warnings;
+}
