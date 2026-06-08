@@ -5,7 +5,9 @@ import { PlanCard } from "@/components/plans/PlanCard";
 import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActivePlans, fetchAllPlanItems, TARGET_TYPE_LABELS, type Plan, type PlanItem } from "@/lib/plans";
-import { ArrowRight } from "lucide-react";
+import { fetchActiveBundles, fetchBundleItems, type Bundle, type BundleItem } from "@/lib/access";
+import { BundleCard } from "@/components/bundles/BundleCard";
+import { ArrowRight, Package } from "lucide-react";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -22,12 +24,18 @@ export const Route = createFileRoute("/pricing")({
 function PricingPage() {
   const [plans, setPlans] = useState<Plan[] | null>(null);
   const [items, setItems] = useState<PlanItem[]>([]);
+  const [bundles, setBundles] = useState<Bundle[]>([]);
+  const [bundleItems, setBundleItems] = useState<BundleItem[]>([]);
 
   useEffect(() => {
     (async () => {
-      const [p, i] = await Promise.all([fetchActivePlans(), fetchAllPlanItems()]);
+      const [p, i, b, bi] = await Promise.all([
+        fetchActivePlans(), fetchAllPlanItems(), fetchActiveBundles(), fetchBundleItems(),
+      ]);
       setPlans(p);
       setItems(i);
+      setBundles(b);
+      setBundleItems(bi);
     })();
   }, []);
 
@@ -94,6 +102,27 @@ function PricingPage() {
         <p className="text-center text-xs text-muted-foreground mt-10">
           Checkout is coming soon. Plans currently shown for preview — no charges will occur.
         </p>
+
+        {bundles.length > 0 && (
+          <div className="mt-20">
+            <div className="text-center mb-8">
+              <div className="size-10 mx-auto rounded-xl bg-primary/10 text-primary grid place-items-center mb-3">
+                <Package className="size-5" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Bundles</h2>
+              <p className="text-muted-foreground mt-2">One-time purchases that unlock multiple items at once.</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {bundles.map((b) => (
+                <BundleCard key={b.id} bundle={b} items={bundleItems.filter((it) => it.bundle_id === b.id)} />
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Button variant="ghost" asChild><Link to="/bundles">All bundles <ArrowRight className="size-4 ml-1" /></Link></Button>
+            </div>
+          </div>
+        )}
+
         <div className="text-center mt-6">
           <Button variant="ghost" asChild><Link to="/">Back home <ArrowRight className="size-4 ml-1" /></Link></Button>
         </div>
