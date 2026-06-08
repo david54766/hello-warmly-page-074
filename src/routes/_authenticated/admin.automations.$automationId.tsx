@@ -5,11 +5,13 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Pencil, ArrowLeft, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { deleteAutomation, fetchAutomation, fetchLogs, type Automation, type AutomationLog } from "@/lib/automations";
+import { deleteAutomation, fetchAutomation, fetchAutomationStats, fetchLogs, type Automation, type AutomationLog } from "@/lib/automations";
 import { AutomationDetailCard } from "@/components/automations/AutomationDetailCard";
 import { AutomationPreview } from "@/components/automations/AutomationPreview";
 import { AutomationLogsTable } from "@/components/automations/AutomationLogsTable";
-import { TestAutomationButton } from "@/components/automations/TestAutomationButton";
+import { TestAutomationModal } from "@/components/automations/TestAutomationModal";
+import { AutomationMetricsCards } from "@/components/automations/AutomationMetricsCards";
+import { AutomationSafetyWarning } from "@/components/automations/AutomationSafetyWarning";
 
 export const Route = createFileRoute("/_authenticated/admin/automations/$automationId")({ component: Page });
 
@@ -19,11 +21,16 @@ function Page() {
   const { automationId } = Route.useParams();
   const [automation, setAutomation] = useState<Automation | null>(null);
   const [logs, setLogs] = useState<AutomationLog[]>([]);
+  const [stats, setStats] = useState<{ success: number; failed: number; skipped: number; lastRunAt: string | null; lastError: string | null } | null>(null);
 
   useEffect(() => { if (!loading && !isAdmin) navigate({ to: "/dashboard" }); }, [loading, isAdmin, navigate]);
   const load = async () => {
-    const [a, l] = await Promise.all([fetchAutomation(automationId), fetchLogs({ automationId, limit: 20 })]);
-    setAutomation(a); setLogs(l);
+    const [a, l, s] = await Promise.all([
+      fetchAutomation(automationId),
+      fetchLogs({ automationId, limit: 20 }),
+      fetchAutomationStats(automationId),
+    ]);
+    setAutomation(a); setLogs(l); setStats(s);
   };
   useEffect(() => { if (isAdmin) load(); }, [isAdmin, automationId]);
 
@@ -48,12 +55,14 @@ function Page() {
           <h1 className="text-3xl font-semibold tracking-tight">{automation.name}</h1>
         </div>
         <div className="flex gap-2">
-          <TestAutomationButton automation={automation} onLogged={load} />
+          <TestAutomationModal automation={automation} onLogged={load} />
           <Button variant="outline" asChild><Link to="/admin/automations/$automationId/edit" params={{ automationId: automation.id }}><Pencil className="size-4 mr-1.5" />Edit</Link></Button>
           <Button variant="ghost" onClick={onDelete}><Trash2 className="size-4 mr-1.5" />Delete</Button>
         </div>
       </header>
       <AutomationPreview automation={automation} />
+      <AutomationSafetyWarning automation={automation} />
+      {stats && <AutomationMetricsCards {...stats} />}
       <AutomationDetailCard automation={automation} />
       <Card className="rounded-2xl">
         <CardHeader>
