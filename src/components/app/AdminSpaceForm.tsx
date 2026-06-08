@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import type { Collection, Space, SpaceAccess, SpacePrivacy } from "@/lib/spaces";
+import { AccessStateSelect } from "@/components/access/AccessStateSelect";
 
 export function AdminSpaceForm({
   open,
@@ -122,14 +123,7 @@ export function AdminSpaceForm({
             </div>
             <div className="space-y-1.5">
               <Label>Access</Label>
-              <Select value={access} onValueChange={(v) => setAccess(v as SpaceAccess)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="free">Free</SelectItem>
-                  <SelectItem value="preview">Preview</SelectItem>
-                  <SelectItem value="paid_placeholder">Paid (placeholder)</SelectItem>
-                </SelectContent>
-              </Select>
+              <AccessStateSelect value={access as never} onChange={(v) => setAccess(v as SpaceAccess)} />
             </div>
           </div>
           <div className="flex items-center justify-between rounded-lg border p-3">
