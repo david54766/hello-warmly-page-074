@@ -26,7 +26,7 @@ const items: NavItem[] = [
   { label: "My Access", to: "/my-access", icon: Shield },
   { label: "Billing", to: "/billing", icon: CreditCard },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
-  { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },
+  { label: "AI Assistant", to: "/admin/ai-assistant", icon: Sparkles, adminOnly: true },
 ];
 
 const footerItems: NavItem[] = [
@@ -47,7 +47,7 @@ export function Sidebar() {
         </Link>
       </div>
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        {items.map((it) => (
+        {items.filter((it) => !it.adminOnly || isAdmin).map((it) => (
           <NavLink key={it.to} item={it} active={pathname === it.to || pathname.startsWith(it.to + "/")} />
         ))}
         {isAdmin && (

@@ -67,6 +67,7 @@ import { Route as AuthenticatedAdminAutomationLogsRouteImport } from './routes/_
 import { Route as AuthenticatedAdminAuditLogsRouteImport } from './routes/_authenticated/admin.audit-logs'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
 import { Route as AuthenticatedAdminAiSettingsRouteImport } from './routes/_authenticated/admin.ai-settings'
+import { Route as AuthenticatedAdminAiAssistantRouteImport } from './routes/_authenticated/admin.ai-assistant'
 import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenticated/admin.access'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
 import { Route as AuthenticatedAdminSegmentsIndexRouteImport } from './routes/_authenticated/admin.segments.index'
@@ -418,6 +419,12 @@ const AuthenticatedAdminAiSettingsRoute =
     path: '/ai-settings',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAiAssistantRoute =
+  AuthenticatedAdminAiAssistantRouteImport.update({
+    id: '/ai-assistant',
+    path: '/ai-assistant',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAccessRoute =
   AuthenticatedAdminAccessRouteImport.update({
     id: '/access',
@@ -608,6 +615,7 @@ export interface FileRoutesByFullPath {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
@@ -694,6 +702,7 @@ export interface FileRoutesByTo {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
@@ -782,6 +791,7 @@ export interface FileRoutesById {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/_authenticated/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/_authenticated/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
@@ -870,6 +880,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/admin/access'
+    | '/admin/ai-assistant'
     | '/admin/ai-settings'
     | '/admin/analytics'
     | '/admin/audit-logs'
@@ -956,6 +967,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/admin/access'
+    | '/admin/ai-assistant'
     | '/admin/ai-settings'
     | '/admin/analytics'
     | '/admin/audit-logs'
@@ -1043,6 +1055,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/_authenticated/admin/access'
+    | '/_authenticated/admin/ai-assistant'
     | '/_authenticated/admin/ai-settings'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/audit-logs'
@@ -1525,6 +1538,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAiSettingsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/ai-assistant': {
+      id: '/_authenticated/admin/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/admin/ai-assistant'
+      preLoaderRoute: typeof AuthenticatedAdminAiAssistantRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/access': {
       id: '/_authenticated/admin/access'
       path: '/access'
@@ -1764,6 +1784,7 @@ const AuthenticatedAdminSegmentsSegmentIdRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
+  AuthenticatedAdminAiAssistantRoute: typeof AuthenticatedAdminAiAssistantRoute
   AuthenticatedAdminAiSettingsRoute: typeof AuthenticatedAdminAiSettingsRoute
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminAuditLogsRoute: typeof AuthenticatedAdminAuditLogsRoute
@@ -1809,6 +1830,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAccessRoute: AuthenticatedAdminAccessRoute,
+  AuthenticatedAdminAiAssistantRoute: AuthenticatedAdminAiAssistantRoute,
   AuthenticatedAdminAiSettingsRoute: AuthenticatedAdminAiSettingsRoute,
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminAuditLogsRoute: AuthenticatedAdminAuditLogsRoute,
