@@ -14,6 +14,7 @@ import { TriggerSelector } from "@/components/automations/TriggerSelector";
 import { ConditionBuilder } from "@/components/automations/ConditionBuilder";
 import { ActionBuilder } from "@/components/automations/ActionBuilder";
 import { AutomationPreview } from "@/components/automations/AutomationPreview";
+import { AutomationSafetyWarning } from "@/components/automations/AutomationSafetyWarning";
 
 export const Route = createFileRoute("/_authenticated/admin/automations/$automationId/edit")({ component: Page });
 
@@ -80,6 +81,7 @@ function Page() {
       <Card className="rounded-2xl"><CardHeader><h2 className="font-semibold">Conditions</h2></CardHeader><CardContent><ConditionBuilder conditions={conditions} onChange={setConditions} /></CardContent></Card>
       <Card className="rounded-2xl"><CardHeader><h2 className="font-semibold">Actions</h2></CardHeader><CardContent><ActionBuilder actions={actions} onChange={setActions} /></CardContent></Card>
       <AutomationPreview automation={{ trigger_type: triggerType, conditions_json: conditions, actions_json: actions }} />
+              <AutomationSafetyWarning automation={{ conditions_json: conditions, actions_json: actions }} />
       <Card className="rounded-2xl">
         <CardContent className="pt-5 flex items-center justify-between">
           <div className="flex items-center gap-2">

@@ -15,6 +15,7 @@ import { TriggerSelector } from "@/components/automations/TriggerSelector";
 import { ConditionBuilder } from "@/components/automations/ConditionBuilder";
 import { ActionBuilder } from "@/components/automations/ActionBuilder";
 import { AutomationPreview } from "@/components/automations/AutomationPreview";
+import { AutomationSafetyWarning } from "@/components/automations/AutomationSafetyWarning";
 
 export const Route = createFileRoute("/_authenticated/admin/automations/new")({ component: Page });
 
@@ -91,6 +92,7 @@ function Page() {
           {step === 4 && (
             <div className="space-y-4">
               <AutomationPreview automation={{ trigger_type: triggerType, conditions_json: conditions, actions_json: actions }} />
+              <AutomationSafetyWarning automation={{ conditions_json: conditions, actions_json: actions }} />
               <div className="flex items-center gap-2">
                 <Switch checked={active} onCheckedChange={setActive} id="auto-active" />
                 <Label htmlFor="auto-active">Activate immediately</Label>
