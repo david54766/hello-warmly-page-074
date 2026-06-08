@@ -1,0 +1,1 @@
+ALTER VIEW public.at_risk_members SET (security_invoker = true);

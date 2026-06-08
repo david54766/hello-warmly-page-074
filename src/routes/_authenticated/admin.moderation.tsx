@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { EmptyState, StatusPill } from "@/components/app/DashboardCard";
 import { Shield, EyeOff, CheckCircle2, XCircle, ExternalLink, Eye, NotebookPen } from "lucide-react";
 import { toast } from "sonner";
+import { ContentFlagTable } from "@/components/moderation/ContentFlagTable";
+import { UserWarningsTable } from "@/components/moderation/UserWarningsTable";
 
 export const Route = createFileRoute("/_authenticated/admin/moderation")({
   component: ModerationPage,
@@ -220,8 +222,15 @@ function ModerationPage() {
     <div className="space-y-6">
       <header>
         <h1 className="text-3xl font-semibold tracking-tight">Moderation Center</h1>
-        <p className="text-muted-foreground mt-1">Review reports, manage flagged content, and keep the community safe.</p>
+        <p className="text-muted-foreground mt-1">Review reports, manage flagged content, document concerns, and protect the quality of the community.</p>
       </header>
+      <Tabs defaultValue="reports">
+        <TabsList>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="flags">Content flags</TabsTrigger>
+          <TabsTrigger value="warnings">Warnings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="reports" className="pt-4">
       {loading ? (
         <div className="space-y-2">{Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-2xl" />)}</div>
       ) : (
@@ -238,6 +247,14 @@ function ModerationPage() {
           <TabsContent value="dismissed" className="pt-4">{renderList(dismissed)}</TabsContent>
         </Tabs>
       )}
+        </TabsContent>
+        <TabsContent value="flags" className="pt-4">
+          <ContentFlagTable />
+        </TabsContent>
+        <TabsContent value="warnings" className="pt-4">
+          <UserWarningsTable />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
