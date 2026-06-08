@@ -56,6 +56,57 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_announcements: {
+        Row: {
+          body: string | null
+          created_at: string
+          created_by: string | null
+          display_type: Database["public"]["Enums"]["announcement_display_type"]
+          id: string
+          pinned: boolean
+          scheduled_at: string | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["announcement_status"]
+          target_id: string | null
+          target_role: string | null
+          target_type: Database["public"]["Enums"]["announcement_target_type"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_type?: Database["public"]["Enums"]["announcement_display_type"]
+          id?: string
+          pinned?: boolean
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["announcement_status"]
+          target_id?: string | null
+          target_role?: string | null
+          target_type?: Database["public"]["Enums"]["announcement_target_type"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_type?: Database["public"]["Enums"]["announcement_display_type"]
+          id?: string
+          pinned?: boolean
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["announcement_status"]
+          target_id?: string | null
+          target_role?: string | null
+          target_type?: Database["public"]["Enums"]["announcement_target_type"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -85,6 +136,38 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      announcement_views: {
+        Row: {
+          announcement_id: string
+          dismissed: boolean
+          id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          announcement_id: string
+          dismissed?: boolean
+          id?: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          announcement_id?: string
+          dismissed?: boolean
+          id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_views_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "admin_announcements"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       automation_logs: {
         Row: {
@@ -1908,6 +1991,74 @@ export type Database = {
         }
         Relationships: []
       }
+      segment_members: {
+        Row: {
+          id: string
+          matched_at: string
+          segment_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          matched_at?: string
+          segment_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          matched_at?: string
+          segment_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "segment_members_segment_id_fkey"
+            columns: ["segment_id"]
+            isOneToOne: false
+            referencedRelation: "segments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      segments: {
+        Row: {
+          active: boolean
+          conditions_json: Json
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          last_refreshed_at: string | null
+          match_mode: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          conditions_json?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          last_refreshed_at?: string | null
+          match_mode?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          conditions_json?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          last_refreshed_at?: string | null
+          match_mode?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       space_members: {
         Row: {
           id: string
@@ -2411,6 +2562,7 @@ export type Database = {
         Args: { _flag: string; _user_id: string }
         Returns: boolean
       }
+      refresh_segment: { Args: { _segment_id: string }; Returns: number }
       run_automations: {
         Args: {
           _payload?: Json
@@ -2421,9 +2573,17 @@ export type Database = {
         }
         Returns: undefined
       }
+      send_announcement: { Args: { _announcement_id: string }; Returns: number }
       test_automation: {
         Args: { _automation_id: string; _user_id: string }
         Returns: Json
+      }
+      user_matches_announcement: {
+        Args: {
+          _ann: Database["public"]["Tables"]["admin_announcements"]["Row"]
+          _user_id: string
+        }
+        Returns: boolean
       }
       validate_coupon: {
         Args: {
@@ -2443,6 +2603,18 @@ export type Database = {
         | "bundle"
         | "manual"
         | "admin_override"
+      announcement_display_type:
+        | "banner"
+        | "feed_post"
+        | "notification_only"
+        | "modal_placeholder"
+      announcement_status: "draft" | "scheduled" | "sent" | "archived"
+      announcement_target_type:
+        | "all_members"
+        | "space"
+        | "segment"
+        | "plan"
+        | "role"
       app_role:
         | "platform_admin"
         | "moderator"
@@ -2756,6 +2928,20 @@ export const Constants = {
         "bundle",
         "manual",
         "admin_override",
+      ],
+      announcement_display_type: [
+        "banner",
+        "feed_post",
+        "notification_only",
+        "modal_placeholder",
+      ],
+      announcement_status: ["draft", "scheduled", "sent", "archived"],
+      announcement_target_type: [
+        "all_members",
+        "space",
+        "segment",
+        "plan",
+        "role",
       ],
       app_role: [
         "platform_admin",
