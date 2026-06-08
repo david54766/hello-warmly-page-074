@@ -93,6 +93,8 @@ export type Database = {
           details_json: Json
           error_message: string | null
           id: string
+          source_id: string | null
+          source_type: string | null
           status: Database["public"]["Enums"]["automation_log_status"]
           trigger_type: string
           user_id: string | null
@@ -103,6 +105,8 @@ export type Database = {
           details_json?: Json
           error_message?: string | null
           id?: string
+          source_id?: string | null
+          source_type?: string | null
           status?: Database["public"]["Enums"]["automation_log_status"]
           trigger_type: string
           user_id?: string | null
@@ -113,6 +117,8 @@ export type Database = {
           details_json?: Json
           error_message?: string | null
           id?: string
+          source_id?: string | null
+          source_type?: string | null
           status?: Database["public"]["Enums"]["automation_log_status"]
           trigger_type?: string
           user_id?: string | null
@@ -120,6 +126,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "automation_logs_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "automations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automation_runs_dedupe: {
+        Row: {
+          automation_id: string
+          created_at: string
+          id: string
+          source_id: string | null
+          source_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          automation_id: string
+          created_at?: string
+          id?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          automation_id?: string
+          created_at?: string
+          id?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_runs_dedupe_automation_id_fkey"
             columns: ["automation_id"]
             isOneToOne: false
             referencedRelation: "automations"
@@ -1046,6 +1087,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      member_tags: {
+        Row: {
+          assigned_by: string | null
+          created_at: string
+          id: string
+          source: string | null
+          tag: string
+          user_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          source?: string | null
+          tag: string
+          user_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          source?: string | null
+          tag?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       message_reactions: {
         Row: {
@@ -2300,6 +2368,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      eval_automation_condition: {
+        Args: { _condition: Json; _user_id: string }
+        Returns: boolean
+      }
+      exec_automation_action: {
+        Args: { _action: Json; _automation_id: string; _user_id: string }
+        Returns: Json
+      }
       has_access: {
         Args: {
           _target_id: string
@@ -2334,6 +2410,20 @@ export type Database = {
       notif_pref: {
         Args: { _flag: string; _user_id: string }
         Returns: boolean
+      }
+      run_automations: {
+        Args: {
+          _payload?: Json
+          _source_id?: string
+          _source_type?: string
+          _trigger: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
+      test_automation: {
+        Args: { _automation_id: string; _user_id: string }
+        Returns: Json
       }
       validate_coupon: {
         Args: {
