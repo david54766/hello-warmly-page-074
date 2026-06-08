@@ -22,8 +22,8 @@ const items: NavItem[] = [
   { label: "Chat", to: "/chat", icon: MessageSquare },
   { label: "Leaderboard", to: "/leaderboard", icon: Trophy },
   { label: "Achievements", to: "/achievements", icon: Award },
+  { label: "Plans", to: "/plans", icon: CreditCard },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
-  { label: "Billing", to: "/coming-soon/billing", icon: CreditCard, comingSoon: true },
   { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },
 ];
 

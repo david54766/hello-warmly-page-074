@@ -48,6 +48,7 @@ import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
+import { Route as AuthenticatedAdminBillingSettingsRouteImport } from './routes/_authenticated/admin.billing-settings'
 import { Route as AuthenticatedAdminBadgesRouteImport } from './routes/_authenticated/admin.badges'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
@@ -276,6 +277,12 @@ const AuthenticatedAdminChecklistRoute =
     path: '/checklist',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminBillingSettingsRoute =
+  AuthenticatedAdminBillingSettingsRouteImport.update({
+    id: '/billing-settings',
+    path: '/billing-settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminBadgesRoute =
   AuthenticatedAdminBadgesRouteImport.update({
     id: '/badges',
@@ -372,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -424,6 +432,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -478,6 +487,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/_authenticated/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -532,6 +542,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/admin/analytics'
     | '/admin/badges'
+    | '/admin/billing-settings'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
@@ -584,6 +595,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/admin/analytics'
     | '/admin/badges'
+    | '/admin/billing-settings'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
@@ -637,6 +649,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/badges'
+    | '/_authenticated/admin/billing-settings'
     | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/moderation'
@@ -952,6 +965,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminChecklistRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/billing-settings': {
+      id: '/_authenticated/admin/billing-settings'
+      path: '/billing-settings'
+      fullPath: '/admin/billing-settings'
+      preLoaderRoute: typeof AuthenticatedAdminBillingSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/badges': {
       id: '/_authenticated/admin/badges'
       path: '/badges'
@@ -1042,6 +1062,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminBadgesRoute: typeof AuthenticatedAdminBadgesRoute
+  AuthenticatedAdminBillingSettingsRoute: typeof AuthenticatedAdminBillingSettingsRoute
   AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
@@ -1063,6 +1084,8 @@ interface AuthenticatedAdminRouteChildren {
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminBadgesRoute: AuthenticatedAdminBadgesRoute,
+  AuthenticatedAdminBillingSettingsRoute:
+    AuthenticatedAdminBillingSettingsRoute,
   AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
