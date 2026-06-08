@@ -16,6 +16,8 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
+import { Route as CheckoutFailedRouteImport } from './routes/checkout.failed'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
@@ -94,6 +96,16 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
+  id: '/checkout/success',
+  path: '/checkout/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutFailedRoute = CheckoutFailedRouteImport.update({
+  id: '/checkout/failed',
+  path: '/checkout/failed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -377,6 +389,8 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/checkout/failed': typeof CheckoutFailedRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -430,6 +444,8 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/checkout/failed': typeof CheckoutFailedRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -485,6 +501,8 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/checkout/failed': typeof CheckoutFailedRoute
+  '/checkout/success': typeof CheckoutSuccessRoute
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/_authenticated/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -540,6 +558,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/saved'
     | '/settings'
+    | '/checkout/failed'
+    | '/checkout/success'
     | '/admin/analytics'
     | '/admin/badges'
     | '/admin/billing-settings'
@@ -593,6 +613,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/saved'
     | '/settings'
+    | '/checkout/failed'
+    | '/checkout/success'
     | '/admin/analytics'
     | '/admin/badges'
     | '/admin/billing-settings'
@@ -647,6 +669,8 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/saved'
     | '/_authenticated/settings'
+    | '/checkout/failed'
+    | '/checkout/success'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/badges'
     | '/_authenticated/admin/billing-settings'
@@ -688,6 +712,8 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   PricingRoute: typeof PricingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  CheckoutFailedRoute: typeof CheckoutFailedRoute
+  CheckoutSuccessRoute: typeof CheckoutSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -739,6 +765,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/success': {
+      id: '/checkout/success'
+      path: '/checkout/success'
+      fullPath: '/checkout/success'
+      preLoaderRoute: typeof CheckoutSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/failed': {
+      id: '/checkout/failed'
+      path: '/checkout/failed'
+      fullPath: '/checkout/failed'
+      preLoaderRoute: typeof CheckoutFailedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/settings': {
@@ -1198,7 +1238,19 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   PricingRoute: PricingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  CheckoutFailedRoute: CheckoutFailedRoute,
+  CheckoutSuccessRoute: CheckoutSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
