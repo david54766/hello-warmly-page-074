@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_grants: {
+        Row: {
+          access_source: Database["public"]["Enums"]["access_source"]
+          active: boolean
+          created_at: string
+          ends_at: string | null
+          id: string
+          source_id: string | null
+          starts_at: string | null
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_source?: Database["public"]["Enums"]["access_source"]
+          active?: boolean
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          source_id?: string | null
+          starts_at?: string | null
+          target_id?: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_source?: Database["public"]["Enums"]["access_source"]
+          active?: boolean
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          source_id?: string | null
+          starts_at?: string | null
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["plan_item_target_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -115,6 +157,86 @@ export type Database = {
           stripe_secret_key_placeholder?: string | null
           stripe_webhook_secret_placeholder?: string | null
           tax_behavior?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bundle_items: {
+        Row: {
+          access_level: Database["public"]["Enums"]["plan_access_level"]
+          bundle_id: string
+          created_at: string
+          id: string
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["plan_access_level"]
+          bundle_id: string
+          created_at?: string
+          id?: string
+          target_id?: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["plan_access_level"]
+          bundle_id?: string
+          created_at?: string
+          id?: string
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bundle_items_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bundles: {
+        Row: {
+          active: boolean
+          created_at: string
+          currency: string
+          description: string | null
+          featured: boolean
+          id: string
+          name: string
+          price: number
+          sort_order: number
+          stripe_price_id: string | null
+          stripe_product_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          name: string
+          price?: number
+          sort_order?: number
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          name?: string
+          price?: number
+          sort_order?: number
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1354,6 +1476,7 @@ export type Database = {
       purchases: {
         Row: {
           amount: number
+          bundle_id: string | null
           created_at: string
           currency: string
           id: string
@@ -1370,6 +1493,7 @@ export type Database = {
         }
         Insert: {
           amount?: number
+          bundle_id?: string | null
           created_at?: string
           currency?: string
           id?: string
@@ -1386,6 +1510,7 @@ export type Database = {
         }
         Update: {
           amount?: number
+          bundle_id?: string | null
           created_at?: string
           currency?: string
           id?: string
@@ -1401,6 +1526,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "purchases_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "purchases_plan_id_fkey"
             columns: ["plan_id"]
@@ -1940,6 +2072,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      has_access: {
+        Args: {
+          _target_id: string
+          _target_type: Database["public"]["Enums"]["plan_item_target_type"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1965,6 +2105,13 @@ export type Database = {
       }
     }
     Enums: {
+      access_source:
+        | "free"
+        | "plan"
+        | "purchase"
+        | "bundle"
+        | "manual"
+        | "admin_override"
       app_role:
         | "platform_admin"
         | "moderator"
@@ -2005,9 +2152,9 @@ export type Database = {
         | "failed"
       comment_status: "active" | "hidden" | "deleted"
       conversation_type: "direct" | "group" | "space"
-      course_access: "free" | "preview" | "paid_placeholder"
+      course_access: "free" | "preview" | "paid_placeholder" | "paid"
       course_visibility: "public" | "members_only" | "space_members" | "hidden"
-      event_access: "free" | "preview" | "paid_placeholder"
+      event_access: "free" | "preview" | "paid_placeholder" | "paid"
       event_status: "draft" | "published" | "canceled" | "completed"
       event_type:
         | "in_person"
@@ -2115,7 +2262,7 @@ export type Database = {
         | "event"
         | "space"
         | "resource_placeholder"
-      space_access: "free" | "preview" | "paid_placeholder"
+      space_access: "free" | "preview" | "paid_placeholder" | "paid"
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
       space_privacy: "public" | "members_only" | "private" | "hidden"
@@ -2255,6 +2402,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      access_source: [
+        "free",
+        "plan",
+        "purchase",
+        "bundle",
+        "manual",
+        "admin_override",
+      ],
       app_role: [
         "platform_admin",
         "moderator",
@@ -2300,9 +2455,9 @@ export const Constants = {
       ],
       comment_status: ["active", "hidden", "deleted"],
       conversation_type: ["direct", "group", "space"],
-      course_access: ["free", "preview", "paid_placeholder"],
+      course_access: ["free", "preview", "paid_placeholder", "paid"],
       course_visibility: ["public", "members_only", "space_members", "hidden"],
-      event_access: ["free", "preview", "paid_placeholder"],
+      event_access: ["free", "preview", "paid_placeholder", "paid"],
       event_status: ["draft", "published", "canceled", "completed"],
       event_type: [
         "in_person",
@@ -2419,7 +2574,7 @@ export const Constants = {
         "space",
         "resource_placeholder",
       ],
-      space_access: ["free", "preview", "paid_placeholder"],
+      space_access: ["free", "preview", "paid_placeholder", "paid"],
       space_member_role: ["space_host", "space_moderator", "member"],
       space_member_status: ["active", "pending", "banned"],
       space_privacy: ["public", "members_only", "private", "hidden"],
