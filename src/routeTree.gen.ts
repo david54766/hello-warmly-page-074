@@ -66,6 +66,7 @@ import { Route as AuthenticatedAdminBadgesRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminAutomationLogsRouteImport } from './routes/_authenticated/admin.automation-logs'
 import { Route as AuthenticatedAdminAuditLogsRouteImport } from './routes/_authenticated/admin.audit-logs'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
+import { Route as AuthenticatedAdminAiSettingsRouteImport } from './routes/_authenticated/admin.ai-settings'
 import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenticated/admin.access'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
 import { Route as AuthenticatedAdminSegmentsIndexRouteImport } from './routes/_authenticated/admin.segments.index'
@@ -76,6 +77,7 @@ import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminBundlesIndexRouteImport } from './routes/_authenticated/admin.bundles.index'
 import { Route as AuthenticatedAdminAutomationsIndexRouteImport } from './routes/_authenticated/admin.automations.index'
 import { Route as AuthenticatedAdminAnnouncementsIndexRouteImport } from './routes/_authenticated/admin.announcements.index'
+import { Route as AuthenticatedAdminAiDraftsIndexRouteImport } from './routes/_authenticated/admin.ai-drafts.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
 import { Route as AuthenticatedAdminSegmentsNewRouteImport } from './routes/_authenticated/admin.segments.new'
 import { Route as AuthenticatedAdminSegmentsSegmentIdRouteImport } from './routes/_authenticated/admin.segments.$segmentId'
@@ -88,6 +90,7 @@ import { Route as AuthenticatedAdminAutomationsNewRouteImport } from './routes/_
 import { Route as AuthenticatedAdminAutomationsAutomationIdRouteImport } from './routes/_authenticated/admin.automations.$automationId'
 import { Route as AuthenticatedAdminAnnouncementsNewRouteImport } from './routes/_authenticated/admin.announcements.new'
 import { Route as AuthenticatedAdminAnnouncementsAnnouncementIdRouteImport } from './routes/_authenticated/admin.announcements.$announcementId'
+import { Route as AuthenticatedAdminAiDraftsDraftIdRouteImport } from './routes/_authenticated/admin.ai-drafts.$draftId'
 import { Route as AuthenticatedAdminSegmentsSegmentIdEditRouteImport } from './routes/_authenticated/admin.segments.$segmentId.edit'
 import { Route as AuthenticatedAdminAutomationsAutomationIdEditRouteImport } from './routes/_authenticated/admin.automations.$automationId.edit'
 import { Route as AuthenticatedAdminAnnouncementsAnnouncementIdEditRouteImport } from './routes/_authenticated/admin.announcements.$announcementId.edit'
@@ -409,6 +412,12 @@ const AuthenticatedAdminAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAiSettingsRoute =
+  AuthenticatedAdminAiSettingsRouteImport.update({
+    id: '/ai-settings',
+    path: '/ai-settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAccessRoute =
   AuthenticatedAdminAccessRouteImport.update({
     id: '/access',
@@ -467,6 +476,12 @@ const AuthenticatedAdminAnnouncementsIndexRoute =
   AuthenticatedAdminAnnouncementsIndexRouteImport.update({
     id: '/announcements/',
     path: '/announcements/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAiDraftsIndexRoute =
+  AuthenticatedAdminAiDraftsIndexRouteImport.update({
+    id: '/ai-drafts/',
+    path: '/ai-drafts/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminSpacesSpaceIdRoute =
@@ -541,6 +556,12 @@ const AuthenticatedAdminAnnouncementsAnnouncementIdRoute =
     path: '/announcements/$announcementId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAiDraftsDraftIdRoute =
+  AuthenticatedAdminAiDraftsDraftIdRouteImport.update({
+    id: '/ai-drafts/$draftId',
+    path: '/ai-drafts/$draftId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminSegmentsSegmentIdEditRoute =
   AuthenticatedAdminSegmentsSegmentIdEditRouteImport.update({
     id: '/edit',
@@ -587,6 +608,7 @@ export interface FileRoutesByFullPath {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
   '/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
@@ -618,6 +640,7 @@ export interface FileRoutesByFullPath {
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
   '/admin/announcements/$announcementId': typeof AuthenticatedAdminAnnouncementsAnnouncementIdRouteWithChildren
   '/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
@@ -630,6 +653,7 @@ export interface FileRoutesByFullPath {
   '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/ai-drafts/': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/admin/announcements/': typeof AuthenticatedAdminAnnouncementsIndexRoute
   '/admin/automations/': typeof AuthenticatedAdminAutomationsIndexRoute
   '/admin/bundles/': typeof AuthenticatedAdminBundlesIndexRoute
@@ -670,6 +694,7 @@ export interface FileRoutesByTo {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
   '/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
@@ -701,6 +726,7 @@ export interface FileRoutesByTo {
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
+  '/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
   '/admin/announcements/$announcementId': typeof AuthenticatedAdminAnnouncementsAnnouncementIdRouteWithChildren
   '/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
@@ -713,6 +739,7 @@ export interface FileRoutesByTo {
   '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/ai-drafts': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/admin/announcements': typeof AuthenticatedAdminAnnouncementsIndexRoute
   '/admin/automations': typeof AuthenticatedAdminAutomationsIndexRoute
   '/admin/bundles': typeof AuthenticatedAdminBundlesIndexRoute
@@ -755,6 +782,7 @@ export interface FileRoutesById {
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
   '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
+  '/_authenticated/admin/ai-settings': typeof AuthenticatedAdminAiSettingsRoute
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/audit-logs': typeof AuthenticatedAdminAuditLogsRoute
   '/_authenticated/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
@@ -786,6 +814,7 @@ export interface FileRoutesById {
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/_authenticated/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
   '/_authenticated/admin/announcements/$announcementId': typeof AuthenticatedAdminAnnouncementsAnnouncementIdRouteWithChildren
   '/_authenticated/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/_authenticated/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
@@ -798,6 +827,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/_authenticated/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/_authenticated/admin/ai-drafts/': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/_authenticated/admin/announcements/': typeof AuthenticatedAdminAnnouncementsIndexRoute
   '/_authenticated/admin/automations/': typeof AuthenticatedAdminAutomationsIndexRoute
   '/_authenticated/admin/bundles/': typeof AuthenticatedAdminBundlesIndexRoute
@@ -840,6 +870,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/admin/access'
+    | '/admin/ai-settings'
     | '/admin/analytics'
     | '/admin/audit-logs'
     | '/admin/automation-logs'
@@ -871,6 +902,7 @@ export interface FileRouteTypes {
     | '/courses/'
     | '/members/'
     | '/spaces/'
+    | '/admin/ai-drafts/$draftId'
     | '/admin/announcements/$announcementId'
     | '/admin/announcements/new'
     | '/admin/automations/$automationId'
@@ -883,6 +915,7 @@ export interface FileRouteTypes {
     | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
+    | '/admin/ai-drafts/'
     | '/admin/announcements/'
     | '/admin/automations/'
     | '/admin/bundles/'
@@ -923,6 +956,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/admin/access'
+    | '/admin/ai-settings'
     | '/admin/analytics'
     | '/admin/audit-logs'
     | '/admin/automation-logs'
@@ -954,6 +988,7 @@ export interface FileRouteTypes {
     | '/courses'
     | '/members'
     | '/spaces'
+    | '/admin/ai-drafts/$draftId'
     | '/admin/announcements/$announcementId'
     | '/admin/announcements/new'
     | '/admin/automations/$automationId'
@@ -966,6 +1001,7 @@ export interface FileRouteTypes {
     | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
+    | '/admin/ai-drafts'
     | '/admin/announcements'
     | '/admin/automations'
     | '/admin/bundles'
@@ -1007,6 +1043,7 @@ export interface FileRouteTypes {
     | '/checkout/failed'
     | '/checkout/success'
     | '/_authenticated/admin/access'
+    | '/_authenticated/admin/ai-settings'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/audit-logs'
     | '/_authenticated/admin/automation-logs'
@@ -1038,6 +1075,7 @@ export interface FileRouteTypes {
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
     | '/_authenticated/spaces/'
+    | '/_authenticated/admin/ai-drafts/$draftId'
     | '/_authenticated/admin/announcements/$announcementId'
     | '/_authenticated/admin/announcements/new'
     | '/_authenticated/admin/automations/$automationId'
@@ -1050,6 +1088,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/segments/$segmentId'
     | '/_authenticated/admin/segments/new'
     | '/_authenticated/admin/spaces/$spaceId'
+    | '/_authenticated/admin/ai-drafts/'
     | '/_authenticated/admin/announcements/'
     | '/_authenticated/admin/automations/'
     | '/_authenticated/admin/bundles/'
@@ -1479,6 +1518,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAnalyticsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/ai-settings': {
+      id: '/_authenticated/admin/ai-settings'
+      path: '/ai-settings'
+      fullPath: '/admin/ai-settings'
+      preLoaderRoute: typeof AuthenticatedAdminAiSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/access': {
       id: '/_authenticated/admin/access'
       path: '/access'
@@ -1547,6 +1593,13 @@ declare module '@tanstack/react-router' {
       path: '/announcements'
       fullPath: '/admin/announcements/'
       preLoaderRoute: typeof AuthenticatedAdminAnnouncementsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/ai-drafts/': {
+      id: '/_authenticated/admin/ai-drafts/'
+      path: '/ai-drafts'
+      fullPath: '/admin/ai-drafts/'
+      preLoaderRoute: typeof AuthenticatedAdminAiDraftsIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/spaces/$spaceId': {
@@ -1633,6 +1686,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAnnouncementsAnnouncementIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/ai-drafts/$draftId': {
+      id: '/_authenticated/admin/ai-drafts/$draftId'
+      path: '/ai-drafts/$draftId'
+      fullPath: '/admin/ai-drafts/$draftId'
+      preLoaderRoute: typeof AuthenticatedAdminAiDraftsDraftIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/segments/$segmentId/edit': {
       id: '/_authenticated/admin/segments/$segmentId/edit'
       path: '/edit'
@@ -1704,6 +1764,7 @@ const AuthenticatedAdminSegmentsSegmentIdRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
+  AuthenticatedAdminAiSettingsRoute: typeof AuthenticatedAdminAiSettingsRoute
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminAuditLogsRoute: typeof AuthenticatedAdminAuditLogsRoute
   AuthenticatedAdminAutomationLogsRoute: typeof AuthenticatedAdminAutomationLogsRoute
@@ -1721,6 +1782,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminTransactionsRoute: typeof AuthenticatedAdminTransactionsRoute
   AuthenticatedAdminTrialsRoute: typeof AuthenticatedAdminTrialsRoute
+  AuthenticatedAdminAiDraftsDraftIdRoute: typeof AuthenticatedAdminAiDraftsDraftIdRoute
   AuthenticatedAdminAnnouncementsAnnouncementIdRoute: typeof AuthenticatedAdminAnnouncementsAnnouncementIdRouteWithChildren
   AuthenticatedAdminAnnouncementsNewRoute: typeof AuthenticatedAdminAnnouncementsNewRoute
   AuthenticatedAdminAutomationsAutomationIdRoute: typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
@@ -1733,6 +1795,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSegmentsSegmentIdRoute: typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   AuthenticatedAdminSegmentsNewRoute: typeof AuthenticatedAdminSegmentsNewRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
+  AuthenticatedAdminAiDraftsIndexRoute: typeof AuthenticatedAdminAiDraftsIndexRoute
   AuthenticatedAdminAnnouncementsIndexRoute: typeof AuthenticatedAdminAnnouncementsIndexRoute
   AuthenticatedAdminAutomationsIndexRoute: typeof AuthenticatedAdminAutomationsIndexRoute
   AuthenticatedAdminBundlesIndexRoute: typeof AuthenticatedAdminBundlesIndexRoute
@@ -1746,6 +1809,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAccessRoute: AuthenticatedAdminAccessRoute,
+  AuthenticatedAdminAiSettingsRoute: AuthenticatedAdminAiSettingsRoute,
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminAuditLogsRoute: AuthenticatedAdminAuditLogsRoute,
   AuthenticatedAdminAutomationLogsRoute: AuthenticatedAdminAutomationLogsRoute,
@@ -1764,6 +1828,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminTransactionsRoute: AuthenticatedAdminTransactionsRoute,
   AuthenticatedAdminTrialsRoute: AuthenticatedAdminTrialsRoute,
+  AuthenticatedAdminAiDraftsDraftIdRoute:
+    AuthenticatedAdminAiDraftsDraftIdRoute,
   AuthenticatedAdminAnnouncementsAnnouncementIdRoute:
     AuthenticatedAdminAnnouncementsAnnouncementIdRouteWithChildren,
   AuthenticatedAdminAnnouncementsNewRoute:
@@ -1782,6 +1848,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
     AuthenticatedAdminSegmentsSegmentIdRouteWithChildren,
   AuthenticatedAdminSegmentsNewRoute: AuthenticatedAdminSegmentsNewRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
+  AuthenticatedAdminAiDraftsIndexRoute: AuthenticatedAdminAiDraftsIndexRoute,
   AuthenticatedAdminAnnouncementsIndexRoute:
     AuthenticatedAdminAnnouncementsIndexRoute,
   AuthenticatedAdminAutomationsIndexRoute:
