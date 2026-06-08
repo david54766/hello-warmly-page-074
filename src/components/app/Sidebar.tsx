@@ -23,6 +23,7 @@ const items: NavItem[] = [
   { label: "Leaderboard", to: "/leaderboard", icon: Trophy },
   { label: "Achievements", to: "/achievements", icon: Award },
   { label: "Plans", to: "/plans", icon: CreditCard },
+  { label: "My Access", to: "/my-access", icon: Shield },
   { label: "Billing", to: "/billing", icon: CreditCard },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "AI Assistant", to: "/coming-soon/ai", icon: Sparkles, comingSoon: true },

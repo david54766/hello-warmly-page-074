@@ -23,6 +23,7 @@ import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPlansRouteImport } from './routes/_authenticated/plans'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedMyAccessRouteImport } from './routes/_authenticated/my-access'
 import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedGettingStartedRouteImport } from './routes/_authenticated/getting-started'
 import { Route as AuthenticatedFollowingRouteImport } from './routes/_authenticated/following'
@@ -58,16 +59,19 @@ import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminBillingSettingsRouteImport } from './routes/_authenticated/admin.billing-settings'
 import { Route as AuthenticatedAdminBadgesRouteImport } from './routes/_authenticated/admin.badges'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
+import { Route as AuthenticatedAdminAccessRouteImport } from './routes/_authenticated/admin.access'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
 import { Route as AuthenticatedAdminPlansIndexRouteImport } from './routes/_authenticated/admin.plans.index'
 import { Route as AuthenticatedAdminMembersIndexRouteImport } from './routes/_authenticated/admin.members.index'
 import { Route as AuthenticatedAdminEventsIndexRouteImport } from './routes/_authenticated/admin.events.index'
 import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_authenticated/admin.courses.index'
+import { Route as AuthenticatedAdminBundlesIndexRouteImport } from './routes/_authenticated/admin.bundles.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
 import { Route as AuthenticatedAdminPlansPlanIdRouteImport } from './routes/_authenticated/admin.plans.$planId'
 import { Route as AuthenticatedAdminMembersUserIdRouteImport } from './routes/_authenticated/admin.members.$userId'
 import { Route as AuthenticatedAdminEventsEventIdRouteImport } from './routes/_authenticated/admin.events.$eventId'
 import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/_authenticated/admin.courses.$courseId'
+import { Route as AuthenticatedAdminBundlesBundleIdRouteImport } from './routes/_authenticated/admin.bundles.$bundleId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -139,6 +143,11 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMyAccessRoute = AuthenticatedMyAccessRouteImport.update({
+  id: '/my-access',
+  path: '/my-access',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedLeaderboardRoute =
   AuthenticatedLeaderboardRouteImport.update({
     id: '/leaderboard',
@@ -340,6 +349,12 @@ const AuthenticatedAdminAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAccessRoute =
+  AuthenticatedAdminAccessRouteImport.update({
+    id: '/access',
+    path: '/access',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminSpacesIndexRoute =
   AuthenticatedAdminSpacesIndexRouteImport.update({
     id: '/spaces/',
@@ -368,6 +383,12 @@ const AuthenticatedAdminCoursesIndexRoute =
   AuthenticatedAdminCoursesIndexRouteImport.update({
     id: '/courses/',
     path: '/courses/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBundlesIndexRoute =
+  AuthenticatedAdminBundlesIndexRouteImport.update({
+    id: '/bundles/',
+    path: '/bundles/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminSpacesSpaceIdRoute =
@@ -400,6 +421,12 @@ const AuthenticatedAdminCoursesCourseIdRoute =
     path: '/courses/$courseId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminBundlesBundleIdRoute =
+  AuthenticatedAdminBundlesBundleIdRouteImport.update({
+    id: '/bundles/$bundleId',
+    path: '/bundles/$bundleId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -418,6 +445,7 @@ export interface FileRoutesByFullPath {
   '/following': typeof AuthenticatedFollowingRoute
   '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/my-access': typeof AuthenticatedMyAccessRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -425,6 +453,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -450,11 +479,13 @@ export interface FileRoutesByFullPath {
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/bundles/': typeof AuthenticatedAdminBundlesIndexRoute
   '/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
@@ -478,6 +509,7 @@ export interface FileRoutesByTo {
   '/following': typeof AuthenticatedFollowingRoute
   '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/my-access': typeof AuthenticatedMyAccessRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -485,6 +517,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -510,11 +543,13 @@ export interface FileRoutesByTo {
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
+  '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/admin/bundles': typeof AuthenticatedAdminBundlesIndexRoute
   '/admin/courses': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/members': typeof AuthenticatedAdminMembersIndexRoute
@@ -540,6 +575,7 @@ export interface FileRoutesById {
   '/_authenticated/following': typeof AuthenticatedFollowingRoute
   '/_authenticated/getting-started': typeof AuthenticatedGettingStartedRoute
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/_authenticated/my-access': typeof AuthenticatedMyAccessRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/plans': typeof AuthenticatedPlansRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
@@ -547,6 +583,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/_authenticated/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
@@ -572,11 +609,13 @@ export interface FileRoutesById {
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/_authenticated/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/_authenticated/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/_authenticated/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/_authenticated/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/_authenticated/admin/bundles/': typeof AuthenticatedAdminBundlesIndexRoute
   '/_authenticated/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/_authenticated/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/_authenticated/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
@@ -602,6 +641,7 @@ export interface FileRouteTypes {
     | '/following'
     | '/getting-started'
     | '/leaderboard'
+    | '/my-access'
     | '/notifications'
     | '/plans'
     | '/profile'
@@ -609,6 +649,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/admin/access'
     | '/admin/analytics'
     | '/admin/badges'
     | '/admin/billing-settings'
@@ -634,11 +675,13 @@ export interface FileRouteTypes {
     | '/courses/'
     | '/members/'
     | '/spaces/'
+    | '/admin/bundles/$bundleId'
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
     | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
+    | '/admin/bundles/'
     | '/admin/courses/'
     | '/admin/events/'
     | '/admin/members/'
@@ -662,6 +705,7 @@ export interface FileRouteTypes {
     | '/following'
     | '/getting-started'
     | '/leaderboard'
+    | '/my-access'
     | '/notifications'
     | '/plans'
     | '/profile'
@@ -669,6 +713,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/admin/access'
     | '/admin/analytics'
     | '/admin/badges'
     | '/admin/billing-settings'
@@ -694,11 +739,13 @@ export interface FileRouteTypes {
     | '/courses'
     | '/members'
     | '/spaces'
+    | '/admin/bundles/$bundleId'
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
     | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
+    | '/admin/bundles'
     | '/admin/courses'
     | '/admin/events'
     | '/admin/members'
@@ -723,6 +770,7 @@ export interface FileRouteTypes {
     | '/_authenticated/following'
     | '/_authenticated/getting-started'
     | '/_authenticated/leaderboard'
+    | '/_authenticated/my-access'
     | '/_authenticated/notifications'
     | '/_authenticated/plans'
     | '/_authenticated/profile'
@@ -730,6 +778,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/_authenticated/admin/access'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/badges'
     | '/_authenticated/admin/billing-settings'
@@ -755,11 +804,13 @@ export interface FileRouteTypes {
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
     | '/_authenticated/spaces/'
+    | '/_authenticated/admin/bundles/$bundleId'
     | '/_authenticated/admin/courses/$courseId'
     | '/_authenticated/admin/events/$eventId'
     | '/_authenticated/admin/members/$userId'
     | '/_authenticated/admin/plans/$planId'
     | '/_authenticated/admin/spaces/$spaceId'
+    | '/_authenticated/admin/bundles/'
     | '/_authenticated/admin/courses/'
     | '/_authenticated/admin/events/'
     | '/_authenticated/admin/members/'
@@ -878,6 +929,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-access': {
+      id: '/_authenticated/my-access'
+      path: '/my-access'
+      fullPath: '/my-access'
+      preLoaderRoute: typeof AuthenticatedMyAccessRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/leaderboard': {
@@ -1125,6 +1183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAnalyticsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/access': {
+      id: '/_authenticated/admin/access'
+      path: '/access'
+      fullPath: '/admin/access'
+      preLoaderRoute: typeof AuthenticatedAdminAccessRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/spaces/': {
       id: '/_authenticated/admin/spaces/'
       path: '/spaces'
@@ -1158,6 +1223,13 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/admin/courses/'
       preLoaderRoute: typeof AuthenticatedAdminCoursesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/bundles/': {
+      id: '/_authenticated/admin/bundles/'
+      path: '/bundles'
+      fullPath: '/admin/bundles/'
+      preLoaderRoute: typeof AuthenticatedAdminBundlesIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/spaces/$spaceId': {
@@ -1195,10 +1267,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCoursesCourseIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/bundles/$bundleId': {
+      id: '/_authenticated/admin/bundles/$bundleId'
+      path: '/bundles/$bundleId'
+      fullPath: '/admin/bundles/$bundleId'
+      preLoaderRoute: typeof AuthenticatedAdminBundlesBundleIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminBadgesRoute: typeof AuthenticatedAdminBadgesRoute
   AuthenticatedAdminBillingSettingsRoute: typeof AuthenticatedAdminBillingSettingsRoute
@@ -1211,11 +1291,13 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminTransactionsRoute: typeof AuthenticatedAdminTransactionsRoute
+  AuthenticatedAdminBundlesBundleIdRoute: typeof AuthenticatedAdminBundlesBundleIdRoute
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
   AuthenticatedAdminEventsEventIdRoute: typeof AuthenticatedAdminEventsEventIdRoute
   AuthenticatedAdminMembersUserIdRoute: typeof AuthenticatedAdminMembersUserIdRoute
   AuthenticatedAdminPlansPlanIdRoute: typeof AuthenticatedAdminPlansPlanIdRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
+  AuthenticatedAdminBundlesIndexRoute: typeof AuthenticatedAdminBundlesIndexRoute
   AuthenticatedAdminCoursesIndexRoute: typeof AuthenticatedAdminCoursesIndexRoute
   AuthenticatedAdminEventsIndexRoute: typeof AuthenticatedAdminEventsIndexRoute
   AuthenticatedAdminMembersIndexRoute: typeof AuthenticatedAdminMembersIndexRoute
@@ -1224,6 +1306,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAccessRoute: AuthenticatedAdminAccessRoute,
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminBadgesRoute: AuthenticatedAdminBadgesRoute,
   AuthenticatedAdminBillingSettingsRoute:
@@ -1237,12 +1320,15 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminTransactionsRoute: AuthenticatedAdminTransactionsRoute,
+  AuthenticatedAdminBundlesBundleIdRoute:
+    AuthenticatedAdminBundlesBundleIdRoute,
   AuthenticatedAdminCoursesCourseIdRoute:
     AuthenticatedAdminCoursesCourseIdRoute,
   AuthenticatedAdminEventsEventIdRoute: AuthenticatedAdminEventsEventIdRoute,
   AuthenticatedAdminMembersUserIdRoute: AuthenticatedAdminMembersUserIdRoute,
   AuthenticatedAdminPlansPlanIdRoute: AuthenticatedAdminPlansPlanIdRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
+  AuthenticatedAdminBundlesIndexRoute: AuthenticatedAdminBundlesIndexRoute,
   AuthenticatedAdminCoursesIndexRoute: AuthenticatedAdminCoursesIndexRoute,
   AuthenticatedAdminEventsIndexRoute: AuthenticatedAdminEventsIndexRoute,
   AuthenticatedAdminMembersIndexRoute: AuthenticatedAdminMembersIndexRoute,
@@ -1289,6 +1375,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFollowingRoute: typeof AuthenticatedFollowingRoute
   AuthenticatedGettingStartedRoute: typeof AuthenticatedGettingStartedRoute
   AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
+  AuthenticatedMyAccessRoute: typeof AuthenticatedMyAccessRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPlansRoute: typeof AuthenticatedPlansRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
@@ -1317,6 +1404,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFollowingRoute: AuthenticatedFollowingRoute,
   AuthenticatedGettingStartedRoute: AuthenticatedGettingStartedRoute,
   AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
+  AuthenticatedMyAccessRoute: AuthenticatedMyAccessRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPlansRoute: AuthenticatedPlansRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,

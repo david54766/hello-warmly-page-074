@@ -91,6 +91,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/subscribers"><Users className="size-4 mr-2" />Subscribers</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/transactions"><CreditCard className="size-4 mr-2" />Transactions</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/payment-events"><Activity className="size-4 mr-2" />Payment Events</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/access"><Shield className="size-4 mr-2" />Access</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/bundles"><CreditCard className="size-4 mr-2" />Bundles</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>
