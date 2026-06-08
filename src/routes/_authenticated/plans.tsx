@@ -9,6 +9,9 @@ import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { AccessSummary } from "@/components/plans/AccessSummary";
 import { fetchActivePlans, fetchAllPlanItems, TARGET_TYPE_LABELS, type Plan, type PlanItem } from "@/lib/plans";
 import { CreditCard } from "lucide-react";
+import { CouponCodeInput } from "@/components/coupons/CouponCodeInput";
+import { CouponSummary } from "@/components/coupons/CouponSummary";
+import type { ValidationResult } from "@/lib/coupons";
 
 export const Route = createFileRoute("/_authenticated/plans")({
   component: PlansPage,
@@ -17,6 +20,7 @@ export const Route = createFileRoute("/_authenticated/plans")({
 function PlansPage() {
   const [plans, setPlans] = useState<Plan[] | null>(null);
   const [items, setItems] = useState<PlanItem[]>([]);
+  const [coupon, setCoupon] = useState<ValidationResult | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -32,6 +36,20 @@ function PlansPage() {
         <h1 className="text-3xl font-semibold tracking-tight">Membership plans</h1>
         <p className="text-muted-foreground mt-1">Review your current plan and explore upgrade options.</p>
       </header>
+
+      <Card className="rounded-2xl">
+        <CardHeader><h2 className="font-semibold">Have a coupon?</h2></CardHeader>
+        <CardContent className="space-y-3">
+          <CouponCodeInput
+            appliesToType="plan"
+            amount={0}
+            applied={coupon}
+            onApply={setCoupon}
+            onClear={() => setCoupon(null)}
+          />
+          <p className="text-xs text-muted-foreground">Discount will apply at checkout for paid plans.</p>
+        </CardContent>
+      </Card>
 
       <Card className="rounded-2xl">
         <CardHeader>
@@ -69,9 +87,12 @@ function PlansPage() {
                   features={features.length > 0 ? features : ["Included community access"]}
                   ctaLabel={isFree ? "Current Free Plan" : undefined}
                   ctaSlot={isFree ? undefined : (
-                    <CheckoutButton plan={plan} className="w-full" variant={plan.featured ? "default" : "outline"} />
+                    <CheckoutButton plan={plan} appliedCoupon={coupon} className="w-full" variant={plan.featured ? "default" : "outline"} />
                   )}
                 />
+                {!isFree && coupon?.valid && (
+                  <CouponSummary original={Number(plan.price)} applied={coupon} currency={plan.currency} />
+                )}
                 {planItems.length > 0 && (
                   <Card className="rounded-2xl">
                     <CardContent className="pt-5">

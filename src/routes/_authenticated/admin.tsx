@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star, Tag, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -93,6 +93,9 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/payment-events"><Activity className="size-4 mr-2" />Payment Events</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/access"><Shield className="size-4 mr-2" />Access</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/bundles"><CreditCard className="size-4 mr-2" />Bundles</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/coupons"><Tag className="size-4 mr-2" />Coupons</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/trials"><Clock className="size-4 mr-2" />Trials</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/revenue"><BarChart3 className="size-4 mr-2" />Revenue</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>

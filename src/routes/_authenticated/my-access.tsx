@@ -8,6 +8,8 @@ import { fetchMySubscription, type Subscription } from "@/lib/billing";
 import { fetchPlan, type Plan } from "@/lib/plans";
 import { MyAccessList } from "@/components/access/MyAccessList";
 import { UpgradePromptCard } from "@/components/access/UpgradePromptCard";
+import { TrialStatusCard } from "@/components/trials/TrialStatusCard";
+import { fetchActiveTrial, type TrialRecord } from "@/lib/trials";
 
 export const Route = createFileRoute("/_authenticated/my-access")({ component: Page });
 
@@ -16,12 +18,13 @@ function Page() {
   const [grants, setGrants] = useState<AccessGrant[] | null>(null);
   const [sub, setSub] = useState<Subscription | null>(null);
   const [plan, setPlan] = useState<Plan | null>(null);
+  const [trial, setTrial] = useState<TrialRecord | null>(null);
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [g, s] = await Promise.all([fetchMyGrants(user.id), fetchMySubscription(user.id)]);
-      setGrants(g); setSub(s);
+      const [g, s, t] = await Promise.all([fetchMyGrants(user.id), fetchMySubscription(user.id), fetchActiveTrial(user.id)]);
+      setGrants(g); setSub(s); setTrial(t);
       if (s?.plan_id) setPlan(await fetchPlan(s.plan_id));
     })();
   }, [user]);
@@ -32,6 +35,7 @@ function Page() {
         <h1 className="text-3xl font-semibold tracking-tight">My Access</h1>
         <p className="text-muted-foreground mt-1">View your membership access, purchased content, and available upgrades.</p>
       </header>
+      <TrialStatusCard trial={trial} />
       <Card className="rounded-2xl">
         <CardHeader><h2 className="font-semibold">Current plan</h2></CardHeader>
         <CardContent>

@@ -5,13 +5,15 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { ctaForPlan, isStripeConfigured, startCheckout } from "@/lib/billing";
 import type { Plan } from "@/lib/plans";
+import type { ValidationResult } from "@/lib/coupons";
 
 interface Props extends Omit<ButtonProps, "onClick" | "children"> {
   plan: Plan;
   label?: string;
+  appliedCoupon?: ValidationResult | null;
 }
 
-export function CheckoutButton({ plan, label, ...rest }: Props) {
+export function CheckoutButton({ plan, label, appliedCoupon, ...rest }: Props) {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [configured, setConfigured] = useState(false);
@@ -27,7 +29,10 @@ export function CheckoutButton({ plan, label, ...rest }: Props) {
     if (isFree) { navigate({ to: "/dashboard" }); return; }
     setLoading(true);
     try {
-      const res = await startCheckout(plan, user.id);
+      const res = await startCheckout(plan, user.id, {
+        couponId: appliedCoupon?.valid ? appliedCoupon.coupon_id ?? null : null,
+        discountAmount: appliedCoupon?.valid ? appliedCoupon.discount_amount ?? 0 : 0,
+      });
       if (!res.configured) {
         toast.info("Checkout setup required", {
           description: isAdmin
