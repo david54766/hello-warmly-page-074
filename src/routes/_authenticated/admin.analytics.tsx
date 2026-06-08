@@ -232,8 +232,36 @@ function AnalyticsPage() {
               </CardContent>
             </Card>
           </div>
+
+          <AdvancedAnalyticsSection />
         </>
       )}
     </div>
   );
+}
+
+function AdvancedAnalyticsSection() {
+  return (
+    <>
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-4">
+        <h2 className="text-xl font-semibold tracking-tight">Advanced</h2>
+        <div className="flex flex-wrap gap-2">
+          <_ExportButtons />
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <_RiskCard />
+        <_AdvancedMetricsCard />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <_ChartA title="Member growth over time" />
+        <_ChartA title="Daily active members" />
+        <_ChartA title="Posts over time" />
+        <_ChartA title="Revenue over time" />
+      </div>
+    </>
+  );
+}
 }
