@@ -86,6 +86,95 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_logs: {
+        Row: {
+          automation_id: string
+          created_at: string
+          details_json: Json
+          error_message: string | null
+          id: string
+          status: Database["public"]["Enums"]["automation_log_status"]
+          trigger_type: string
+          user_id: string | null
+        }
+        Insert: {
+          automation_id: string
+          created_at?: string
+          details_json?: Json
+          error_message?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["automation_log_status"]
+          trigger_type: string
+          user_id?: string | null
+        }
+        Update: {
+          automation_id?: string
+          created_at?: string
+          details_json?: Json
+          error_message?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["automation_log_status"]
+          trigger_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_logs_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "automations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automations: {
+        Row: {
+          actions_json: Json
+          active: boolean
+          conditions_json: Json
+          created_at: string
+          created_by: string | null
+          description: string | null
+          error_count: number
+          id: string
+          last_run_at: string | null
+          name: string
+          total_runs: number
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          actions_json?: Json
+          active?: boolean
+          conditions_json?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          error_count?: number
+          id?: string
+          last_run_at?: string | null
+          name: string
+          total_runs?: number
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          actions_json?: Json
+          active?: boolean
+          conditions_json?: Json
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          error_count?: number
+          id?: string
+          last_run_at?: string | null
+          name?: string
+          total_runs?: number
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       badges: {
         Row: {
           active: boolean
@@ -2270,6 +2359,7 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      automation_log_status: "pending" | "success" | "failed" | "skipped"
       badge_type:
         | "manual"
         | "milestone"
@@ -2584,6 +2674,7 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      automation_log_status: ["pending", "success", "failed", "skipped"],
       badge_type: [
         "manual",
         "milestone",
