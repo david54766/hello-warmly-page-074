@@ -75,6 +75,7 @@ import { Route as AuthenticatedAdminBundlesIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminAutomationsIndexRouteImport } from './routes/_authenticated/admin.automations.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
 import { Route as AuthenticatedAdminSegmentsNewRouteImport } from './routes/_authenticated/admin.segments.new'
+import { Route as AuthenticatedAdminSegmentsSegmentIdRouteImport } from './routes/_authenticated/admin.segments.$segmentId'
 import { Route as AuthenticatedAdminPlansPlanIdRouteImport } from './routes/_authenticated/admin.plans.$planId'
 import { Route as AuthenticatedAdminMembersUserIdRouteImport } from './routes/_authenticated/admin.members.$userId'
 import { Route as AuthenticatedAdminEventsEventIdRouteImport } from './routes/_authenticated/admin.events.$eventId'
@@ -455,6 +456,12 @@ const AuthenticatedAdminSegmentsNewRoute =
     path: '/segments/new',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminSegmentsSegmentIdRoute =
+  AuthenticatedAdminSegmentsSegmentIdRouteImport.update({
+    id: '/segments/$segmentId',
+    path: '/segments/$segmentId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminPlansPlanIdRoute =
   AuthenticatedAdminPlansPlanIdRouteImport.update({
     id: '/plans/$planId',
@@ -567,6 +574,7 @@ export interface FileRoutesByFullPath {
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
+  '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRoute
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/automations/': typeof AuthenticatedAdminAutomationsIndexRoute
@@ -642,6 +650,7 @@ export interface FileRoutesByTo {
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
+  '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRoute
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/automations': typeof AuthenticatedAdminAutomationsIndexRoute
@@ -719,6 +728,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/_authenticated/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
   '/_authenticated/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
+  '/_authenticated/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRoute
   '/_authenticated/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/_authenticated/admin/automations/': typeof AuthenticatedAdminAutomationsIndexRoute
@@ -796,6 +806,7 @@ export interface FileRouteTypes {
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
     | '/admin/plans/$planId'
+    | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
     | '/admin/automations/'
@@ -871,6 +882,7 @@ export interface FileRouteTypes {
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
     | '/admin/plans/$planId'
+    | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
     | '/admin/automations'
@@ -947,6 +959,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/events/$eventId'
     | '/_authenticated/admin/members/$userId'
     | '/_authenticated/admin/plans/$planId'
+    | '/_authenticated/admin/segments/$segmentId'
     | '/_authenticated/admin/segments/new'
     | '/_authenticated/admin/spaces/$spaceId'
     | '/_authenticated/admin/automations/'
@@ -1438,6 +1451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSegmentsNewRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/segments/$segmentId': {
+      id: '/_authenticated/admin/segments/$segmentId'
+      path: '/segments/$segmentId'
+      fullPath: '/admin/segments/$segmentId'
+      preLoaderRoute: typeof AuthenticatedAdminSegmentsSegmentIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/plans/$planId': {
       id: '/_authenticated/admin/plans/$planId'
       path: '/plans/$planId'
@@ -1537,6 +1557,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminEventsEventIdRoute: typeof AuthenticatedAdminEventsEventIdRoute
   AuthenticatedAdminMembersUserIdRoute: typeof AuthenticatedAdminMembersUserIdRoute
   AuthenticatedAdminPlansPlanIdRoute: typeof AuthenticatedAdminPlansPlanIdRoute
+  AuthenticatedAdminSegmentsSegmentIdRoute: typeof AuthenticatedAdminSegmentsSegmentIdRoute
   AuthenticatedAdminSegmentsNewRoute: typeof AuthenticatedAdminSegmentsNewRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
   AuthenticatedAdminAutomationsIndexRoute: typeof AuthenticatedAdminAutomationsIndexRoute
@@ -1578,6 +1599,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminEventsEventIdRoute: AuthenticatedAdminEventsEventIdRoute,
   AuthenticatedAdminMembersUserIdRoute: AuthenticatedAdminMembersUserIdRoute,
   AuthenticatedAdminPlansPlanIdRoute: AuthenticatedAdminPlansPlanIdRoute,
+  AuthenticatedAdminSegmentsSegmentIdRoute:
+    AuthenticatedAdminSegmentsSegmentIdRoute,
   AuthenticatedAdminSegmentsNewRoute: AuthenticatedAdminSegmentsNewRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
   AuthenticatedAdminAutomationsIndexRoute:
