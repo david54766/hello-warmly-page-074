@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -18,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedPlansRouteImport } from './routes/_authenticated/plans'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedGettingStartedRouteImport } from './routes/_authenticated/getting-started'
@@ -46,13 +48,16 @@ import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
+import { Route as AuthenticatedAdminBillingSettingsRouteImport } from './routes/_authenticated/admin.billing-settings'
 import { Route as AuthenticatedAdminBadgesRouteImport } from './routes/_authenticated/admin.badges'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
 import { Route as AuthenticatedAdminSpacesIndexRouteImport } from './routes/_authenticated/admin.spaces.index'
+import { Route as AuthenticatedAdminPlansIndexRouteImport } from './routes/_authenticated/admin.plans.index'
 import { Route as AuthenticatedAdminMembersIndexRouteImport } from './routes/_authenticated/admin.members.index'
 import { Route as AuthenticatedAdminEventsIndexRouteImport } from './routes/_authenticated/admin.events.index'
 import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_authenticated/admin.courses.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
+import { Route as AuthenticatedAdminPlansPlanIdRouteImport } from './routes/_authenticated/admin.plans.$planId'
 import { Route as AuthenticatedAdminMembersUserIdRouteImport } from './routes/_authenticated/admin.members.$userId'
 import { Route as AuthenticatedAdminEventsEventIdRouteImport } from './routes/_authenticated/admin.events.$eventId'
 import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/_authenticated/admin.courses.$courseId'
@@ -60,6 +65,11 @@ import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -99,6 +109,11 @@ const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPlansRoute = AuthenticatedPlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedNotificationsRoute =
@@ -262,6 +277,12 @@ const AuthenticatedAdminChecklistRoute =
     path: '/checklist',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminBillingSettingsRoute =
+  AuthenticatedAdminBillingSettingsRouteImport.update({
+    id: '/billing-settings',
+    path: '/billing-settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminBadgesRoute =
   AuthenticatedAdminBadgesRouteImport.update({
     id: '/badges',
@@ -278,6 +299,12 @@ const AuthenticatedAdminSpacesIndexRoute =
   AuthenticatedAdminSpacesIndexRouteImport.update({
     id: '/spaces/',
     path: '/spaces/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPlansIndexRoute =
+  AuthenticatedAdminPlansIndexRouteImport.update({
+    id: '/plans/',
+    path: '/plans/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminMembersIndexRoute =
@@ -304,6 +331,12 @@ const AuthenticatedAdminSpacesSpaceIdRoute =
     path: '/spaces/$spaceId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminPlansPlanIdRoute =
+  AuthenticatedAdminPlansPlanIdRouteImport.update({
+    id: '/plans/$planId',
+    path: '/plans/$planId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminMembersUserIdRoute =
   AuthenticatedAdminMembersUserIdRouteImport.update({
     id: '/members/$userId',
@@ -328,6 +361,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/pricing': typeof PricingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/achievements': typeof AuthenticatedAchievementsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -339,11 +373,13 @@ export interface FileRoutesByFullPath {
   '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -365,10 +401,12 @@ export interface FileRoutesByFullPath {
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
+  '/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -376,6 +414,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/pricing': typeof PricingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/achievements': typeof AuthenticatedAchievementsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -387,11 +426,13 @@ export interface FileRoutesByTo {
   '/getting-started': typeof AuthenticatedGettingStartedRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -413,10 +454,12 @@ export interface FileRoutesByTo {
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsIndexRoute
   '/admin/members': typeof AuthenticatedAdminMembersIndexRoute
+  '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/spaces': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRoutesById {
@@ -426,6 +469,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
+  '/pricing': typeof PricingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/achievements': typeof AuthenticatedAchievementsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -437,11 +481,13 @@ export interface FileRoutesById {
   '/_authenticated/getting-started': typeof AuthenticatedGettingStartedRoute
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/plans': typeof AuthenticatedPlansRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/badges': typeof AuthenticatedAdminBadgesRoute
+  '/_authenticated/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
   '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
@@ -463,10 +509,12 @@ export interface FileRoutesById {
   '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/_authenticated/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/_authenticated/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/_authenticated/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/_authenticated/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/_authenticated/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
   '/_authenticated/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
+  '/_authenticated/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
   '/_authenticated/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
 }
 export interface FileRouteTypes {
@@ -476,6 +524,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/forgot-password'
     | '/onboarding'
+    | '/pricing'
     | '/reset-password'
     | '/achievements'
     | '/admin'
@@ -487,11 +536,13 @@ export interface FileRouteTypes {
     | '/getting-started'
     | '/leaderboard'
     | '/notifications'
+    | '/plans'
     | '/profile'
     | '/saved'
     | '/settings'
     | '/admin/analytics'
     | '/admin/badges'
+    | '/admin/billing-settings'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
@@ -513,10 +564,12 @@ export interface FileRouteTypes {
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
+    | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses/'
     | '/admin/events/'
     | '/admin/members/'
+    | '/admin/plans/'
     | '/admin/spaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -524,6 +577,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/forgot-password'
     | '/onboarding'
+    | '/pricing'
     | '/reset-password'
     | '/achievements'
     | '/admin'
@@ -535,11 +589,13 @@ export interface FileRouteTypes {
     | '/getting-started'
     | '/leaderboard'
     | '/notifications'
+    | '/plans'
     | '/profile'
     | '/saved'
     | '/settings'
     | '/admin/analytics'
     | '/admin/badges'
+    | '/admin/billing-settings'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/moderation'
@@ -561,10 +617,12 @@ export interface FileRouteTypes {
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
+    | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses'
     | '/admin/events'
     | '/admin/members'
+    | '/admin/plans'
     | '/admin/spaces'
   id:
     | '__root__'
@@ -573,6 +631,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/forgot-password'
     | '/onboarding'
+    | '/pricing'
     | '/reset-password'
     | '/_authenticated/achievements'
     | '/_authenticated/admin'
@@ -584,11 +643,13 @@ export interface FileRouteTypes {
     | '/_authenticated/getting-started'
     | '/_authenticated/leaderboard'
     | '/_authenticated/notifications'
+    | '/_authenticated/plans'
     | '/_authenticated/profile'
     | '/_authenticated/saved'
     | '/_authenticated/settings'
     | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/badges'
+    | '/_authenticated/admin/billing-settings'
     | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/moderation'
@@ -610,10 +671,12 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/courses/$courseId'
     | '/_authenticated/admin/events/$eventId'
     | '/_authenticated/admin/members/$userId'
+    | '/_authenticated/admin/plans/$planId'
     | '/_authenticated/admin/spaces/$spaceId'
     | '/_authenticated/admin/courses/'
     | '/_authenticated/admin/events/'
     | '/_authenticated/admin/members/'
+    | '/_authenticated/admin/plans/'
     | '/_authenticated/admin/spaces/'
   fileRoutesById: FileRoutesById
 }
@@ -623,6 +686,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
+  PricingRoute: typeof PricingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
@@ -633,6 +697,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -689,6 +760,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/plans': {
+      id: '/_authenticated/plans'
+      path: '/plans'
+      fullPath: '/plans'
+      preLoaderRoute: typeof AuthenticatedPlansRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/notifications': {
@@ -887,6 +965,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminChecklistRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/billing-settings': {
+      id: '/_authenticated/admin/billing-settings'
+      path: '/billing-settings'
+      fullPath: '/admin/billing-settings'
+      preLoaderRoute: typeof AuthenticatedAdminBillingSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/badges': {
       id: '/_authenticated/admin/badges'
       path: '/badges'
@@ -906,6 +991,13 @@ declare module '@tanstack/react-router' {
       path: '/spaces'
       fullPath: '/admin/spaces/'
       preLoaderRoute: typeof AuthenticatedAdminSpacesIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/plans/': {
+      id: '/_authenticated/admin/plans/'
+      path: '/plans'
+      fullPath: '/admin/plans/'
+      preLoaderRoute: typeof AuthenticatedAdminPlansIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/members/': {
@@ -936,6 +1028,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSpacesSpaceIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/plans/$planId': {
+      id: '/_authenticated/admin/plans/$planId'
+      path: '/plans/$planId'
+      fullPath: '/admin/plans/$planId'
+      preLoaderRoute: typeof AuthenticatedAdminPlansPlanIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/members/$userId': {
       id: '/_authenticated/admin/members/$userId'
       path: '/members/$userId'
@@ -963,6 +1062,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminBadgesRoute: typeof AuthenticatedAdminBadgesRoute
+  AuthenticatedAdminBillingSettingsRoute: typeof AuthenticatedAdminBillingSettingsRoute
   AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
@@ -972,16 +1072,20 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
   AuthenticatedAdminEventsEventIdRoute: typeof AuthenticatedAdminEventsEventIdRoute
   AuthenticatedAdminMembersUserIdRoute: typeof AuthenticatedAdminMembersUserIdRoute
+  AuthenticatedAdminPlansPlanIdRoute: typeof AuthenticatedAdminPlansPlanIdRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
   AuthenticatedAdminCoursesIndexRoute: typeof AuthenticatedAdminCoursesIndexRoute
   AuthenticatedAdminEventsIndexRoute: typeof AuthenticatedAdminEventsIndexRoute
   AuthenticatedAdminMembersIndexRoute: typeof AuthenticatedAdminMembersIndexRoute
+  AuthenticatedAdminPlansIndexRoute: typeof AuthenticatedAdminPlansIndexRoute
   AuthenticatedAdminSpacesIndexRoute: typeof AuthenticatedAdminSpacesIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminBadgesRoute: AuthenticatedAdminBadgesRoute,
+  AuthenticatedAdminBillingSettingsRoute:
+    AuthenticatedAdminBillingSettingsRoute,
   AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
@@ -992,10 +1096,12 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
     AuthenticatedAdminCoursesCourseIdRoute,
   AuthenticatedAdminEventsEventIdRoute: AuthenticatedAdminEventsEventIdRoute,
   AuthenticatedAdminMembersUserIdRoute: AuthenticatedAdminMembersUserIdRoute,
+  AuthenticatedAdminPlansPlanIdRoute: AuthenticatedAdminPlansPlanIdRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
   AuthenticatedAdminCoursesIndexRoute: AuthenticatedAdminCoursesIndexRoute,
   AuthenticatedAdminEventsIndexRoute: AuthenticatedAdminEventsIndexRoute,
   AuthenticatedAdminMembersIndexRoute: AuthenticatedAdminMembersIndexRoute,
+  AuthenticatedAdminPlansIndexRoute: AuthenticatedAdminPlansIndexRoute,
   AuthenticatedAdminSpacesIndexRoute: AuthenticatedAdminSpacesIndexRoute,
 }
 
@@ -1038,6 +1144,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedGettingStartedRoute: typeof AuthenticatedGettingStartedRoute
   AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedPlansRoute: typeof AuthenticatedPlansRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
@@ -1064,6 +1171,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedGettingStartedRoute: AuthenticatedGettingStartedRoute,
   AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedPlansRoute: AuthenticatedPlansRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
@@ -1088,6 +1196,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
+  PricingRoute: PricingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport

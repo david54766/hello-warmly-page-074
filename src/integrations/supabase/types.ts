@@ -83,6 +83,42 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_settings: {
+        Row: {
+          billing_support_email: string | null
+          created_at: string
+          currency: string
+          id: string
+          stripe_publishable_key: string | null
+          stripe_secret_key_placeholder: string | null
+          stripe_webhook_secret_placeholder: string | null
+          tax_behavior: string
+          updated_at: string
+        }
+        Insert: {
+          billing_support_email?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          stripe_publishable_key?: string | null
+          stripe_secret_key_placeholder?: string | null
+          stripe_webhook_secret_placeholder?: string | null
+          tax_behavior?: string
+          updated_at?: string
+        }
+        Update: {
+          billing_support_email?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          stripe_publishable_key?: string | null
+          stripe_secret_key_placeholder?: string | null
+          stripe_webhook_secret_placeholder?: string | null
+          tax_behavior?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collections: {
         Row: {
           created_at: string
@@ -769,6 +805,95 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      plan_items: {
+        Row: {
+          access_level: Database["public"]["Enums"]["plan_access_level"]
+          created_at: string
+          id: string
+          plan_id: string
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["plan_access_level"]
+          created_at?: string
+          id?: string
+          plan_id: string
+          target_id?: string | null
+          target_type: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["plan_access_level"]
+          created_at?: string
+          id?: string
+          plan_id?: string
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["plan_item_target_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_items_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plans: {
+        Row: {
+          access_rules_json: Json
+          active: boolean
+          billing_interval: Database["public"]["Enums"]["plan_billing_interval"]
+          created_at: string
+          currency: string
+          description: string | null
+          featured: boolean
+          id: string
+          name: string
+          price: number
+          sort_order: number
+          stripe_price_id: string | null
+          stripe_product_id: string | null
+          trial_days: number
+          updated_at: string
+        }
+        Insert: {
+          access_rules_json?: Json
+          active?: boolean
+          billing_interval?: Database["public"]["Enums"]["plan_billing_interval"]
+          created_at?: string
+          currency?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          name: string
+          price?: number
+          sort_order?: number
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          trial_days?: number
+          updated_at?: string
+        }
+        Update: {
+          access_rules_json?: Json
+          active?: boolean
+          billing_interval?: Database["public"]["Enums"]["plan_billing_interval"]
+          created_at?: string
+          currency?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          name?: string
+          price?: number
+          sort_order?: number
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          trial_days?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1475,7 +1600,33 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      billing_settings_public: {
+        Row: {
+          billing_support_email: string | null
+          currency: string | null
+          id: string | null
+          stripe_publishable_key: string | null
+          tax_behavior: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          billing_support_email?: string | null
+          currency?: string | null
+          id?: string | null
+          stripe_publishable_key?: string | null
+          tax_behavior?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          billing_support_email?: string | null
+          currency?: string | null
+          id?: string | null
+          stripe_publishable_key?: string | null
+          tax_behavior?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       award_badge_by_slug: {
@@ -1645,6 +1796,14 @@ export type Database = {
         | "question_answered"
         | "best_answer_selected"
         | "poll_vote_received"
+      plan_access_level: "full_access" | "preview_access" | "limited_access"
+      plan_billing_interval: "free" | "monthly" | "annual" | "one_time"
+      plan_item_target_type:
+        | "platform"
+        | "space"
+        | "course"
+        | "event"
+        | "resource_placeholder"
       points_source_type:
         | "profile_complete"
         | "space_joined"
@@ -1910,6 +2069,15 @@ export const Constants = {
         "question_answered",
         "best_answer_selected",
         "poll_vote_received",
+      ],
+      plan_access_level: ["full_access", "preview_access", "limited_access"],
+      plan_billing_interval: ["free", "monthly", "annual", "one_time"],
+      plan_item_target_type: [
+        "platform",
+        "space",
+        "course",
+        "event",
+        "resource_placeholder",
       ],
       points_source_type: [
         "profile_complete",

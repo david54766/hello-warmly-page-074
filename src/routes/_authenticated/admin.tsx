@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const { isAdmin, loading } = useAuth();
   const navigate = useNavigate();
-  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0, events: 0, upcomingEvents: 0, rsvps: 0, suspended: 0, newMonth: 0, openReports: 0 });
+  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0, events: 0, upcomingEvents: 0, rsvps: 0, suspended: 0, newMonth: 0, openReports: 0, totalPlans: 0, activePlans: 0, featuredPlan: "—", billingConfigured: false });
   const [recent, setRecent] = useState<Space[]>([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function AdminPage() {
       const weekAgo = new Date(Date.now() - 7 * 86400_000).toISOString();
       const monthAgo = new Date(Date.now() - 30 * 86400_000).toISOString();
       const nowIso = new Date().toISOString();
-      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }, { count: eventsCount }, { count: upcomingCount }, { count: rsvpCount }, { count: suspended }, { count: newMonth }, { count: openReports }] = await Promise.all([
+      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }, { count: eventsCount }, { count: upcomingCount }, { count: rsvpCount }, { count: suspended }, { count: newMonth }, { count: openReports }, { data: plansData }, { data: billingData }] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("created_at", weekAgo),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("last_active_at", weekAgo),
@@ -41,7 +41,10 @@ function AdminPage() {
         supabase.from("profiles").select("*", { count: "exact", head: true }).eq("status", "suspended"),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("created_at", monthAgo),
         supabase.from("reports").select("*", { count: "exact", head: true }).in("status", ["open", "under_review", "pending"]),
+        (supabase as any).from("plans").select("name,active,featured"),
+        (supabase as any).from("billing_settings").select("stripe_publishable_key").limit(1).maybeSingle(),
       ]);
+      const plans = (plansData ?? []) as { name: string; active: boolean; featured: boolean }[];
       setStats({
         total: total ?? 0,
         newWeek: newWeek ?? 0,
@@ -54,6 +57,10 @@ function AdminPage() {
         suspended: suspended ?? 0,
         newMonth: newMonth ?? 0,
         openReports: openReports ?? 0,
+        totalPlans: plans.length,
+        activePlans: plans.filter((p) => p.active).length,
+        featuredPlan: plans.find((p) => p.featured)?.name ?? "—",
+        billingConfigured: !!billingData?.stripe_publishable_key,
       });
       setRecent((recentSpaces ?? []) as Space[]);
     })();
@@ -79,6 +86,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/checklist"><ListChecks className="size-4 mr-2" />Onboarding</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/badges"><Award className="size-4 mr-2" />Badges</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/points"><Trophy className="size-4 mr-2" />Points</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/plans"><CreditCard className="size-4 mr-2" />Plans</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/billing-settings"><CreditCard className="size-4 mr-2" />Billing</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>
@@ -93,6 +102,10 @@ function AdminPage() {
         <AdminStatCard label="Total Events" value={stats.events} icon={<Calendar className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="Upcoming Events" value={stats.upcomingEvents} icon={<CalendarCheck className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="Open Reports" value={stats.openReports} icon={<ShieldAlert className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Total Plans" value={stats.totalPlans} icon={<CreditCard className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Active Plans" value={stats.activePlans} icon={<CreditCard className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Featured Plan" value={stats.featuredPlan} icon={<Star className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Billing Setup" value={stats.billingConfigured ? "Ready" : "Pending"} icon={<CreditCard className="size-4 text-muted-foreground" />} />
       </div>
 
       <section className="space-y-3">
