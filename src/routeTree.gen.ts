@@ -84,6 +84,7 @@ import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/
 import { Route as AuthenticatedAdminBundlesBundleIdRouteImport } from './routes/_authenticated/admin.bundles.$bundleId'
 import { Route as AuthenticatedAdminAutomationsNewRouteImport } from './routes/_authenticated/admin.automations.new'
 import { Route as AuthenticatedAdminAutomationsAutomationIdRouteImport } from './routes/_authenticated/admin.automations.$automationId'
+import { Route as AuthenticatedAdminAnnouncementsNewRouteImport } from './routes/_authenticated/admin.announcements.new'
 import { Route as AuthenticatedAdminSegmentsSegmentIdEditRouteImport } from './routes/_authenticated/admin.segments.$segmentId.edit'
 import { Route as AuthenticatedAdminAutomationsAutomationIdEditRouteImport } from './routes/_authenticated/admin.automations.$automationId.edit'
 
@@ -512,6 +513,12 @@ const AuthenticatedAdminAutomationsAutomationIdRoute =
     path: '/automations/$automationId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAnnouncementsNewRoute =
+  AuthenticatedAdminAnnouncementsNewRouteImport.update({
+    id: '/announcements/new',
+    path: '/announcements/new',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminSegmentsSegmentIdEditRoute =
   AuthenticatedAdminSegmentsSegmentIdEditRouteImport.update({
     id: '/edit',
@@ -581,6 +588,7 @@ export interface FileRoutesByFullPath {
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
@@ -659,6 +667,7 @@ export interface FileRoutesByTo {
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
+  '/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
@@ -739,6 +748,7 @@ export interface FileRoutesById {
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
+  '/_authenticated/admin/announcements/new': typeof AuthenticatedAdminAnnouncementsNewRoute
   '/_authenticated/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/_authenticated/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/_authenticated/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
@@ -819,6 +829,7 @@ export interface FileRouteTypes {
     | '/courses/'
     | '/members/'
     | '/spaces/'
+    | '/admin/announcements/new'
     | '/admin/automations/$automationId'
     | '/admin/automations/new'
     | '/admin/bundles/$bundleId'
@@ -897,6 +908,7 @@ export interface FileRouteTypes {
     | '/courses'
     | '/members'
     | '/spaces'
+    | '/admin/announcements/new'
     | '/admin/automations/$automationId'
     | '/admin/automations/new'
     | '/admin/bundles/$bundleId'
@@ -976,6 +988,7 @@ export interface FileRouteTypes {
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
     | '/_authenticated/spaces/'
+    | '/_authenticated/admin/announcements/new'
     | '/_authenticated/admin/automations/$automationId'
     | '/_authenticated/admin/automations/new'
     | '/_authenticated/admin/bundles/$bundleId'
@@ -1540,6 +1553,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAutomationsAutomationIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/announcements/new': {
+      id: '/_authenticated/admin/announcements/new'
+      path: '/announcements/new'
+      fullPath: '/admin/announcements/new'
+      preLoaderRoute: typeof AuthenticatedAdminAnnouncementsNewRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/segments/$segmentId/edit': {
       id: '/_authenticated/admin/segments/$segmentId/edit'
       path: '/edit'
@@ -1605,6 +1625,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminTransactionsRoute: typeof AuthenticatedAdminTransactionsRoute
   AuthenticatedAdminTrialsRoute: typeof AuthenticatedAdminTrialsRoute
+  AuthenticatedAdminAnnouncementsNewRoute: typeof AuthenticatedAdminAnnouncementsNewRoute
   AuthenticatedAdminAutomationsAutomationIdRoute: typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   AuthenticatedAdminAutomationsNewRoute: typeof AuthenticatedAdminAutomationsNewRoute
   AuthenticatedAdminBundlesBundleIdRoute: typeof AuthenticatedAdminBundlesBundleIdRoute
@@ -1645,6 +1666,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminTransactionsRoute: AuthenticatedAdminTransactionsRoute,
   AuthenticatedAdminTrialsRoute: AuthenticatedAdminTrialsRoute,
+  AuthenticatedAdminAnnouncementsNewRoute:
+    AuthenticatedAdminAnnouncementsNewRoute,
   AuthenticatedAdminAutomationsAutomationIdRoute:
     AuthenticatedAdminAutomationsAutomationIdRouteWithChildren,
   AuthenticatedAdminAutomationsNewRoute: AuthenticatedAdminAutomationsNewRoute,
