@@ -119,6 +119,59 @@ export type Database = {
         }
         Relationships: []
       }
+      checkout_sessions: {
+        Row: {
+          checkout_url: string | null
+          created_at: string
+          id: string
+          plan_id: string | null
+          status: Database["public"]["Enums"]["checkout_session_status"]
+          stripe_session_id: string | null
+          target_id: string | null
+          target_type:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checkout_url?: string | null
+          created_at?: string
+          id?: string
+          plan_id?: string | null
+          status?: Database["public"]["Enums"]["checkout_session_status"]
+          stripe_session_id?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checkout_url?: string | null
+          created_at?: string
+          id?: string
+          plan_id?: string | null
+          status?: Database["public"]["Enums"]["checkout_session_status"]
+          stripe_session_id?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checkout_sessions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collections: {
         Row: {
           created_at: string
@@ -516,6 +569,56 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          amount_due: number
+          amount_paid: number
+          created_at: string
+          currency: string
+          hosted_invoice_url: string | null
+          id: string
+          invoice_pdf_url: string | null
+          status: Database["public"]["Enums"]["invoice_status"]
+          stripe_invoice_id: string | null
+          subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_due?: number
+          amount_paid?: number
+          created_at?: string
+          currency?: string
+          hosted_invoice_url?: string | null
+          id?: string
+          invoice_pdf_url?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          stripe_invoice_id?: string | null
+          subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_due?: number
+          amount_paid?: number
+          created_at?: string
+          currency?: string
+          hosted_invoice_url?: string | null
+          id?: string
+          invoice_pdf_url?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          stripe_invoice_id?: string | null
+          subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leaderboard_snapshots: {
         Row: {
           created_at: string
@@ -805,6 +908,39 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      payment_webhook_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          payload_json: Json
+          processed: boolean
+          processed_at: string | null
+          processing_error: string | null
+          stripe_event_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          payload_json?: Json
+          processed?: boolean
+          processed_at?: string | null
+          processing_error?: string | null
+          stripe_event_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload_json?: Json
+          processed?: boolean
+          processed_at?: string | null
+          processing_error?: string | null
+          stripe_event_id?: string | null
         }
         Relationships: []
       }
@@ -1215,6 +1351,65 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          plan_id: string | null
+          purchase_type: Database["public"]["Enums"]["purchase_kind"]
+          status: Database["public"]["Enums"]["purchase_status"]
+          stripe_payment_intent_id: string | null
+          target_id: string | null
+          target_type:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          plan_id?: string | null
+          purchase_type?: Database["public"]["Enums"]["purchase_kind"]
+          status?: Database["public"]["Enums"]["purchase_status"]
+          stripe_payment_intent_id?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          plan_id?: string | null
+          purchase_type?: Database["public"]["Enums"]["purchase_kind"]
+          status?: Database["public"]["Enums"]["purchase_status"]
+          stripe_payment_intent_id?: string | null
+          target_id?: string | null
+          target_type?:
+            | Database["public"]["Enums"]["plan_item_target_type"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       question_details: {
         Row: {
           best_answer_comment_id: string | null
@@ -1425,6 +1620,59 @@ export type Database = {
             columns: ["collection_id"]
             isOneToOne: false
             referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan_id: string | null
+          status: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          trial_end: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
             referencedColumns: ["id"]
           },
         ]
@@ -1749,6 +1997,12 @@ export type Database = {
         | "lesson"
         | "settings"
         | "member"
+      checkout_session_status:
+        | "created"
+        | "pending"
+        | "completed"
+        | "expired"
+        | "failed"
       comment_status: "active" | "hidden" | "deleted"
       conversation_type: "direct" | "group" | "space"
       course_access: "free" | "preview" | "paid_placeholder"
@@ -1763,6 +2017,7 @@ export type Database = {
         | "course_session"
         | "livestream_placeholder"
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
+      invoice_status: "draft" | "open" | "paid" | "uncollectible" | "void"
       leaderboard_period: "all_time" | "month" | "week"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
       lesson_visibility: "visible" | "preview" | "locked" | "hidden"
@@ -1796,6 +2051,11 @@ export type Database = {
         | "question_answered"
         | "best_answer_selected"
         | "poll_vote_received"
+        | "checkout_completed"
+        | "payment_failed"
+        | "subscription_active"
+        | "subscription_canceled"
+        | "invoice_paid"
       plan_access_level: "full_access" | "preview_access" | "limited_access"
       plan_billing_interval: "free" | "monthly" | "annual" | "one_time"
       plan_item_target_type:
@@ -1830,6 +2090,8 @@ export type Database = {
         | "event_announcement"
         | "poll"
       post_visibility: "public" | "space_members" | "admins_only" | "hidden"
+      purchase_kind: "subscription" | "one_time"
+      purchase_status: "pending" | "paid" | "failed" | "refunded" | "canceled"
       reaction_type: "like" | "love" | "celebrate" | "helpful"
       report_status:
         | "pending"
@@ -1857,6 +2119,15 @@ export type Database = {
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
       space_privacy: "public" | "members_only" | "private" | "hidden"
+      subscription_status:
+        | "active"
+        | "trialing"
+        | "past_due"
+        | "canceled"
+        | "incomplete"
+        | "incomplete_expired"
+        | "unpaid"
+        | "paused"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2020,6 +2291,13 @@ export const Constants = {
         "settings",
         "member",
       ],
+      checkout_session_status: [
+        "created",
+        "pending",
+        "completed",
+        "expired",
+        "failed",
+      ],
       comment_status: ["active", "hidden", "deleted"],
       conversation_type: ["direct", "group", "space"],
       course_access: ["free", "preview", "paid_placeholder"],
@@ -2035,6 +2313,7 @@ export const Constants = {
         "livestream_placeholder",
       ],
       event_visibility: ["public", "members_only", "space_members", "hidden"],
+      invoice_status: ["draft", "open", "paid", "uncollectible", "void"],
       leaderboard_period: ["all_time", "month", "week"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
       lesson_visibility: ["visible", "preview", "locked", "hidden"],
@@ -2069,6 +2348,11 @@ export const Constants = {
         "question_answered",
         "best_answer_selected",
         "poll_vote_received",
+        "checkout_completed",
+        "payment_failed",
+        "subscription_active",
+        "subscription_canceled",
+        "invoice_paid",
       ],
       plan_access_level: ["full_access", "preview_access", "limited_access"],
       plan_billing_interval: ["free", "monthly", "annual", "one_time"],
@@ -2107,6 +2391,8 @@ export const Constants = {
         "poll",
       ],
       post_visibility: ["public", "space_members", "admins_only", "hidden"],
+      purchase_kind: ["subscription", "one_time"],
+      purchase_status: ["pending", "paid", "failed", "refunded", "canceled"],
       reaction_type: ["like", "love", "celebrate", "helpful"],
       report_status: [
         "pending",
@@ -2137,6 +2423,16 @@ export const Constants = {
       space_member_role: ["space_host", "space_moderator", "member"],
       space_member_status: ["active", "pending", "banned"],
       space_privacy: ["public", "members_only", "private", "hidden"],
+      subscription_status: [
+        "active",
+        "trialing",
+        "past_due",
+        "canceled",
+        "incomplete",
+        "incomplete_expired",
+        "unpaid",
+        "paused",
+      ],
     },
   },
 } as const
