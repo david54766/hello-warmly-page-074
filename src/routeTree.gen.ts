@@ -56,6 +56,7 @@ import { Route as AuthenticatedAdminMembersIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminEventsIndexRouteImport } from './routes/_authenticated/admin.events.index'
 import { Route as AuthenticatedAdminCoursesIndexRouteImport } from './routes/_authenticated/admin.courses.index'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
+import { Route as AuthenticatedAdminPlansPlanIdRouteImport } from './routes/_authenticated/admin.plans.$planId'
 import { Route as AuthenticatedAdminMembersUserIdRouteImport } from './routes/_authenticated/admin.members.$userId'
 import { Route as AuthenticatedAdminEventsEventIdRouteImport } from './routes/_authenticated/admin.events.$eventId'
 import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/_authenticated/admin.courses.$courseId'
@@ -323,6 +324,12 @@ const AuthenticatedAdminSpacesSpaceIdRoute =
     path: '/spaces/$spaceId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminPlansPlanIdRoute =
+  AuthenticatedAdminPlansPlanIdRouteImport.update({
+    id: '/plans/$planId',
+    path: '/plans/$planId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminMembersUserIdRoute =
   AuthenticatedAdminMembersUserIdRouteImport.update({
     id: '/members/$userId',
@@ -386,6 +393,7 @@ export interface FileRoutesByFullPath {
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
@@ -437,6 +445,7 @@ export interface FileRoutesByTo {
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/admin/courses': typeof AuthenticatedAdminCoursesIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsIndexRoute
@@ -490,6 +499,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
   '/_authenticated/admin/events/$eventId': typeof AuthenticatedAdminEventsEventIdRoute
   '/_authenticated/admin/members/$userId': typeof AuthenticatedAdminMembersUserIdRoute
+  '/_authenticated/admin/plans/$planId': typeof AuthenticatedAdminPlansPlanIdRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
   '/_authenticated/admin/courses/': typeof AuthenticatedAdminCoursesIndexRoute
   '/_authenticated/admin/events/': typeof AuthenticatedAdminEventsIndexRoute
@@ -543,6 +553,7 @@ export interface FileRouteTypes {
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
+    | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses/'
     | '/admin/events/'
@@ -594,6 +605,7 @@ export interface FileRouteTypes {
     | '/admin/courses/$courseId'
     | '/admin/events/$eventId'
     | '/admin/members/$userId'
+    | '/admin/plans/$planId'
     | '/admin/spaces/$spaceId'
     | '/admin/courses'
     | '/admin/events'
@@ -646,6 +658,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/courses/$courseId'
     | '/_authenticated/admin/events/$eventId'
     | '/_authenticated/admin/members/$userId'
+    | '/_authenticated/admin/plans/$planId'
     | '/_authenticated/admin/spaces/$spaceId'
     | '/_authenticated/admin/courses/'
     | '/_authenticated/admin/events/'
@@ -995,6 +1008,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSpacesSpaceIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/plans/$planId': {
+      id: '/_authenticated/admin/plans/$planId'
+      path: '/plans/$planId'
+      fullPath: '/admin/plans/$planId'
+      preLoaderRoute: typeof AuthenticatedAdminPlansPlanIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/members/$userId': {
       id: '/_authenticated/admin/members/$userId'
       path: '/members/$userId'
@@ -1031,6 +1051,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
   AuthenticatedAdminEventsEventIdRoute: typeof AuthenticatedAdminEventsEventIdRoute
   AuthenticatedAdminMembersUserIdRoute: typeof AuthenticatedAdminMembersUserIdRoute
+  AuthenticatedAdminPlansPlanIdRoute: typeof AuthenticatedAdminPlansPlanIdRoute
   AuthenticatedAdminSpacesSpaceIdRoute: typeof AuthenticatedAdminSpacesSpaceIdRoute
   AuthenticatedAdminCoursesIndexRoute: typeof AuthenticatedAdminCoursesIndexRoute
   AuthenticatedAdminEventsIndexRoute: typeof AuthenticatedAdminEventsIndexRoute
@@ -1052,6 +1073,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
     AuthenticatedAdminCoursesCourseIdRoute,
   AuthenticatedAdminEventsEventIdRoute: AuthenticatedAdminEventsEventIdRoute,
   AuthenticatedAdminMembersUserIdRoute: AuthenticatedAdminMembersUserIdRoute,
+  AuthenticatedAdminPlansPlanIdRoute: AuthenticatedAdminPlansPlanIdRoute,
   AuthenticatedAdminSpacesSpaceIdRoute: AuthenticatedAdminSpacesSpaceIdRoute,
   AuthenticatedAdminCoursesIndexRoute: AuthenticatedAdminCoursesIndexRoute,
   AuthenticatedAdminEventsIndexRoute: AuthenticatedAdminEventsIndexRoute,
