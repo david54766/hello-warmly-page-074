@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import type { Collection, Space } from "@/lib/spaces";
-import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight, Bell, Trophy, Award } from "lucide-react";
+import { Users2, MessageSquare, Calendar, UserCircle2, Bookmark, ArrowRight, Bell, Trophy, Award, CreditCard } from "lucide-react";
 import { fetchMembers, type MemberSummary } from "@/lib/members";
 import { MemberCard } from "@/components/members/MemberCard";
 import { ContinueLearningCard, SuggestedCoursesCard } from "@/components/courses/ContinueLearningCard";
@@ -189,6 +189,14 @@ function Dashboard() {
           </div>
         </DashboardCard>
         <SuggestedMembersCard />
+        <DashboardCard title="Membership" icon={<CreditCard className="size-4" />}>
+          <p className="text-sm"><span className="text-muted-foreground">Current plan:</span> <span className="font-medium">Free Member</span></p>
+          <p className="text-xs text-muted-foreground mt-1">Upgrade Coming Soon — full checkout activates in a later phase.</p>
+          <div className="mt-3 flex gap-2">
+            <Button size="sm" variant="outline" asChild><Link to="/plans">View plans <ArrowRight className="size-4 ml-1" /></Link></Button>
+            <Button size="sm" variant="ghost" asChild><Link to="/pricing">Pricing</Link></Button>
+          </div>
+        </DashboardCard>
         <DashboardCard title="Saved Content" icon={<Bookmark className="size-4" />}>
           <p className="text-sm text-muted-foreground">Quickly return to posts, lessons, events, and resources you've saved.</p>
           <div className="mt-3">
