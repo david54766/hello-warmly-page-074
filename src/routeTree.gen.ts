@@ -79,6 +79,7 @@ import { Route as AuthenticatedAdminCoursesCourseIdRouteImport } from './routes/
 import { Route as AuthenticatedAdminBundlesBundleIdRouteImport } from './routes/_authenticated/admin.bundles.$bundleId'
 import { Route as AuthenticatedAdminAutomationsNewRouteImport } from './routes/_authenticated/admin.automations.new'
 import { Route as AuthenticatedAdminAutomationsAutomationIdRouteImport } from './routes/_authenticated/admin.automations.$automationId'
+import { Route as AuthenticatedAdminAutomationsAutomationIdEditRouteImport } from './routes/_authenticated/admin.automations.$automationId.edit'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -475,6 +476,12 @@ const AuthenticatedAdminAutomationsAutomationIdRoute =
     path: '/automations/$automationId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAutomationsAutomationIdEditRoute =
+  AuthenticatedAdminAutomationsAutomationIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AuthenticatedAdminAutomationsAutomationIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -531,7 +538,7 @@ export interface FileRoutesByFullPath {
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
-  '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRoute
+  '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
@@ -546,6 +553,7 @@ export interface FileRoutesByFullPath {
   '/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
   '/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
+  '/admin/automations/$automationId/edit': typeof AuthenticatedAdminAutomationsAutomationIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -602,7 +610,7 @@ export interface FileRoutesByTo {
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
-  '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRoute
+  '/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
@@ -617,6 +625,7 @@ export interface FileRoutesByTo {
   '/admin/members': typeof AuthenticatedAdminMembersIndexRoute
   '/admin/plans': typeof AuthenticatedAdminPlansIndexRoute
   '/admin/spaces': typeof AuthenticatedAdminSpacesIndexRoute
+  '/admin/automations/$automationId/edit': typeof AuthenticatedAdminAutomationsAutomationIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -675,7 +684,7 @@ export interface FileRoutesById {
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
-  '/_authenticated/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRoute
+  '/_authenticated/admin/automations/$automationId': typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   '/_authenticated/admin/automations/new': typeof AuthenticatedAdminAutomationsNewRoute
   '/_authenticated/admin/bundles/$bundleId': typeof AuthenticatedAdminBundlesBundleIdRoute
   '/_authenticated/admin/courses/$courseId': typeof AuthenticatedAdminCoursesCourseIdRoute
@@ -690,6 +699,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/members/': typeof AuthenticatedAdminMembersIndexRoute
   '/_authenticated/admin/plans/': typeof AuthenticatedAdminPlansIndexRoute
   '/_authenticated/admin/spaces/': typeof AuthenticatedAdminSpacesIndexRoute
+  '/_authenticated/admin/automations/$automationId/edit': typeof AuthenticatedAdminAutomationsAutomationIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -763,6 +773,7 @@ export interface FileRouteTypes {
     | '/admin/members/'
     | '/admin/plans/'
     | '/admin/spaces/'
+    | '/admin/automations/$automationId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -834,6 +845,7 @@ export interface FileRouteTypes {
     | '/admin/members'
     | '/admin/plans'
     | '/admin/spaces'
+    | '/admin/automations/$automationId/edit'
   id:
     | '__root__'
     | '/'
@@ -906,6 +918,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/members/'
     | '/_authenticated/admin/plans/'
     | '/_authenticated/admin/spaces/'
+    | '/_authenticated/admin/automations/$automationId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1414,8 +1427,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAutomationsAutomationIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/automations/$automationId/edit': {
+      id: '/_authenticated/admin/automations/$automationId/edit'
+      path: '/edit'
+      fullPath: '/admin/automations/$automationId/edit'
+      preLoaderRoute: typeof AuthenticatedAdminAutomationsAutomationIdEditRouteImport
+      parentRoute: typeof AuthenticatedAdminAutomationsAutomationIdRoute
+    }
   }
 }
+
+interface AuthenticatedAdminAutomationsAutomationIdRouteChildren {
+  AuthenticatedAdminAutomationsAutomationIdEditRoute: typeof AuthenticatedAdminAutomationsAutomationIdEditRoute
+}
+
+const AuthenticatedAdminAutomationsAutomationIdRouteChildren: AuthenticatedAdminAutomationsAutomationIdRouteChildren =
+  {
+    AuthenticatedAdminAutomationsAutomationIdEditRoute:
+      AuthenticatedAdminAutomationsAutomationIdEditRoute,
+  }
+
+const AuthenticatedAdminAutomationsAutomationIdRouteWithChildren =
+  AuthenticatedAdminAutomationsAutomationIdRoute._addFileChildren(
+    AuthenticatedAdminAutomationsAutomationIdRouteChildren,
+  )
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAccessRoute: typeof AuthenticatedAdminAccessRoute
@@ -1434,7 +1469,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminTransactionsRoute: typeof AuthenticatedAdminTransactionsRoute
   AuthenticatedAdminTrialsRoute: typeof AuthenticatedAdminTrialsRoute
-  AuthenticatedAdminAutomationsAutomationIdRoute: typeof AuthenticatedAdminAutomationsAutomationIdRoute
+  AuthenticatedAdminAutomationsAutomationIdRoute: typeof AuthenticatedAdminAutomationsAutomationIdRouteWithChildren
   AuthenticatedAdminAutomationsNewRoute: typeof AuthenticatedAdminAutomationsNewRoute
   AuthenticatedAdminBundlesBundleIdRoute: typeof AuthenticatedAdminBundlesBundleIdRoute
   AuthenticatedAdminCoursesCourseIdRoute: typeof AuthenticatedAdminCoursesCourseIdRoute
@@ -1470,7 +1505,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminTransactionsRoute: AuthenticatedAdminTransactionsRoute,
   AuthenticatedAdminTrialsRoute: AuthenticatedAdminTrialsRoute,
   AuthenticatedAdminAutomationsAutomationIdRoute:
-    AuthenticatedAdminAutomationsAutomationIdRoute,
+    AuthenticatedAdminAutomationsAutomationIdRouteWithChildren,
   AuthenticatedAdminAutomationsNewRoute: AuthenticatedAdminAutomationsNewRoute,
   AuthenticatedAdminBundlesBundleIdRoute:
     AuthenticatedAdminBundlesBundleIdRoute,
