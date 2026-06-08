@@ -16,9 +16,10 @@ interface Props {
   highlight?: boolean;
   footer?: ReactNode;
   showInactive?: boolean;
+  ctaSlot?: ReactNode;
 }
 
-export function PlanCard({ plan, features, ctaLabel, ctaTo, onCta, highlight, footer, showInactive }: Props) {
+export function PlanCard({ plan, features, ctaLabel, ctaTo, onCta, highlight, footer, showInactive, ctaSlot }: Props) {
   const isFree = plan.billing_interval === "free" || Number(plan.price) === 0;
   const featured = highlight ?? plan.featured;
 
@@ -64,7 +65,9 @@ export function PlanCard({ plan, features, ctaLabel, ctaTo, onCta, highlight, fo
         )}
 
         <div className="mt-auto space-y-2">
-          {ctaTo ? (
+          {ctaSlot ? (
+            ctaSlot
+          ) : ctaTo ? (
             <Button asChild variant={featured ? "default" : "outline"} className="w-full">
               <Link to={ctaTo}>{ctaLabel ?? "View Plan"}</Link>
             </Button>

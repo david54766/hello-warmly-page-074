@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PlanCard } from "@/components/plans/PlanCard";
+import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActivePlans, fetchAllPlanItems, TARGET_TYPE_LABELS, type Plan, type PlanItem } from "@/lib/plans";
 import { ArrowRight } from "lucide-react";
@@ -80,8 +81,11 @@ function PricingPage() {
                   key={plan.id}
                   plan={plan}
                   features={featuresFor(plan)}
-                  ctaLabel={isFree ? "Start Free" : "Upgrade Coming Soon"}
                   ctaTo={isFree ? "/auth" : undefined}
+                  ctaLabel={isFree ? "Start Free" : undefined}
+                  ctaSlot={isFree ? undefined : (
+                    <CheckoutButton plan={plan} className="w-full" variant={plan.featured ? "default" : "outline"} />
+                  )}
                 />
               );
             })}

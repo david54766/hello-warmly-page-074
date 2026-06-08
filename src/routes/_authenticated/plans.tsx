@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PlanCard } from "@/components/plans/PlanCard";
+import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { AccessSummary } from "@/components/plans/AccessSummary";
 import { fetchActivePlans, fetchAllPlanItems, TARGET_TYPE_LABELS, type Plan, type PlanItem } from "@/lib/plans";
 import { CreditCard } from "lucide-react";
@@ -66,7 +67,10 @@ function PlansPage() {
                 <PlanCard
                   plan={plan}
                   features={features.length > 0 ? features : ["Included community access"]}
-                  ctaLabel={isFree ? "Current Free Plan" : "Upgrade Coming Soon"}
+                  ctaLabel={isFree ? "Current Free Plan" : undefined}
+                  ctaSlot={isFree ? undefined : (
+                    <CheckoutButton plan={plan} className="w-full" variant={plan.featured ? "default" : "outline"} />
+                  )}
                 />
                 {planItems.length > 0 && (
                   <Card className="rounded-2xl">
