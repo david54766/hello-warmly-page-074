@@ -153,7 +153,13 @@ export async function startCheckout(plan: Plan, userId: string): Promise<{
   configured: boolean;
   checkoutSessionId: string;
   redirectUrl: string | null;
-}> {
+}> ;
+export async function startCheckout(plan: Plan, userId: string, opts: { couponId?: string | null; discountAmount?: number }): Promise<{
+  configured: boolean;
+  checkoutSessionId: string;
+  redirectUrl: string | null;
+}>;
+export async function startCheckout(plan: Plan, userId: string, opts?: { couponId?: string | null; discountAmount?: number }) {
   const configured = await isStripeConfigured();
   const { data, error } = await db.from("checkout_sessions").insert({
     user_id: userId,
@@ -161,6 +167,16 @@ export async function startCheckout(plan: Plan, userId: string): Promise<{
     status: configured ? "pending" : "created",
   }).select("id").single();
   if (error) throw error;
+  if (opts?.couponId) {
+    try {
+      await db.from("coupon_redemptions").insert({
+        coupon_id: opts.couponId,
+        user_id: userId,
+        checkout_session_id: data.id,
+        amount_discounted: opts.discountAmount ?? 0,
+      });
+    } catch { /* non-blocking — coupon log */ }
+  }
   return {
     configured,
     checkoutSessionId: data.id,

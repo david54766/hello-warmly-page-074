@@ -454,6 +454,98 @@ export type Database = {
           },
         ]
       }
+      coupon_redemptions: {
+        Row: {
+          amount_discounted: number
+          checkout_session_id: string | null
+          coupon_id: string
+          id: string
+          purchase_id: string | null
+          redeemed_at: string
+          subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_discounted?: number
+          checkout_session_id?: string | null
+          coupon_id: string
+          id?: string
+          purchase_id?: string | null
+          redeemed_at?: string
+          subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_discounted?: number
+          checkout_session_id?: string | null
+          coupon_id?: string
+          id?: string
+          purchase_id?: string | null
+          redeemed_at?: string
+          subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_redemptions_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          active: boolean
+          applies_to_id: string | null
+          applies_to_type: Database["public"]["Enums"]["coupon_applies_to_type"]
+          code: string
+          created_at: string
+          description: string | null
+          discount_type: Database["public"]["Enums"]["coupon_discount_type"]
+          discount_value: number
+          expires_at: string | null
+          id: string
+          max_uses: number | null
+          starts_at: string | null
+          times_used: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          applies_to_id?: string | null
+          applies_to_type?: Database["public"]["Enums"]["coupon_applies_to_type"]
+          code: string
+          created_at?: string
+          description?: string | null
+          discount_type: Database["public"]["Enums"]["coupon_discount_type"]
+          discount_value: number
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          starts_at?: string | null
+          times_used?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          applies_to_id?: string | null
+          applies_to_type?: Database["public"]["Enums"]["coupon_applies_to_type"]
+          code?: string
+          created_at?: string
+          description?: string | null
+          discount_type?: Database["public"]["Enums"]["coupon_discount_type"]
+          discount_value?: number
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          starts_at?: string | null
+          times_used?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       course_sections: {
         Row: {
           course_id: string
@@ -1809,6 +1901,53 @@ export type Database = {
           },
         ]
       }
+      trial_records: {
+        Row: {
+          canceled_at: string | null
+          converted_at: string | null
+          created_at: string
+          ends_at: string
+          id: string
+          plan_id: string | null
+          starts_at: string
+          status: Database["public"]["Enums"]["trial_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          canceled_at?: string | null
+          converted_at?: string | null
+          created_at?: string
+          ends_at: string
+          id?: string
+          plan_id?: string | null
+          starts_at?: string
+          status?: Database["public"]["Enums"]["trial_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          canceled_at?: string | null
+          converted_at?: string | null
+          created_at?: string
+          ends_at?: string
+          id?: string
+          plan_id?: string | null
+          starts_at?: string
+          status?: Database["public"]["Enums"]["trial_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trial_records_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_badges: {
         Row: {
           award_reason: string | null
@@ -2091,6 +2230,10 @@ export type Database = {
         Args: { _conversation_id: string; _user_id: string }
         Returns: boolean
       }
+      is_grant_active: {
+        Args: { g: Database["public"]["Tables"]["access_grants"]["Row"] }
+        Returns: boolean
+      }
       is_space_host: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
@@ -2102,6 +2245,15 @@ export type Database = {
       notif_pref: {
         Args: { _flag: string; _user_id: string }
         Returns: boolean
+      }
+      validate_coupon: {
+        Args: {
+          _amount?: number
+          _applies_to_id?: string
+          _applies_to_type?: Database["public"]["Enums"]["coupon_applies_to_type"]
+          _code: string
+        }
+        Returns: Json
       }
     }
     Enums: {
@@ -2152,6 +2304,14 @@ export type Database = {
         | "failed"
       comment_status: "active" | "hidden" | "deleted"
       conversation_type: "direct" | "group" | "space"
+      coupon_applies_to_type:
+        | "all"
+        | "plan"
+        | "bundle"
+        | "course"
+        | "event"
+        | "space"
+      coupon_discount_type: "percent" | "fixed_amount"
       course_access: "free" | "preview" | "paid_placeholder" | "paid"
       course_visibility: "public" | "members_only" | "space_members" | "hidden"
       event_access: "free" | "preview" | "paid_placeholder" | "paid"
@@ -2203,6 +2363,12 @@ export type Database = {
         | "subscription_active"
         | "subscription_canceled"
         | "invoice_paid"
+        | "trial_started"
+        | "trial_ending_soon"
+        | "trial_expired"
+        | "coupon_applied"
+        | "access_expiring"
+        | "access_expired"
       plan_access_level: "full_access" | "preview_access" | "limited_access"
       plan_billing_interval: "free" | "monthly" | "annual" | "one_time"
       plan_item_target_type:
@@ -2275,6 +2441,7 @@ export type Database = {
         | "incomplete_expired"
         | "unpaid"
         | "paused"
+      trial_status: "active" | "converted" | "expired" | "canceled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2455,6 +2622,15 @@ export const Constants = {
       ],
       comment_status: ["active", "hidden", "deleted"],
       conversation_type: ["direct", "group", "space"],
+      coupon_applies_to_type: [
+        "all",
+        "plan",
+        "bundle",
+        "course",
+        "event",
+        "space",
+      ],
+      coupon_discount_type: ["percent", "fixed_amount"],
       course_access: ["free", "preview", "paid_placeholder", "paid"],
       course_visibility: ["public", "members_only", "space_members", "hidden"],
       event_access: ["free", "preview", "paid_placeholder", "paid"],
@@ -2508,6 +2684,12 @@ export const Constants = {
         "subscription_active",
         "subscription_canceled",
         "invoice_paid",
+        "trial_started",
+        "trial_ending_soon",
+        "trial_expired",
+        "coupon_applied",
+        "access_expiring",
+        "access_expired",
       ],
       plan_access_level: ["full_access", "preview_access", "limited_access"],
       plan_billing_interval: ["free", "monthly", "annual", "one_time"],
@@ -2588,6 +2770,7 @@ export const Constants = {
         "unpaid",
         "paused",
       ],
+      trial_status: ["active", "converted", "expired", "canceled"],
     },
   },
 } as const
