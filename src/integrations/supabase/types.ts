@@ -107,6 +107,185 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_conversations: {
+        Row: {
+          context_id: string | null
+          context_type: string
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_generated_content: {
+        Row: {
+          body: string
+          content_type: string
+          created_at: string
+          id: string
+          metadata_json: Json
+          status: string
+          target_id: string | null
+          target_type: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          metadata_json?: Json
+          status?: string
+          target_id?: string | null
+          target_type?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          metadata_json?: Json
+          status?: string
+          target_id?: string | null
+          target_type?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata_json: Json
+          role: string
+        }
+        Insert: {
+          content?: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata_json?: Json
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata_json?: Json
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_settings: {
+        Row: {
+          ai_enabled: boolean
+          api_key_placeholder: string | null
+          created_at: string
+          id: string
+          max_tokens: number
+          mock_mode_enabled: boolean
+          model: string
+          provider: string
+          temperature: number
+          updated_at: string
+        }
+        Insert: {
+          ai_enabled?: boolean
+          api_key_placeholder?: string | null
+          created_at?: string
+          id?: string
+          max_tokens?: number
+          mock_mode_enabled?: boolean
+          model?: string
+          provider?: string
+          temperature?: number
+          updated_at?: string
+        }
+        Update: {
+          ai_enabled?: boolean
+          api_key_placeholder?: string | null
+          created_at?: string
+          id?: string
+          max_tokens?: number
+          mock_mode_enabled?: boolean
+          model?: string
+          provider?: string
+          temperature?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_usage_events: {
+        Row: {
+          completion_tokens_placeholder: number
+          created_at: string
+          feature_type: string
+          id: string
+          prompt_tokens_placeholder: number
+          status: string
+          total_tokens_placeholder: number
+          user_id: string | null
+        }
+        Insert: {
+          completion_tokens_placeholder?: number
+          created_at?: string
+          feature_type: string
+          id?: string
+          prompt_tokens_placeholder?: number
+          status?: string
+          total_tokens_placeholder?: number
+          user_id?: string | null
+        }
+        Update: {
+          completion_tokens_placeholder?: number
+          created_at?: string
+          feature_type?: string
+          id?: string
+          prompt_tokens_placeholder?: number
+          status?: string
+          total_tokens_placeholder?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
