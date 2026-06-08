@@ -137,6 +137,30 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_snapshots: {
+        Row: {
+          created_at: string
+          data_json: Json
+          id: string
+          period: string
+          snapshot_type: string
+        }
+        Insert: {
+          created_at?: string
+          data_json?: Json
+          id?: string
+          period: string
+          snapshot_type: string
+        }
+        Update: {
+          created_at?: string
+          data_json?: Json
+          id?: string
+          period?: string
+          snapshot_type?: string
+        }
+        Relationships: []
+      }
       announcement_views: {
         Row: {
           announcement_id: string
@@ -168,6 +192,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      audit_logs: {
+        Row: {
+          action_type: string
+          actor_id: string | null
+          created_at: string
+          details_json: Json
+          id: string
+          ip_address_placeholder: string | null
+          target_id: string | null
+          target_type: Database["public"]["Enums"]["audit_target_type"] | null
+          user_agent_placeholder: string | null
+        }
+        Insert: {
+          action_type: string
+          actor_id?: string | null
+          created_at?: string
+          details_json?: Json
+          id?: string
+          ip_address_placeholder?: string | null
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["audit_target_type"] | null
+          user_agent_placeholder?: string | null
+        }
+        Update: {
+          action_type?: string
+          actor_id?: string | null
+          created_at?: string
+          details_json?: Json
+          id?: string
+          ip_address_placeholder?: string | null
+          target_id?: string | null
+          target_type?: Database["public"]["Enums"]["audit_target_type"] | null
+          user_agent_placeholder?: string | null
+        }
+        Relationships: []
       }
       automation_logs: {
         Row: {
@@ -584,6 +644,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_flags: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          flag_type: Database["public"]["Enums"]["content_flag_type"]
+          id: string
+          notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: Database["public"]["Enums"]["content_flag_severity"]
+          status: Database["public"]["Enums"]["content_flag_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["content_flag_target"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          flag_type?: Database["public"]["Enums"]["content_flag_type"]
+          id?: string
+          notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: Database["public"]["Enums"]["content_flag_severity"]
+          status?: Database["public"]["Enums"]["content_flag_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["content_flag_target"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          flag_type?: Database["public"]["Enums"]["content_flag_type"]
+          id?: string
+          notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: Database["public"]["Enums"]["content_flag_severity"]
+          status?: Database["public"]["Enums"]["content_flag_status"]
+          target_id?: string
+          target_type?: Database["public"]["Enums"]["content_flag_target"]
+          updated_at?: string
+        }
+        Relationships: []
       }
       conversation_members: {
         Row: {
@@ -1273,6 +1378,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      moderator_notes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          note: string
+          target_id: string | null
+          target_type: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note: string
+          target_id?: string | null
+          target_type?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string
+          target_id?: string | null
+          target_type?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       notification_preferences: {
         Row: {
@@ -2348,6 +2486,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_warnings: {
+        Row: {
+          acknowledged_at: string | null
+          created_at: string
+          id: string
+          issued_at: string
+          issued_by: string | null
+          reason: string
+          status: Database["public"]["Enums"]["user_warning_status"]
+          updated_at: string
+          user_id: string
+          warning_type: Database["public"]["Enums"]["user_warning_type"]
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          created_at?: string
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          reason: string
+          status?: Database["public"]["Enums"]["user_warning_status"]
+          updated_at?: string
+          user_id: string
+          warning_type?: Database["public"]["Enums"]["user_warning_type"]
+        }
+        Update: {
+          acknowledged_at?: string | null
+          created_at?: string
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          reason?: string
+          status?: Database["public"]["Enums"]["user_warning_status"]
+          updated_at?: string
+          user_id?: string
+          warning_type?: Database["public"]["Enums"]["user_warning_type"]
+        }
+        Relationships: []
+      }
       welcome_checklist_items: {
         Row: {
           action_type: Database["public"]["Enums"]["checklist_action_type"]
@@ -2427,6 +2604,54 @@ export type Database = {
       }
     }
     Views: {
+      at_risk_members: {
+        Row: {
+          active_warnings: number | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          inactive_14d: boolean | null
+          last_active_at: string | null
+          onboarding_completed: boolean | null
+          onboarding_incomplete: boolean | null
+          past_due: boolean | null
+          post_count: number | null
+          status: string | null
+          trial_ending_soon: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          active_warnings?: never
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          inactive_14d?: never
+          last_active_at?: string | null
+          onboarding_completed?: boolean | null
+          onboarding_incomplete?: never
+          past_due?: never
+          post_count?: never
+          status?: string | null
+          trial_ending_soon?: never
+          user_id?: string | null
+        }
+        Update: {
+          active_warnings?: never
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          inactive_14d?: never
+          last_active_at?: string | null
+          onboarding_completed?: boolean | null
+          onboarding_incomplete?: never
+          past_due?: never
+          post_count?: never
+          status?: string | null
+          trial_ending_soon?: never
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       billing_settings_public: {
         Row: {
           billing_support_email: string | null
@@ -2550,6 +2775,7 @@ export type Database = {
         Args: { g: Database["public"]["Tables"]["access_grants"]["Row"] }
         Returns: boolean
       }
+      is_moderator_or_admin: { Args: { _user_id: string }; Returns: boolean }
       is_space_host: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
@@ -2558,10 +2784,28 @@ export type Database = {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
       }
+      issue_warning: {
+        Args: {
+          _reason: string
+          _type: Database["public"]["Enums"]["user_warning_type"]
+          _user_id: string
+        }
+        Returns: string
+      }
+      log_audit: {
+        Args: {
+          _action: string
+          _details?: Json
+          _target_id: string
+          _target_type: Database["public"]["Enums"]["audit_target_type"]
+        }
+        Returns: string
+      }
       notif_pref: {
         Args: { _flag: string; _user_id: string }
         Returns: boolean
       }
+      reactivate_user: { Args: { _user_id: string }; Returns: undefined }
       refresh_segment: { Args: { _segment_id: string }; Returns: number }
       run_automations: {
         Args: {
@@ -2574,6 +2818,10 @@ export type Database = {
         Returns: undefined
       }
       send_announcement: { Args: { _announcement_id: string }; Returns: number }
+      suspend_user: {
+        Args: { _reason: string; _user_id: string }
+        Returns: undefined
+      }
       test_automation: {
         Args: { _automation_id: string; _user_id: string }
         Returns: Json
@@ -2621,6 +2869,27 @@ export type Database = {
         | "space_host"
         | "member"
         | "limited_member"
+      audit_target_type:
+        | "user"
+        | "space"
+        | "post"
+        | "comment"
+        | "message"
+        | "course"
+        | "lesson"
+        | "event"
+        | "plan"
+        | "coupon"
+        | "bundle"
+        | "automation"
+        | "announcement"
+        | "segment"
+        | "access_grant"
+        | "badge"
+        | "points"
+        | "settings"
+        | "subscription"
+        | "other"
       automation_log_status: "pending" | "success" | "failed" | "skipped"
       badge_type:
         | "manual"
@@ -2655,6 +2924,25 @@ export type Database = {
         | "expired"
         | "failed"
       comment_status: "active" | "hidden" | "deleted"
+      content_flag_severity: "low" | "medium" | "high" | "urgent"
+      content_flag_status: "open" | "under_review" | "resolved" | "dismissed"
+      content_flag_target:
+        | "post"
+        | "comment"
+        | "message"
+        | "user"
+        | "event"
+        | "course"
+        | "lesson"
+        | "announcement"
+      content_flag_type:
+        | "spam"
+        | "harassment"
+        | "inappropriate"
+        | "misinformation"
+        | "off_topic"
+        | "security_concern"
+        | "other"
       conversation_type: "direct" | "group" | "space"
       coupon_applies_to_type:
         | "all"
@@ -2721,6 +3009,11 @@ export type Database = {
         | "coupon_applied"
         | "access_expiring"
         | "access_expired"
+        | "warning_issued"
+        | "account_suspended"
+        | "account_reactivated"
+        | "report_resolved"
+        | "content_restored"
       plan_access_level: "full_access" | "preview_access" | "limited_access"
       plan_billing_interval: "free" | "monthly" | "annual" | "one_time"
       plan_item_target_type:
@@ -2794,6 +3087,14 @@ export type Database = {
         | "unpaid"
         | "paused"
       trial_status: "active" | "converted" | "expired" | "canceled"
+      user_warning_status: "active" | "acknowledged" | "dismissed"
+      user_warning_type:
+        | "general"
+        | "content_violation"
+        | "behavior"
+        | "spam"
+        | "harassment"
+        | "final_warning"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2950,6 +3251,28 @@ export const Constants = {
         "member",
         "limited_member",
       ],
+      audit_target_type: [
+        "user",
+        "space",
+        "post",
+        "comment",
+        "message",
+        "course",
+        "lesson",
+        "event",
+        "plan",
+        "coupon",
+        "bundle",
+        "automation",
+        "announcement",
+        "segment",
+        "access_grant",
+        "badge",
+        "points",
+        "settings",
+        "subscription",
+        "other",
+      ],
       automation_log_status: ["pending", "success", "failed", "skipped"],
       badge_type: [
         "manual",
@@ -2988,6 +3311,27 @@ export const Constants = {
         "failed",
       ],
       comment_status: ["active", "hidden", "deleted"],
+      content_flag_severity: ["low", "medium", "high", "urgent"],
+      content_flag_status: ["open", "under_review", "resolved", "dismissed"],
+      content_flag_target: [
+        "post",
+        "comment",
+        "message",
+        "user",
+        "event",
+        "course",
+        "lesson",
+        "announcement",
+      ],
+      content_flag_type: [
+        "spam",
+        "harassment",
+        "inappropriate",
+        "misinformation",
+        "off_topic",
+        "security_concern",
+        "other",
+      ],
       conversation_type: ["direct", "group", "space"],
       coupon_applies_to_type: [
         "all",
@@ -3057,6 +3401,11 @@ export const Constants = {
         "coupon_applied",
         "access_expiring",
         "access_expired",
+        "warning_issued",
+        "account_suspended",
+        "account_reactivated",
+        "report_resolved",
+        "content_restored",
       ],
       plan_access_level: ["full_access", "preview_access", "limited_access"],
       plan_billing_interval: ["free", "monthly", "annual", "one_time"],
@@ -3138,6 +3487,15 @@ export const Constants = {
         "paused",
       ],
       trial_status: ["active", "converted", "expired", "canceled"],
+      user_warning_status: ["active", "acknowledged", "dismissed"],
+      user_warning_type: [
+        "general",
+        "content_violation",
+        "behavior",
+        "spam",
+        "harassment",
+        "final_warning",
+      ],
     },
   },
 } as const
