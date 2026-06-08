@@ -38,7 +38,7 @@ export function AnnouncementForm({ initial, saving, onSubmit }: Props) {
           <Textarea rows={5} value={body ?? ""} onChange={(e) => setBody(e.target.value)} placeholder="Write your announcement message…" />
         </div>
 
-        <AnnouncementTargetSelector {...target} onChange={setTarget} />
+        <AnnouncementTargetSelector targetType={target.target_type} targetId={target.target_id} targetRole={target.target_role} onChange={setTarget} />
 
         <div className="space-y-1.5">
           <Label>Display</Label>
