@@ -95,6 +95,7 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/posts"><MessageSquare className="size-4 mr-2" />Posts</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/moderation"><Shield className="size-4 mr-2" />Moderation</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/analytics"><BarChart3 className="size-4 mr-2" />Analytics</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/audit-logs"><FileText className="size-4 mr-2" />Audit Logs</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/checklist"><ListChecks className="size-4 mr-2" />Onboarding</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/badges"><Award className="size-4 mr-2" />Badges</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/points"><Trophy className="size-4 mr-2" />Points</Link></Button>
