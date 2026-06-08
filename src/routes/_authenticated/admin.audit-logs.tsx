@@ -32,17 +32,17 @@ function AuditLogsPage() {
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Select value={filters.action ?? ""} onValueChange={(v) => setFilters((f) => ({ ...f, action: v || undefined }))}>
+        <Select value={filters.action ?? "__all"} onValueChange={(v) => setFilters((f) => ({ ...f, action: v === "__all" ? undefined : v }))}>
           <SelectTrigger><SelectValue placeholder="Action type" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All actions</SelectItem>
+            <SelectItem value="__all">All actions</SelectItem>
             {AUDIT_ACTIONS.map((a) => <SelectItem key={a} value={a}>{a.replace(/_/g, " ")}</SelectItem>)}
           </SelectContent>
         </Select>
-        <Select value={filters.targetType ?? ""} onValueChange={(v) => setFilters((f) => ({ ...f, targetType: (v || undefined) as AuditTargetType | undefined }))}>
+        <Select value={filters.targetType ?? "__all"} onValueChange={(v) => setFilters((f) => ({ ...f, targetType: v === "__all" ? undefined : (v as AuditTargetType) }))}>
           <SelectTrigger><SelectValue placeholder="Target type" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All targets</SelectItem>
+            <SelectItem value="__all">All targets</SelectItem>
             {TARGET_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
