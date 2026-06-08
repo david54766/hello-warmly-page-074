@@ -22,6 +22,11 @@ import { fetchUserPointsTotal } from "@/lib/gamification";
 import { ActivePollsWidget } from "@/components/feed/ActivePollsWidget";
 import { UnansweredQuestionsWidget } from "@/components/feed/UnansweredQuestionsWidget";
 import { TrendingHashtagsCard } from "@/components/feed/TrendingHashtagsCard";
+import { UpgradePromptCard } from "@/components/access/UpgradePromptCard";
+import { AccessSummaryCard } from "@/components/access/AccessSummaryCard";
+import { fetchMyGrants, type AccessGrant } from "@/lib/access";
+import { fetchMySubscription } from "@/lib/billing";
+import { fetchPlan } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -36,6 +41,8 @@ function Dashboard() {
   const [continueData, setContinueData] = useState<{ course: Course; lesson: Lesson; total: number; completed: number } | null>(null);
   const [newestMembers, setNewestMembers] = useState<MemberSummary[]>([]);
   const [myPoints, setMyPoints] = useState(0);
+  const [grants, setGrants] = useState<AccessGrant[]>([]);
+  const [planName, setPlanName] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -60,6 +67,18 @@ function Dashboard() {
   }, []);
 
   useEffect(() => { if (user) fetchUserPointsTotal(user.id).then(setMyPoints); }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [g, s] = await Promise.all([fetchMyGrants(user.id), fetchMySubscription(user.id)]);
+      setGrants(g);
+      if (s?.plan_id) {
+        const p = await fetchPlan(s.plan_id);
+        setPlanName(p?.name ?? null);
+      }
+    })();
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -176,6 +195,7 @@ function Dashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <NotificationSummaryCard />
+        <AccessSummaryCard grants={grants} planName={planName} />
         <ActivePollsWidget />
         <UnansweredQuestionsWidget />
         <TrendingHashtagsCard />
@@ -209,6 +229,8 @@ function Dashboard() {
           </DashboardCard>
         ))}
       </div>
+
+      <UpgradePromptCard />
     </div>
   );
 }

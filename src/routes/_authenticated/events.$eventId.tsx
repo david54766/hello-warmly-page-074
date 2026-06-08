@@ -11,6 +11,8 @@ import {
 import { RSVPButton } from "@/components/events/RSVPButton";
 import { AttendeeList, type Attendee } from "@/components/events/AttendeeList";
 import { LockedContentCard } from "@/components/courses/LockedContentCard";
+import { LockedContentPage } from "@/components/access/LockedContentCard";
+import { hasAccess } from "@/lib/access";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -30,12 +32,18 @@ function EventDetail() {
   const [rsvps, setRsvps] = useState<RsvpRow[]>([]);
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [spaceName, setSpaceName] = useState<string | null>(null);
+  const [allowed, setAllowed] = useState<boolean>(true);
 
   const load = async () => {
     setLoading(true);
     const ev = await fetchEvent(eventId);
     setEvent(ev);
     if (ev) {
+      if ((ev.access_level === "paid" || ev.access_level === "paid_placeholder") && user) {
+        setAllowed(await hasAccess(user.id, "event", ev.id));
+      } else {
+        setAllowed(true);
+      }
       const [r, { data: sp }] = await Promise.all([
         fetchRsvps(eventId),
         supabase.from("spaces").select("name").eq("id", ev.space_id).maybeSingle(),
@@ -66,6 +74,15 @@ function EventDetail() {
   const goingCount = rsvps.filter((r) => r.status === "going").length;
   const locked = isLocked(event);
   const past = isPast(event);
+
+  if (locked && !allowed) {
+    return (
+      <LockedContentPage
+        title={`${event.title} is a paid event`}
+        message="Upgrade your membership or purchase access to RSVP and join this event."
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">

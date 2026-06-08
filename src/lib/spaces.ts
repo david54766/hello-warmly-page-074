@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import * as Icons from "lucide-react";
 
 export type SpacePrivacy = "public" | "members_only" | "private" | "hidden";
-export type SpaceAccess = "free" | "preview" | "paid_placeholder";
+export type SpaceAccess = "free" | "preview" | "paid" | "paid_placeholder";
 export type SpaceMemberRole = "space_host" | "space_moderator" | "member";
 
 export interface Collection {
@@ -58,17 +58,18 @@ export const PRIVACY_LABELS: Record<SpacePrivacy, string> = {
 export const ACCESS_LABELS: Record<SpaceAccess, string> = {
   free: "Free",
   preview: "Preview",
+  paid: "Paid",
   paid_placeholder: "Paid",
 };
 
 export function isLocked(space: Pick<Space, "access_level" | "privacy_level">) {
-  return space.access_level === "paid_placeholder" || space.privacy_level === "private";
+  return space.access_level === "paid_placeholder" || space.access_level === "paid" || space.privacy_level === "private";
 }
 
 export function canJoin(space: Pick<Space, "access_level" | "privacy_level" | "is_archived">) {
   return (
     !space.is_archived &&
-    space.access_level === "free" &&
+    (space.access_level === "free" || space.access_level === "preview") &&
     (space.privacy_level === "public" || space.privacy_level === "members_only")
   );
 }

@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import { CheckCircle2, Circle, Lock, PlayCircle, Eye } from "lucide-react";
 
 export type CourseVisibility = "public" | "members_only" | "space_members" | "hidden";
-export type CourseAccess = "free" | "preview" | "paid_placeholder";
+export type CourseAccess = "free" | "preview" | "paid" | "paid_placeholder";
 export type LessonVisibility = "visible" | "preview" | "locked" | "hidden";
 export type LessonProgressStatus = "not_started" | "in_progress" | "completed";
 
@@ -62,6 +62,7 @@ export interface LessonProgress {
 export const COURSE_ACCESS_LABELS: Record<CourseAccess, string> = {
   free: "Free",
   preview: "Preview",
+  paid: "Paid",
   paid_placeholder: "Paid",
 };
 
@@ -80,7 +81,7 @@ export const LESSON_VISIBILITY_LABELS: Record<LessonVisibility, string> = {
 };
 
 export function isCourseLocked(c: Pick<Course, "access_level">) {
-  return c.access_level === "paid_placeholder";
+  return c.access_level === "paid" || c.access_level === "paid_placeholder";
 }
 
 export function isLessonLocked(l: Pick<Lesson, "visibility">) {

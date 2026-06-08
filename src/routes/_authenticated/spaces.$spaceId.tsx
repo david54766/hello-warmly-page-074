@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { Collection, Space } from "@/lib/spaces";
+import { isLocked as isSpaceLocked } from "@/lib/spaces";
+import { hasAccess } from "@/lib/access";
+import { LockedContentPage } from "@/components/access/LockedContentCard";
 import { SpaceHeader } from "@/components/app/SpaceHeader";
 import { SpaceTabs } from "@/components/app/SpaceTabs";
 import type { SpaceMemberRow } from "@/components/app/SpaceMemberList";
@@ -23,12 +26,21 @@ function SpaceDetail() {
   const [space, setSpace] = useState<Space | null>(null);
   const [collection, setCollection] = useState<Collection | null>(null);
   const [members, setMembers] = useState<SpaceMemberRow[]>([]);
+  const [allowed, setAllowed] = useState<boolean>(true);
 
   const load = async () => {
     setLoading(true);
     const { data: sp } = await supabase.from("spaces").select("*").eq("id", spaceId).maybeSingle();
     if (!sp) { setSpace(null); setLoading(false); return; }
     setSpace(sp as Space);
+
+    // Paid gating
+    if ((sp.access_level === "paid" || sp.access_level === "paid_placeholder") && user) {
+      const ok = await hasAccess(user.id, "space", sp.id);
+      setAllowed(ok);
+    } else {
+      setAllowed(true);
+    }
 
     const tasks: Array<Promise<unknown>> = [];
     if (sp.collection_id) {
@@ -81,6 +93,15 @@ function SpaceDetail() {
         title="Space not found"
         description="This Space may be private or no longer exists."
         action={<Button onClick={() => navigate({ to: "/spaces" })}>Back to Spaces</Button>}
+      />
+    );
+  }
+
+  if (!allowed && isSpaceLocked(space)) {
+    return (
+      <LockedContentPage
+        title={`${space.name} is a paid Space`}
+        message="Upgrade your membership or purchase access to unlock posts, courses, and events inside this Space."
       />
     );
   }

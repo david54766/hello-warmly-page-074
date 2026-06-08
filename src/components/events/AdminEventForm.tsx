@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { sbEvents, EVENT_TYPE_LABELS, EVENT_STATUS_LABELS, VISIBILITY_LABELS, ACCESS_LABELS, type EventRow, type EventType, type EventVisibility, type EventAccess, type EventStatus } from "@/lib/events";
 import type { Space } from "@/lib/spaces";
+import { AccessStateSelect } from "@/components/access/AccessStateSelect";
 
 type Draft = Partial<EventRow>;
 
@@ -94,10 +95,7 @@ export function AdminEventForm({
           </Select>
         </Field>
         <Field label="Access">
-          <Select value={draft.access_level ?? "free"} onValueChange={(v) => set("access_level", v as EventAccess)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>{(Object.keys(ACCESS_LABELS) as EventAccess[]).map((t) => <SelectItem key={t} value={t}>{ACCESS_LABELS[t]}</SelectItem>)}</SelectContent>
-          </Select>
+          <AccessStateSelect value={(draft.access_level ?? "free") as never} onChange={(v) => set("access_level", v as EventAccess)} />
         </Field>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">

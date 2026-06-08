@@ -8,6 +8,8 @@ import { EmptyState } from "@/components/app/DashboardCard";
 import { LessonList } from "@/components/courses/LessonList";
 import { CourseProgressBar } from "@/components/courses/CourseProgressBar";
 import { LockedContentCard } from "@/components/courses/LockedContentCard";
+import { LockedContentPage } from "@/components/access/LockedContentCard";
+import { hasAccess } from "@/lib/access";
 import { ArrowLeft, BookOpen, Play, Lock } from "lucide-react";
 import { COURSE_ACCESS_LABELS, isCourseLocked, type Course, type CourseSection, type Lesson, type LessonProgress } from "@/lib/courses";
 import type { Space } from "@/lib/spaces";
@@ -26,6 +28,7 @@ function CourseDetail() {
   const [sections, setSections] = useState<CourseSection[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [progress, setProgress] = useState<LessonProgress[]>([]);
+  const [allowed, setAllowed] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
@@ -33,6 +36,11 @@ function CourseDetail() {
       const { data: c } = await supabase.from("courses").select("*").eq("id", courseId).maybeSingle();
       if (!c) { setCourse(null); setLoading(false); return; }
       setCourse(c as Course);
+      if ((c.access_level === "paid" || c.access_level === "paid_placeholder") && user) {
+        setAllowed(await hasAccess(user.id, "course", c.id));
+      } else {
+        setAllowed(true);
+      }
       const [{ data: sp }, { data: secs }, { data: ls }, prog] = await Promise.all([
         supabase.from("spaces").select("*").eq("id", c.space_id).maybeSingle(),
         supabase.from("course_sections").select("*").eq("course_id", courseId).order("sort_order"),
@@ -77,6 +85,15 @@ function CourseDetail() {
   }
 
   const locked = isCourseLocked(course);
+
+  if (locked && !allowed) {
+    return (
+      <LockedContentPage
+        title={`${course.title} is a paid course`}
+        message="Upgrade your membership or purchase this course to unlock all lessons."
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

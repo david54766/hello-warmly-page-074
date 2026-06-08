@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import type { Course, CourseAccess, CourseVisibility } from "@/lib/courses";
 import type { Space } from "@/lib/spaces";
+import { AccessStateSelect } from "@/components/access/AccessStateSelect";
 
 export function AdminCourseForm({
   open,
@@ -103,14 +104,7 @@ export function AdminCourseForm({
             </div>
             <div className="space-y-1.5">
               <Label>Access</Label>
-              <Select value={access} onValueChange={(v) => setAccess(v as CourseAccess)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="free">Free</SelectItem>
-                  <SelectItem value="preview">Preview</SelectItem>
-                  <SelectItem value="paid_placeholder">Paid (placeholder)</SelectItem>
-                </SelectContent>
-              </Select>
+              <AccessStateSelect value={access as never} onChange={(v) => setAccess(v as CourseAccess)} />
             </div>
           </div>
         </div>

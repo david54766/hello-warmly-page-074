@@ -9,7 +9,7 @@ export type EventType =
   | "livestream_placeholder";
 
 export type EventVisibility = "public" | "members_only" | "space_members" | "hidden";
-export type EventAccess = "free" | "preview" | "paid_placeholder";
+export type EventAccess = "free" | "preview" | "paid" | "paid_placeholder";
 export type EventStatus = "draft" | "published" | "canceled" | "completed";
 export type RsvpStatus = "going" | "not_going" | "waitlist";
 
@@ -69,6 +69,7 @@ export const VISIBILITY_LABELS: Record<EventVisibility, string> = {
 export const ACCESS_LABELS: Record<EventAccess, string> = {
   free: "Free",
   preview: "Preview",
+  paid: "Paid",
   paid_placeholder: "Paid",
 };
 
@@ -89,7 +90,7 @@ export function isPast(e: Pick<EventRow, "end_time" | "status">) {
 }
 
 export function isLocked(e: Pick<EventRow, "access_level">) {
-  return e.access_level === "paid_placeholder";
+  return e.access_level === "paid" || e.access_level === "paid_placeholder";
 }
 
 // Untyped client (events tables not yet in generated types)
