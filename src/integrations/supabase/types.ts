@@ -107,6 +107,45 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_content_sources: {
+        Row: {
+          approved_for_member_ai: boolean
+          content: string | null
+          created_at: string
+          embedding_status: string
+          id: string
+          source_id: string | null
+          source_type: string
+          title: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          approved_for_member_ai?: boolean
+          content?: string | null
+          created_at?: string
+          embedding_status?: string
+          id?: string
+          source_id?: string | null
+          source_type: string
+          title: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          approved_for_member_ai?: boolean
+          content?: string | null
+          created_at?: string
+          embedding_status?: string
+          id?: string
+          source_id?: string | null
+          source_type?: string
+          title?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       ai_conversations: {
         Row: {
           context_id: string | null
@@ -236,6 +275,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_helper_settings: {
+        Row: {
+          allow_course_content: boolean
+          allow_event_content: boolean
+          allow_lesson_content: boolean
+          allow_post_content: boolean
+          allow_resource_content: boolean
+          assistant_instructions: string
+          assistant_name: string
+          created_at: string
+          fallback_message: string
+          id: string
+          member_ai_enabled: boolean
+          require_approved_sources: boolean
+          updated_at: string
+        }
+        Insert: {
+          allow_course_content?: boolean
+          allow_event_content?: boolean
+          allow_lesson_content?: boolean
+          allow_post_content?: boolean
+          allow_resource_content?: boolean
+          assistant_instructions?: string
+          assistant_name?: string
+          created_at?: string
+          fallback_message?: string
+          id?: string
+          member_ai_enabled?: boolean
+          require_approved_sources?: boolean
+          updated_at?: string
+        }
+        Update: {
+          allow_course_content?: boolean
+          allow_event_content?: boolean
+          allow_lesson_content?: boolean
+          allow_post_content?: boolean
+          allow_resource_content?: boolean
+          assistant_instructions?: string
+          assistant_name?: string
+          created_at?: string
+          fallback_message?: string
+          id?: string
+          member_ai_enabled?: boolean
+          require_approved_sources?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_lesson_generations: {
         Row: {
           audience: string | null
@@ -291,6 +378,45 @@ export type Database = {
           status?: Database["public"]["Enums"]["ai_generation_status"]
           tone?: string | null
           topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_member_insights: {
+        Row: {
+          created_at: string
+          engagement_level: string
+          generated_by: string | null
+          id: string
+          risk_level: string
+          suggested_actions_json: Json
+          suggested_message: string | null
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          engagement_level?: string
+          generated_by?: string | null
+          id?: string
+          risk_level?: string
+          suggested_actions_json?: Json
+          suggested_message?: string | null
+          summary: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          engagement_level?: string
+          generated_by?: string | null
+          id?: string
+          risk_level?: string
+          suggested_actions_json?: Json
+          suggested_message?: string | null
+          summary?: string
           updated_at?: string
           user_id?: string
         }
@@ -1613,6 +1739,68 @@ export type Database = {
             columns: ["section_id"]
             isOneToOne: false
             referencedRelation: "course_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      member_ai_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      member_ai_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          related_sources_json: Json
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          related_sources_json?: Json
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          related_sources_json?: Json
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "member_ai_conversations"
             referencedColumns: ["id"]
           },
         ]
