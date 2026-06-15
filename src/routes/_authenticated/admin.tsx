@@ -130,6 +130,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/ai-member-insights"><Sparkles className="size-4 mr-2" />Member Insights</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-content-sources"><FileText className="size-4 mr-2" />AI Content Sources</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-helper-settings"><Bot className="size-4 mr-2" />AI Helper Settings</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/resources"><BookOpen className="size-4 mr-2" />Resources</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/resource-folders"><FolderTree className="size-4 mr-2" />Resource Folders</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>
