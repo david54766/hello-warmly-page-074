@@ -2634,6 +2634,196 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_downloads: {
+        Row: {
+          downloaded_at: string
+          id: string
+          resource_id: string
+          user_id: string
+        }
+        Insert: {
+          downloaded_at?: string
+          id?: string
+          resource_id: string
+          user_id: string
+        }
+        Update: {
+          downloaded_at?: string
+          id?: string
+          resource_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_downloads_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_folders: {
+        Row: {
+          access_level: Database["public"]["Enums"]["resource_access_level"]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_archived: boolean
+          name: string
+          parent_folder_id: string | null
+          sort_order: number
+          space_id: string | null
+          updated_at: string
+          visibility: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["resource_access_level"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          name: string
+          parent_folder_id?: string | null
+          sort_order?: number
+          space_id?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["resource_access_level"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          name?: string
+          parent_folder_id?: string | null
+          sort_order?: number
+          space_id?: string | null
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_folders_parent_folder_id_fkey"
+            columns: ["parent_folder_id"]
+            isOneToOne: false
+            referencedRelation: "resource_folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resource_folders_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resource_views: {
+        Row: {
+          id: string
+          resource_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          resource_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          resource_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_views_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          access_level: Database["public"]["Enums"]["resource_access_level"]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          external_url: string | null
+          file_url: string | null
+          folder_id: string | null
+          id: string
+          is_archived: boolean
+          is_featured: boolean
+          resource_type: Database["public"]["Enums"]["resource_type"]
+          space_id: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          visibility: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Insert: {
+          access_level?: Database["public"]["Enums"]["resource_access_level"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          external_url?: string | null
+          file_url?: string | null
+          folder_id?: string | null
+          id?: string
+          is_archived?: boolean
+          is_featured?: boolean
+          resource_type?: Database["public"]["Enums"]["resource_type"]
+          space_id?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Update: {
+          access_level?: Database["public"]["Enums"]["resource_access_level"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          external_url?: string | null
+          file_url?: string | null
+          folder_id?: string | null
+          id?: string
+          is_archived?: boolean
+          is_featured?: boolean
+          resource_type?: Database["public"]["Enums"]["resource_type"]
+          space_id?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["resource_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "resource_folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resources_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       saved_items: {
         Row: {
           created_at: string
@@ -3246,6 +3436,10 @@ export type Database = {
         Args: { _lesson_id: string; _user_id: string }
         Returns: boolean
       }
+      can_access_resource: {
+        Args: { _resource_id: string; _user_id: string }
+        Returns: boolean
+      }
       can_access_space: {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
@@ -3600,6 +3794,23 @@ export type Database = {
         | "course"
         | "lesson"
         | "message"
+      resource_access_level: "free" | "preview" | "paid"
+      resource_type:
+        | "file"
+        | "link"
+        | "pdf"
+        | "video"
+        | "image"
+        | "document"
+        | "template"
+        | "checklist"
+        | "guide"
+        | "other"
+      resource_visibility:
+        | "public"
+        | "members_only"
+        | "space_members"
+        | "hidden"
       rsvp_status: "going" | "not_going" | "waitlist"
       saved_target_type:
         | "post"
@@ -3608,6 +3819,7 @@ export type Database = {
         | "event"
         | "space"
         | "resource_placeholder"
+        | "resource"
       space_access: "free" | "preview" | "paid_placeholder" | "paid"
       space_member_role: "space_host" | "space_moderator" | "member"
       space_member_status: "active" | "pending" | "banned"
@@ -4005,6 +4217,25 @@ export const Constants = {
         "lesson",
         "message",
       ],
+      resource_access_level: ["free", "preview", "paid"],
+      resource_type: [
+        "file",
+        "link",
+        "pdf",
+        "video",
+        "image",
+        "document",
+        "template",
+        "checklist",
+        "guide",
+        "other",
+      ],
+      resource_visibility: [
+        "public",
+        "members_only",
+        "space_members",
+        "hidden",
+      ],
       rsvp_status: ["going", "not_going", "waitlist"],
       saved_target_type: [
         "post",
@@ -4013,6 +4244,7 @@ export const Constants = {
         "event",
         "space",
         "resource_placeholder",
+        "resource",
       ],
       space_access: ["free", "preview", "paid_placeholder", "paid"],
       space_member_role: ["space_host", "space_moderator", "member"],

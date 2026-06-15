@@ -37,11 +37,13 @@ import { Route as AuthenticatedAiHelperRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAchievementsRouteImport } from './routes/_authenticated/achievements'
 import { Route as AuthenticatedSpacesIndexRouteImport } from './routes/_authenticated/spaces.index'
+import { Route as AuthenticatedResourcesIndexRouteImport } from './routes/_authenticated/resources.index'
 import { Route as AuthenticatedMembersIndexRouteImport } from './routes/_authenticated/members.index'
 import { Route as AuthenticatedCoursesIndexRouteImport } from './routes/_authenticated/courses.index'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings.notifications'
+import { Route as AuthenticatedResourcesResourceIdRouteImport } from './routes/_authenticated/resources.$resourceId'
 import { Route as AuthenticatedPostsPostIdRouteImport } from './routes/_authenticated/posts.$postId'
 import { Route as AuthenticatedMembersUserIdRouteImport } from './routes/_authenticated/members.$userId'
 import { Route as AuthenticatedLessonsLessonIdRouteImport } from './routes/_authenticated/lessons.$lessonId'
@@ -55,6 +57,8 @@ import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminRevenueRouteImport } from './routes/_authenticated/admin.revenue'
+import { Route as AuthenticatedAdminResourcesRouteImport } from './routes/_authenticated/admin.resources'
+import { Route as AuthenticatedAdminResourceFoldersRouteImport } from './routes/_authenticated/admin.resource-folders'
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
 import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenticated/admin.points'
 import { Route as AuthenticatedAdminPaymentEventsRouteImport } from './routes/_authenticated/admin.payment-events'
@@ -85,6 +89,7 @@ import { Route as AuthenticatedAdminAutomationsIndexRouteImport } from './routes
 import { Route as AuthenticatedAdminAnnouncementsIndexRouteImport } from './routes/_authenticated/admin.announcements.index'
 import { Route as AuthenticatedAdminAiDraftsIndexRouteImport } from './routes/_authenticated/admin.ai-drafts.index'
 import { Route as AuthenticatedAdminAiCourseBuilderIndexRouteImport } from './routes/_authenticated/admin.ai-course-builder.index'
+import { Route as AuthenticatedSpacesSpaceIdResourcesRouteImport } from './routes/_authenticated/spaces.$spaceId.resources'
 import { Route as AuthenticatedAdminSpacesSpaceIdRouteImport } from './routes/_authenticated/admin.spaces.$spaceId'
 import { Route as AuthenticatedAdminSegmentsNewRouteImport } from './routes/_authenticated/admin.segments.new'
 import { Route as AuthenticatedAdminSegmentsSegmentIdRouteImport } from './routes/_authenticated/admin.segments.$segmentId'
@@ -247,6 +252,12 @@ const AuthenticatedSpacesIndexRoute =
     path: '/spaces/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedResourcesIndexRoute =
+  AuthenticatedResourcesIndexRouteImport.update({
+    id: '/resources/',
+    path: '/resources/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMembersIndexRoute =
   AuthenticatedMembersIndexRouteImport.update({
     id: '/members/',
@@ -275,6 +286,12 @@ const AuthenticatedSettingsNotificationsRoute =
     id: '/notifications',
     path: '/notifications',
     getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedResourcesResourceIdRoute =
+  AuthenticatedResourcesResourceIdRouteImport.update({
+    id: '/resources/$resourceId',
+    path: '/resources/$resourceId',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedPostsPostIdRoute =
   AuthenticatedPostsPostIdRouteImport.update({
@@ -352,6 +369,18 @@ const AuthenticatedAdminRevenueRoute =
   AuthenticatedAdminRevenueRouteImport.update({
     id: '/revenue',
     path: '/revenue',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminResourcesRoute =
+  AuthenticatedAdminResourcesRouteImport.update({
+    id: '/resources',
+    path: '/resources',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminResourceFoldersRoute =
+  AuthenticatedAdminResourceFoldersRouteImport.update({
+    id: '/resource-folders',
+    path: '/resource-folders',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminPostsRoute = AuthenticatedAdminPostsRouteImport.update({
@@ -533,6 +562,12 @@ const AuthenticatedAdminAiCourseBuilderIndexRoute =
     path: '/ai-course-builder/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedSpacesSpaceIdResourcesRoute =
+  AuthenticatedSpacesSpaceIdResourcesRouteImport.update({
+    id: '/resources',
+    path: '/resources',
+    getParentRoute: () => AuthenticatedSpacesSpaceIdRoute,
+  } as any)
 const AuthenticatedAdminSpacesSpaceIdRoute =
   AuthenticatedAdminSpacesSpaceIdRouteImport.update({
     id: '/spaces/$spaceId',
@@ -682,6 +717,8 @@ export interface FileRoutesByFullPath {
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/resource-folders': typeof AuthenticatedAdminResourceFoldersRoute
+  '/admin/resources': typeof AuthenticatedAdminResourcesRoute
   '/admin/revenue': typeof AuthenticatedAdminRevenueRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -695,11 +732,13 @@ export interface FileRoutesByFullPath {
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
+  '/resources/$resourceId': typeof AuthenticatedResourcesResourceIdRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
+  '/resources/': typeof AuthenticatedResourcesIndexRoute
   '/spaces/': typeof AuthenticatedSpacesIndexRoute
   '/admin/ai-course-builder/$generationId': typeof AuthenticatedAdminAiCourseBuilderGenerationIdRoute
   '/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
@@ -715,6 +754,7 @@ export interface FileRoutesByFullPath {
   '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/spaces/$spaceId/resources': typeof AuthenticatedSpacesSpaceIdResourcesRoute
   '/admin/ai-course-builder/': typeof AuthenticatedAdminAiCourseBuilderIndexRoute
   '/admin/ai-drafts/': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/admin/announcements/': typeof AuthenticatedAdminAnnouncementsIndexRoute
@@ -776,6 +816,8 @@ export interface FileRoutesByTo {
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/resource-folders': typeof AuthenticatedAdminResourceFoldersRoute
+  '/admin/resources': typeof AuthenticatedAdminResourcesRoute
   '/admin/revenue': typeof AuthenticatedAdminRevenueRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -789,11 +831,13 @@ export interface FileRoutesByTo {
   '/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/posts/$postId': typeof AuthenticatedPostsPostIdRoute
+  '/resources/$resourceId': typeof AuthenticatedResourcesResourceIdRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
+  '/resources': typeof AuthenticatedResourcesIndexRoute
   '/spaces': typeof AuthenticatedSpacesIndexRoute
   '/admin/ai-course-builder/$generationId': typeof AuthenticatedAdminAiCourseBuilderGenerationIdRoute
   '/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
@@ -809,6 +853,7 @@ export interface FileRoutesByTo {
   '/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/spaces/$spaceId/resources': typeof AuthenticatedSpacesSpaceIdResourcesRoute
   '/admin/ai-course-builder': typeof AuthenticatedAdminAiCourseBuilderIndexRoute
   '/admin/ai-drafts': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/admin/announcements': typeof AuthenticatedAdminAnnouncementsIndexRoute
@@ -872,6 +917,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/_authenticated/admin/points': typeof AuthenticatedAdminPointsRoute
   '/_authenticated/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/_authenticated/admin/resource-folders': typeof AuthenticatedAdminResourceFoldersRoute
+  '/_authenticated/admin/resources': typeof AuthenticatedAdminResourcesRoute
   '/_authenticated/admin/revenue': typeof AuthenticatedAdminRevenueRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
@@ -885,11 +932,13 @@ export interface FileRoutesById {
   '/_authenticated/lessons/$lessonId': typeof AuthenticatedLessonsLessonIdRoute
   '/_authenticated/members/$userId': typeof AuthenticatedMembersUserIdRoute
   '/_authenticated/posts/$postId': typeof AuthenticatedPostsPostIdRoute
+  '/_authenticated/resources/$resourceId': typeof AuthenticatedResourcesResourceIdRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRoute
+  '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
+  '/_authenticated/resources/': typeof AuthenticatedResourcesIndexRoute
   '/_authenticated/spaces/': typeof AuthenticatedSpacesIndexRoute
   '/_authenticated/admin/ai-course-builder/$generationId': typeof AuthenticatedAdminAiCourseBuilderGenerationIdRoute
   '/_authenticated/admin/ai-drafts/$draftId': typeof AuthenticatedAdminAiDraftsDraftIdRoute
@@ -905,6 +954,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/segments/$segmentId': typeof AuthenticatedAdminSegmentsSegmentIdRouteWithChildren
   '/_authenticated/admin/segments/new': typeof AuthenticatedAdminSegmentsNewRoute
   '/_authenticated/admin/spaces/$spaceId': typeof AuthenticatedAdminSpacesSpaceIdRoute
+  '/_authenticated/spaces/$spaceId/resources': typeof AuthenticatedSpacesSpaceIdResourcesRoute
   '/_authenticated/admin/ai-course-builder/': typeof AuthenticatedAdminAiCourseBuilderIndexRoute
   '/_authenticated/admin/ai-drafts/': typeof AuthenticatedAdminAiDraftsIndexRoute
   '/_authenticated/admin/announcements/': typeof AuthenticatedAdminAnnouncementsIndexRoute
@@ -968,6 +1018,8 @@ export interface FileRouteTypes {
     | '/admin/payment-events'
     | '/admin/points'
     | '/admin/posts'
+    | '/admin/resource-folders'
+    | '/admin/resources'
     | '/admin/revenue'
     | '/admin/settings'
     | '/admin/subscribers'
@@ -981,11 +1033,13 @@ export interface FileRouteTypes {
     | '/lessons/$lessonId'
     | '/members/$userId'
     | '/posts/$postId'
+    | '/resources/$resourceId'
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
     | '/courses/'
     | '/members/'
+    | '/resources/'
     | '/spaces/'
     | '/admin/ai-course-builder/$generationId'
     | '/admin/ai-drafts/$draftId'
@@ -1001,6 +1055,7 @@ export interface FileRouteTypes {
     | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
+    | '/spaces/$spaceId/resources'
     | '/admin/ai-course-builder/'
     | '/admin/ai-drafts/'
     | '/admin/announcements/'
@@ -1062,6 +1117,8 @@ export interface FileRouteTypes {
     | '/admin/payment-events'
     | '/admin/points'
     | '/admin/posts'
+    | '/admin/resource-folders'
+    | '/admin/resources'
     | '/admin/revenue'
     | '/admin/settings'
     | '/admin/subscribers'
@@ -1075,11 +1132,13 @@ export interface FileRouteTypes {
     | '/lessons/$lessonId'
     | '/members/$userId'
     | '/posts/$postId'
+    | '/resources/$resourceId'
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
     | '/courses'
     | '/members'
+    | '/resources'
     | '/spaces'
     | '/admin/ai-course-builder/$generationId'
     | '/admin/ai-drafts/$draftId'
@@ -1095,6 +1154,7 @@ export interface FileRouteTypes {
     | '/admin/segments/$segmentId'
     | '/admin/segments/new'
     | '/admin/spaces/$spaceId'
+    | '/spaces/$spaceId/resources'
     | '/admin/ai-course-builder'
     | '/admin/ai-drafts'
     | '/admin/announcements'
@@ -1157,6 +1217,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/payment-events'
     | '/_authenticated/admin/points'
     | '/_authenticated/admin/posts'
+    | '/_authenticated/admin/resource-folders'
+    | '/_authenticated/admin/resources'
     | '/_authenticated/admin/revenue'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/subscribers'
@@ -1170,11 +1232,13 @@ export interface FileRouteTypes {
     | '/_authenticated/lessons/$lessonId'
     | '/_authenticated/members/$userId'
     | '/_authenticated/posts/$postId'
+    | '/_authenticated/resources/$resourceId'
     | '/_authenticated/settings/notifications'
     | '/_authenticated/spaces/$spaceId'
     | '/api/public/stripe-webhook'
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
+    | '/_authenticated/resources/'
     | '/_authenticated/spaces/'
     | '/_authenticated/admin/ai-course-builder/$generationId'
     | '/_authenticated/admin/ai-drafts/$draftId'
@@ -1190,6 +1254,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/segments/$segmentId'
     | '/_authenticated/admin/segments/new'
     | '/_authenticated/admin/spaces/$spaceId'
+    | '/_authenticated/spaces/$spaceId/resources'
     | '/_authenticated/admin/ai-course-builder/'
     | '/_authenticated/admin/ai-drafts/'
     | '/_authenticated/admin/announcements/'
@@ -1418,6 +1483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSpacesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/resources/': {
+      id: '/_authenticated/resources/'
+      path: '/resources'
+      fullPath: '/resources/'
+      preLoaderRoute: typeof AuthenticatedResourcesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/members/': {
       id: '/_authenticated/members/'
       path: '/members'
@@ -1452,6 +1524,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/notifications'
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/resources/$resourceId': {
+      id: '/_authenticated/resources/$resourceId'
+      path: '/resources/$resourceId'
+      fullPath: '/resources/$resourceId'
+      preLoaderRoute: typeof AuthenticatedResourcesResourceIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/posts/$postId': {
       id: '/_authenticated/posts/$postId'
@@ -1542,6 +1621,20 @@ declare module '@tanstack/react-router' {
       path: '/revenue'
       fullPath: '/admin/revenue'
       preLoaderRoute: typeof AuthenticatedAdminRevenueRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/resources': {
+      id: '/_authenticated/admin/resources'
+      path: '/resources'
+      fullPath: '/admin/resources'
+      preLoaderRoute: typeof AuthenticatedAdminResourcesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/resource-folders': {
+      id: '/_authenticated/admin/resource-folders'
+      path: '/resource-folders'
+      fullPath: '/admin/resource-folders'
+      preLoaderRoute: typeof AuthenticatedAdminResourceFoldersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/posts': {
@@ -1754,6 +1847,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAiCourseBuilderIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/spaces/$spaceId/resources': {
+      id: '/_authenticated/spaces/$spaceId/resources'
+      path: '/resources'
+      fullPath: '/spaces/$spaceId/resources'
+      preLoaderRoute: typeof AuthenticatedSpacesSpaceIdResourcesRouteImport
+      parentRoute: typeof AuthenticatedSpacesSpaceIdRoute
+    }
     '/_authenticated/admin/spaces/$spaceId': {
       id: '/_authenticated/admin/spaces/$spaceId'
       path: '/spaces/$spaceId'
@@ -1941,6 +2041,8 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPaymentEventsRoute: typeof AuthenticatedAdminPaymentEventsRoute
   AuthenticatedAdminPointsRoute: typeof AuthenticatedAdminPointsRoute
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
+  AuthenticatedAdminResourceFoldersRoute: typeof AuthenticatedAdminResourceFoldersRoute
+  AuthenticatedAdminResourcesRoute: typeof AuthenticatedAdminResourcesRoute
   AuthenticatedAdminRevenueRoute: typeof AuthenticatedAdminRevenueRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
@@ -1998,6 +2100,9 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminPaymentEventsRoute: AuthenticatedAdminPaymentEventsRoute,
   AuthenticatedAdminPointsRoute: AuthenticatedAdminPointsRoute,
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
+  AuthenticatedAdminResourceFoldersRoute:
+    AuthenticatedAdminResourceFoldersRoute,
+  AuthenticatedAdminResourcesRoute: AuthenticatedAdminResourcesRoute,
   AuthenticatedAdminRevenueRoute: AuthenticatedAdminRevenueRoute,
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
@@ -2069,6 +2174,21 @@ const AuthenticatedSettingsRouteWithChildren =
     AuthenticatedSettingsRouteChildren,
   )
 
+interface AuthenticatedSpacesSpaceIdRouteChildren {
+  AuthenticatedSpacesSpaceIdResourcesRoute: typeof AuthenticatedSpacesSpaceIdResourcesRoute
+}
+
+const AuthenticatedSpacesSpaceIdRouteChildren: AuthenticatedSpacesSpaceIdRouteChildren =
+  {
+    AuthenticatedSpacesSpaceIdResourcesRoute:
+      AuthenticatedSpacesSpaceIdResourcesRoute,
+  }
+
+const AuthenticatedSpacesSpaceIdRouteWithChildren =
+  AuthenticatedSpacesSpaceIdRoute._addFileChildren(
+    AuthenticatedSpacesSpaceIdRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAchievementsRoute: typeof AuthenticatedAchievementsRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
@@ -2094,9 +2214,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLessonsLessonIdRoute: typeof AuthenticatedLessonsLessonIdRoute
   AuthenticatedMembersUserIdRoute: typeof AuthenticatedMembersUserIdRoute
   AuthenticatedPostsPostIdRoute: typeof AuthenticatedPostsPostIdRoute
-  AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRoute
+  AuthenticatedResourcesResourceIdRoute: typeof AuthenticatedResourcesResourceIdRoute
+  AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   AuthenticatedCoursesIndexRoute: typeof AuthenticatedCoursesIndexRoute
   AuthenticatedMembersIndexRoute: typeof AuthenticatedMembersIndexRoute
+  AuthenticatedResourcesIndexRoute: typeof AuthenticatedResourcesIndexRoute
   AuthenticatedSpacesIndexRoute: typeof AuthenticatedSpacesIndexRoute
 }
 
@@ -2126,9 +2248,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLessonsLessonIdRoute: AuthenticatedLessonsLessonIdRoute,
   AuthenticatedMembersUserIdRoute: AuthenticatedMembersUserIdRoute,
   AuthenticatedPostsPostIdRoute: AuthenticatedPostsPostIdRoute,
-  AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRoute,
+  AuthenticatedResourcesResourceIdRoute: AuthenticatedResourcesResourceIdRoute,
+  AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRouteWithChildren,
   AuthenticatedCoursesIndexRoute: AuthenticatedCoursesIndexRoute,
   AuthenticatedMembersIndexRoute: AuthenticatedMembersIndexRoute,
+  AuthenticatedResourcesIndexRoute: AuthenticatedResourcesIndexRoute,
   AuthenticatedSpacesIndexRoute: AuthenticatedSpacesIndexRoute,
 }
 

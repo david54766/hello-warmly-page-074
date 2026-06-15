@@ -15,15 +15,16 @@ interface ResolvedItem extends SavedItem {
 
 async function resolveSavedItems(items: SavedItem[]): Promise<ResolvedItem[]> {
   const grouped: Record<SavedTargetType, string[]> = {
-    post: [], course: [], lesson: [], event: [], space: [], resource_placeholder: [],
+    post: [], course: [], lesson: [], event: [], space: [], resource: [], resource_placeholder: [],
   };
   items.forEach((it) => { grouped[it.target_type]?.push(it.target_id); });
-  const [posts, courses, lessons, events, spaces] = await Promise.all([
+  const [posts, courses, lessons, events, spaces, resources] = await Promise.all([
     grouped.post.length ? supabase.from("posts").select("id,title,body").in("id", grouped.post) : Promise.resolve({ data: [] as any[] }),
     grouped.course.length ? supabase.from("courses").select("id,title,description").in("id", grouped.course) : Promise.resolve({ data: [] as any[] }),
     grouped.lesson.length ? supabase.from("lessons").select("id,title,course_id").in("id", grouped.lesson) : Promise.resolve({ data: [] as any[] }),
     grouped.event.length ? (supabase as any).from("events").select("id,title,start_time").in("id", grouped.event) : Promise.resolve({ data: [] as any[] }),
     grouped.space.length ? supabase.from("spaces").select("id,name,tagline").in("id", grouped.space) : Promise.resolve({ data: [] as any[] }),
+    grouped.resource.length ? (supabase as any).from("resources").select("id,title,description").in("id", grouped.resource) : Promise.resolve({ data: [] as any[] }),
   ]);
   const map = new Map<string, any>();
   (posts.data ?? []).forEach((p: any) => map.set(`post:${p.id}`, { title: p.title || (p.body?.slice(0, 60) ?? "Untitled post"), href: { to: "/posts/$postId", params: { postId: p.id } } }));
@@ -31,6 +32,7 @@ async function resolveSavedItems(items: SavedItem[]): Promise<ResolvedItem[]> {
   (lessons.data ?? []).forEach((l: any) => map.set(`lesson:${l.id}`, { title: l.title, href: { to: "/lessons/$lessonId", params: { lessonId: l.id } } }));
   (events.data ?? []).forEach((e: any) => map.set(`event:${e.id}`, { title: e.title, subtitle: new Date(e.start_time).toLocaleString(), href: { to: "/events/$eventId", params: { eventId: e.id } } }));
   (spaces.data ?? []).forEach((s: any) => map.set(`space:${s.id}`, { title: s.name, subtitle: s.tagline, href: { to: "/spaces/$spaceId", params: { spaceId: s.id } } }));
+  (resources.data ?? []).forEach((r: any) => map.set(`resource:${r.id}`, { title: r.title, subtitle: r.description, href: { to: "/resources/$resourceId", params: { resourceId: r.id } } }));
 
   return items.map((it) => {
     const found = map.get(`${it.target_type}:${it.target_id}`);
@@ -44,11 +46,11 @@ async function resolveSavedItems(items: SavedItem[]): Promise<ResolvedItem[]> {
 }
 
 const ICONS: Record<SavedTargetType, any> = {
-  post: FileText, course: GraduationCap, lesson: BookOpen, event: Calendar, space: Users2, resource_placeholder: Bookmark,
+  post: FileText, course: GraduationCap, lesson: BookOpen, event: Calendar, space: Users2, resource: Bookmark, resource_placeholder: Bookmark,
 };
 
 const LABELS: Record<SavedTargetType, string> = {
-  post: "Post", course: "Course", lesson: "Lesson", event: "Event", space: "Space", resource_placeholder: "Resource",
+  post: "Post", course: "Course", lesson: "Lesson", event: "Event", space: "Space", resource: "Resource", resource_placeholder: "Resource",
 };
 
 export function SavedItemsList({ items, onUnsave }: { items: SavedItem[]; onUnsave?: () => void }) {

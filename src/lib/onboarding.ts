@@ -9,7 +9,7 @@ export type ChecklistTargetType =
   | "profile" | "space" | "post" | "event" | "course" | "lesson" | "settings" | "member";
 
 export type SavedTargetType =
-  | "post" | "course" | "lesson" | "event" | "space" | "resource_placeholder";
+  | "post" | "course" | "lesson" | "event" | "space" | "resource" | "resource_placeholder";
 
 export interface ChecklistItem {
   id: string;

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star, Tag, Clock, Zap, AlertTriangle, FileText, Megaphone, Layers } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star, Tag, Clock, Zap, AlertTriangle, FileText, Megaphone, Layers, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -130,6 +130,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/ai-member-insights"><Sparkles className="size-4 mr-2" />Member Insights</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-content-sources"><FileText className="size-4 mr-2" />AI Content Sources</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-helper-settings"><Bot className="size-4 mr-2" />AI Helper Settings</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/resources"><BookOpen className="size-4 mr-2" />Resources</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/resource-folders"><FolderTree className="size-4 mr-2" />Resource Folders</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>

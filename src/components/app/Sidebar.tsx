@@ -25,7 +25,7 @@ const items: NavItem[] = [
   { label: "Plans", to: "/plans", icon: CreditCard },
   { label: "My Access", to: "/my-access", icon: Shield },
   { label: "Billing", to: "/billing", icon: CreditCard },
-  { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
+  { label: "Resources", to: "/resources", icon: BookOpen },
   { label: "AI Assistant", to: "/admin/ai-assistant", icon: Sparkles, adminOnly: true },
   { label: "AI Helper", to: "/ai-helper", icon: Sparkles },
 ];
