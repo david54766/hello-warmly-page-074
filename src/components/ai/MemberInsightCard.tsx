@@ -5,10 +5,10 @@ import { Copy, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { ENGAGEMENT_LABELS, RISK_LABELS, type AIMemberInsight, type MemberActivityStats } from "@/lib/memberAi";
 
-function engagementVariant(level: string) {
+function engagementVariant(level: string): any {
   return level === "high" ? "default" : level === "medium" ? "secondary" : level === "low" ? "outline" : "destructive";
 }
-function riskVariant(level: string) {
+function riskVariant(level: string): any {
   return level === "none" ? "outline" : level === "low" ? "secondary" : level === "medium" ? "default" : "destructive";
 }
 
@@ -24,11 +24,11 @@ export function MemberInsightCard({ insight, stats }: { insight: AIMemberInsight
         <CardTitle className="flex items-center gap-2 text-base">
           <Sparkles className="size-4 text-primary" /> AI Member Insight
         </CardTitle>
-        <div className="flex gap-2">
-          <Badge variant={engagementVariant(insight.engagement_level) as any}>
+        <div className="flex gap-2 flex-wrap">
+          <Badge variant={engagementVariant(insight.engagement_level)}>
             Engagement: {ENGAGEMENT_LABELS[insight.engagement_level]}
           </Badge>
-          <Badge variant={riskVariant(insight.risk_level) as any}>
+          <Badge variant={riskVariant(insight.risk_level)}>
             Risk: {RISK_LABELS[insight.risk_level]}
           </Badge>
         </div>
