@@ -27,6 +27,7 @@ const items: NavItem[] = [
   { label: "Billing", to: "/billing", icon: CreditCard },
   { label: "Resources", to: "/coming-soon/resources", icon: BookOpen, comingSoon: true },
   { label: "AI Assistant", to: "/admin/ai-assistant", icon: Sparkles, adminOnly: true },
+  { label: "AI Helper", to: "/ai-helper", icon: Sparkles },
 ];
 
 const footerItems: NavItem[] = [
