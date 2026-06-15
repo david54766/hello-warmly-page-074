@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/app/DashboardCard";
 import { AdminCourseForm } from "@/components/courses/AdminCourseForm";
-import { Search, Plus, Pencil, Archive, ArchiveRestore, BookOpen, Settings2, Trash2, ChevronUp, ChevronDown } from "lucide-react";
+import { Search, Plus, Pencil, Archive, ArchiveRestore, BookOpen, Settings2, Trash2, ChevronUp, ChevronDown, Sparkles, History } from "lucide-react";
 import { toast } from "sonner";
 import { COURSE_ACCESS_LABELS, COURSE_VISIBILITY_LABELS, type Course } from "@/lib/courses";
 import type { Space } from "@/lib/spaces";
@@ -82,9 +82,14 @@ function AdminCoursesPage() {
           <h1 className="text-3xl font-semibold tracking-tight">Courses</h1>
           <p className="text-muted-foreground mt-1">Create courses, structure them into sections, and add lessons.</p>
         </div>
-        <Button onClick={() => { setEditing(null); setFormOpen(true); }}>
-          <Plus className="size-4 mr-1.5" />New course
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline"><Link to="/admin/ai-course-builder"><Sparkles className="size-4 mr-1.5" />Generate Course with AI</Link></Button>
+          <Button asChild variant="outline"><Link to="/admin/ai-course-builder"><Sparkles className="size-4 mr-1.5" />Generate Lesson Draft</Link></Button>
+          <Button asChild variant="outline"><Link to="/admin/ai-course-generations"><History className="size-4 mr-1.5" />AI Generations</Link></Button>
+          <Button onClick={() => { setEditing(null); setFormOpen(true); }}>
+            <Plus className="size-4 mr-1.5" />New course
+          </Button>
+        </div>
       </header>
 
       <div className="flex flex-wrap items-center gap-2">

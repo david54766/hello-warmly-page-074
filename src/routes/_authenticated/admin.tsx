@@ -117,6 +117,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/announcements"><Megaphone className="size-4 mr-2" />Announcements</Link></Button>
           <Button asChild><Link to="/admin/announcements/new"><Plus className="size-4 mr-1.5" />Create Announcement</Link></Button>
           <Button asChild><Link to="/admin/ai-assistant"><Sparkles className="size-4 mr-1.5" />AI Assistant</Link></Button>
+          <Button asChild><Link to="/admin/ai-course-builder"><Sparkles className="size-4 mr-1.5" />Generate Course</Link></Button>
+          <Button variant="outline" asChild><Link to="/admin/ai-course-generations"><FileText className="size-4 mr-2" />AI Generations</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-drafts"><FileText className="size-4 mr-2" />AI Drafts</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/ai-settings"><Bot className="size-4 mr-2" />AI Settings</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
