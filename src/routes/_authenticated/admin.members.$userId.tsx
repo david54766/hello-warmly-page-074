@@ -24,6 +24,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, UserX, UserCheck } from "lucide-react";
 import type { AppRole } from "@/hooks/useAuth";
 import type { Space } from "@/lib/spaces";
+import { MemberInsightCard } from "@/components/ai/MemberInsightCard";
+import { GenerateMemberInsightButton } from "@/components/ai/GenerateMemberInsightButton";
+import { AIReengagementMessageBox } from "@/components/ai/AIReengagementMessageBox";
+import { fetchMemberStats, getLatestInsight, type AIMemberInsight, type MemberActivityStats } from "@/lib/memberAi";
 
 export const Route = createFileRoute("/_authenticated/admin/members/$userId")({
   component: AdminMemberDetail,
@@ -39,21 +43,27 @@ function AdminMemberDetail() {
   const [allSpaces, setAllSpaces] = useState<Space[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [insight, setInsight] = useState<AIMemberInsight | null>(null);
+  const [memberStats, setMemberStats] = useState<MemberActivityStats | null>(null);
 
   useEffect(() => { if (!authLoading && !isAdmin) navigate({ to: "/dashboard" }); }, [authLoading, isAdmin, navigate]);
 
   const load = async () => {
     setLoading(true);
-    const [m, a, { data: memRows }, { data: allSp }] = await Promise.all([
+    const [m, a, { data: memRows }, { data: allSp }, ins, stats] = await Promise.all([
       fetchMember(userId),
       fetchActivity(userId),
       supabase.from("space_members").select("id, space_id, spaces(*)").eq("user_id", userId).eq("status", "active"),
       supabase.from("spaces").select("*").eq("is_archived", false).order("name"),
+      getLatestInsight(userId),
+      fetchMemberStats(userId),
     ]);
     setMember(m);
     setActivity(a);
     setSpaces(((memRows ?? []) as any[]).map((r) => ({ membership_id: r.id, space: r.spaces as Space })).filter((x) => x.space));
     setAllSpaces((allSp ?? []) as Space[]);
+    setInsight(ins);
+    setMemberStats(stats);
     setLoading(false);
   };
 
@@ -109,6 +119,25 @@ function AdminMemberDetail() {
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           {activity && <ProfileActivitySummary data={activity} />}
+
+          {insight ? (
+            <div className="space-y-3">
+              <MemberInsightCard insight={insight} stats={memberStats} />
+              <div className="flex gap-2">
+                <GenerateMemberInsightButton userId={member.id} memberName={member.full_name} onGenerated={setInsight} label="Regenerate insight" />
+              </div>
+            </div>
+          ) : (
+            <Card className="rounded-2xl">
+              <CardHeader><CardTitle>AI Member Insight</CardTitle></CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">Generate an AI-powered summary of this member's activity and a suggested next action.</p>
+                <GenerateMemberInsightButton userId={member.id} memberName={member.full_name} onGenerated={setInsight} />
+              </CardContent>
+            </Card>
+          )}
+
+          <AIReengagementMessageBox />
 
           <Card className="rounded-2xl">
             <CardHeader><CardTitle>Admin actions</CardTitle></CardHeader>
