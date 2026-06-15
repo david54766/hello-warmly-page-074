@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { AnnouncementBanner } from "@/components/announcements/AnnouncementBanner";
+import { AIHelperButton } from "@/components/ai/AIHelperButton";
 import { useAuth } from "@/hooks/useAuth";
 import { AlertOctagon } from "lucide-react";
 
@@ -33,6 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </div>
       <MobileBottomNav />
+      <AIHelperButton />
     </div>
   );
 }
