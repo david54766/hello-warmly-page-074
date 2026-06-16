@@ -64,6 +64,7 @@ import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenticated/admin.points'
 import { Route as AuthenticatedAdminPaymentEventsRouteImport } from './routes/_authenticated/admin.payment-events'
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
+import { Route as AuthenticatedAdminInvitationsRouteImport } from './routes/_authenticated/admin.invitations'
 import { Route as AuthenticatedAdminCouponsRouteImport } from './routes/_authenticated/admin.coupons'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
@@ -412,6 +413,12 @@ const AuthenticatedAdminModerationRoute =
     path: '/moderation',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminInvitationsRoute =
+  AuthenticatedAdminInvitationsRouteImport.update({
+    id: '/invitations',
+    path: '/invitations',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminCouponsRoute =
   AuthenticatedAdminCouponsRouteImport.update({
     id: '/coupons',
@@ -720,6 +727,7 @@ export interface FileRoutesByFullPath {
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -820,6 +828,7 @@ export interface FileRoutesByTo {
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -922,6 +931,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/_authenticated/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/_authenticated/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/_authenticated/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -1024,6 +1034,7 @@ export interface FileRouteTypes {
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/coupons'
+    | '/admin/invitations'
     | '/admin/moderation'
     | '/admin/payment-events'
     | '/admin/points'
@@ -1124,6 +1135,7 @@ export interface FileRouteTypes {
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/coupons'
+    | '/admin/invitations'
     | '/admin/moderation'
     | '/admin/payment-events'
     | '/admin/points'
@@ -1225,6 +1237,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/coupons'
+    | '/_authenticated/admin/invitations'
     | '/_authenticated/admin/moderation'
     | '/_authenticated/admin/payment-events'
     | '/_authenticated/admin/points'
@@ -1684,6 +1697,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminModerationRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/invitations': {
+      id: '/_authenticated/admin/invitations'
+      path: '/invitations'
+      fullPath: '/admin/invitations'
+      preLoaderRoute: typeof AuthenticatedAdminInvitationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/coupons': {
       id: '/_authenticated/admin/coupons'
       path: '/coupons'
@@ -2056,6 +2076,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminCouponsRoute: typeof AuthenticatedAdminCouponsRoute
+  AuthenticatedAdminInvitationsRoute: typeof AuthenticatedAdminInvitationsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
   AuthenticatedAdminPaymentEventsRoute: typeof AuthenticatedAdminPaymentEventsRoute
   AuthenticatedAdminPointsRoute: typeof AuthenticatedAdminPointsRoute
@@ -2115,6 +2136,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminCouponsRoute: AuthenticatedAdminCouponsRoute,
+  AuthenticatedAdminInvitationsRoute: AuthenticatedAdminInvitationsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
   AuthenticatedAdminPaymentEventsRoute: AuthenticatedAdminPaymentEventsRoute,
   AuthenticatedAdminPointsRoute: AuthenticatedAdminPointsRoute,
