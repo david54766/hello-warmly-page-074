@@ -54,6 +54,7 @@ import { Route as AuthenticatedHashtagsTagRouteImport } from './routes/_authenti
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events.$eventId'
 import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_authenticated/courses.$courseId'
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
+import { Route as AuthenticatedCertificatesCertificateIdRouteImport } from './routes/_authenticated/certificates.$certificateId'
 import { Route as AuthenticatedAnnouncementsAnnouncementIdRouteImport } from './routes/_authenticated/announcements.$announcementId'
 import { Route as AuthenticatedAdminTrialsRouteImport } from './routes/_authenticated/admin.trials'
 import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_authenticated/admin.transactions'
@@ -354,6 +355,12 @@ const AuthenticatedComingSoonAreaRoute =
   AuthenticatedComingSoonAreaRouteImport.update({
     id: '/coming-soon/$area',
     path: '/coming-soon/$area',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCertificatesCertificateIdRoute =
+  AuthenticatedCertificatesCertificateIdRouteImport.update({
+    id: '/certificates/$certificateId',
+    path: '/certificates/$certificateId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAnnouncementsAnnouncementIdRoute =
@@ -762,6 +769,7 @@ export interface FileRoutesByFullPath {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -866,6 +874,7 @@ export interface FileRoutesByTo {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -972,6 +981,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/_authenticated/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/_authenticated/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/_authenticated/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/_authenticated/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -1078,6 +1088,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/trials'
     | '/announcements/$announcementId'
+    | '/certificates/$certificateId'
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
@@ -1182,6 +1193,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/trials'
     | '/announcements/$announcementId'
+    | '/certificates/$certificateId'
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
@@ -1287,6 +1299,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/transactions'
     | '/_authenticated/admin/trials'
     | '/_authenticated/announcements/$announcementId'
+    | '/_authenticated/certificates/$certificateId'
     | '/_authenticated/coming-soon/$area'
     | '/_authenticated/courses/$courseId'
     | '/_authenticated/events/$eventId'
@@ -1664,6 +1677,13 @@ declare module '@tanstack/react-router' {
       path: '/coming-soon/$area'
       fullPath: '/coming-soon/$area'
       preLoaderRoute: typeof AuthenticatedComingSoonAreaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificates/$certificateId': {
+      id: '/_authenticated/certificates/$certificateId'
+      path: '/certificates/$certificateId'
+      fullPath: '/certificates/$certificateId'
+      preLoaderRoute: typeof AuthenticatedCertificatesCertificateIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/announcements/$announcementId': {
@@ -2312,6 +2332,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedAnnouncementsAnnouncementIdRoute: typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  AuthenticatedCertificatesCertificateIdRoute: typeof AuthenticatedCertificatesCertificateIdRoute
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
   AuthenticatedCoursesCourseIdRoute: typeof AuthenticatedCoursesCourseIdRoute
   AuthenticatedHashtagsTagRoute: typeof AuthenticatedHashtagsTagRoute
@@ -2348,6 +2369,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedAnnouncementsAnnouncementIdRoute:
     AuthenticatedAnnouncementsAnnouncementIdRoute,
+  AuthenticatedCertificatesCertificateIdRoute:
+    AuthenticatedCertificatesCertificateIdRoute,
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
   AuthenticatedCoursesCourseIdRoute: AuthenticatedCoursesCourseIdRoute,
   AuthenticatedHashtagsTagRoute: AuthenticatedHashtagsTagRoute,
