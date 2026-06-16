@@ -44,6 +44,12 @@ function PlatformSettingsPage() {
       secondary_color: row.secondary_color,
       support_email: row.support_email,
       privacy_level: row.privacy_level,
+      favicon_url: row.favicon_url,
+      button_style: row.button_style,
+      card_style: row.card_style,
+      sidebar_style: row.sidebar_style,
+      login_bg_url: row.login_bg_url,
+      role_display_names: row.role_display_names,
     }).eq("id", row.id);
     setSaving(false);
     if (error) return toast.error(error.message);
@@ -70,6 +76,59 @@ function PlatformSettingsPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Primary color"><Input type="color" value={row.primary_color ?? "#6366f1"} onChange={(e) => set("primary_color", e.target.value)} /></Field>
             <Field label="Secondary color"><Input type="color" value={row.secondary_color ?? "#0ea5e9"} onChange={(e) => set("secondary_color", e.target.value)} /></Field>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Favicon URL (placeholder)"><Input value={row.favicon_url ?? ""} onChange={(e) => set("favicon_url", e.target.value)} placeholder="https://…" /></Field>
+            <Field label="Login page background URL"><Input value={row.login_bg_url ?? ""} onChange={(e) => set("login_bg_url", e.target.value)} placeholder="https://…" /></Field>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="rounded-2xl">
+        <CardHeader><CardTitle>UI style</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Field label="Button style">
+              <Select value={row.button_style ?? "rounded"} onValueChange={(v) => set("button_style", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="rounded">Rounded</SelectItem>
+                  <SelectItem value="pill">Pill</SelectItem>
+                  <SelectItem value="square">Square</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field label="Card style">
+              <Select value={row.card_style ?? "rounded"} onValueChange={(v) => set("card_style", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="rounded">Rounded</SelectItem>
+                  <SelectItem value="flat">Flat</SelectItem>
+                  <SelectItem value="elevated">Elevated</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field label="Sidebar style">
+              <Select value={row.sidebar_style ?? "default"} onValueChange={(v) => set("sidebar_style", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">Default</SelectItem>
+                  <SelectItem value="compact">Compact</SelectItem>
+                  <SelectItem value="hidden">Hidden on member pages</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          </div>
+          <div className="rounded-xl border bg-muted/30 p-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Branding preview</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="size-12 rounded-xl border" style={{ background: row.primary_color ?? "#6366f1" }} aria-label="Primary" />
+              <div className="size-12 rounded-xl border" style={{ background: row.secondary_color ?? "#0ea5e9" }} aria-label="Secondary" />
+              <div className="rounded-lg border px-3 py-1.5 text-sm font-medium" style={{ background: row.primary_color ?? "#6366f1", color: "white" }}>
+                {row.platform_name || "MemberHub"}
+              </div>
+              <span className="text-xs text-muted-foreground">{row.button_style ?? "rounded"} buttons · {row.card_style ?? "rounded"} cards · {row.sidebar_style ?? "default"} sidebar</span>
+            </div>
           </div>
         </CardContent>
       </Card>
