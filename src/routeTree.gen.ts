@@ -42,6 +42,7 @@ import { Route as AuthenticatedSpacesIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedResourcesIndexRouteImport } from './routes/_authenticated/resources.index'
 import { Route as AuthenticatedMembersIndexRouteImport } from './routes/_authenticated/members.index'
 import { Route as AuthenticatedCoursesIndexRouteImport } from './routes/_authenticated/courses.index'
+import { Route as AuthenticatedCertificatesIndexRouteImport } from './routes/_authenticated/certificates.index'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings.notifications'
@@ -282,6 +283,12 @@ const AuthenticatedCoursesIndexRoute =
   AuthenticatedCoursesIndexRouteImport.update({
     id: '/courses/',
     path: '/courses/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCertificatesIndexRoute =
+  AuthenticatedCertificatesIndexRouteImport.update({
+    id: '/certificates/',
+    path: '/certificates/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
@@ -766,6 +773,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/certificates/': typeof AuthenticatedCertificatesIndexRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/resources/': typeof AuthenticatedResourcesIndexRoute
@@ -869,6 +877,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/certificates': typeof AuthenticatedCertificatesIndexRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/resources': typeof AuthenticatedResourcesIndexRoute
@@ -974,6 +983,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/_authenticated/certificates/': typeof AuthenticatedCertificatesIndexRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/resources/': typeof AuthenticatedResourcesIndexRoute
@@ -1079,6 +1089,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/certificates/'
     | '/courses/'
     | '/members/'
     | '/resources/'
@@ -1182,6 +1193,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/certificates'
     | '/courses'
     | '/members'
     | '/resources'
@@ -1286,6 +1298,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/_authenticated/certificates/'
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
     | '/_authenticated/resources/'
@@ -1567,6 +1580,13 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/courses/'
       preLoaderRoute: typeof AuthenticatedCoursesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificates/': {
+      id: '/_authenticated/certificates/'
+      path: '/certificates'
+      fullPath: '/certificates/'
+      preLoaderRoute: typeof AuthenticatedCertificatesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/stripe-webhook': {
@@ -2300,6 +2320,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPostsPostIdRoute: typeof AuthenticatedPostsPostIdRoute
   AuthenticatedResourcesResourceIdRoute: typeof AuthenticatedResourcesResourceIdRoute
   AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRouteWithChildren
+  AuthenticatedCertificatesIndexRoute: typeof AuthenticatedCertificatesIndexRoute
   AuthenticatedCoursesIndexRoute: typeof AuthenticatedCoursesIndexRoute
   AuthenticatedMembersIndexRoute: typeof AuthenticatedMembersIndexRoute
   AuthenticatedResourcesIndexRoute: typeof AuthenticatedResourcesIndexRoute
@@ -2335,6 +2356,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPostsPostIdRoute: AuthenticatedPostsPostIdRoute,
   AuthenticatedResourcesResourceIdRoute: AuthenticatedResourcesResourceIdRoute,
   AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRouteWithChildren,
+  AuthenticatedCertificatesIndexRoute: AuthenticatedCertificatesIndexRoute,
   AuthenticatedCoursesIndexRoute: AuthenticatedCoursesIndexRoute,
   AuthenticatedMembersIndexRoute: AuthenticatedMembersIndexRoute,
   AuthenticatedResourcesIndexRoute: AuthenticatedResourcesIndexRoute,
