@@ -17,6 +17,7 @@ import { Route as BundlesRouteImport } from './routes/bundles'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 import { Route as CheckoutFailedRouteImport } from './routes/checkout.failed'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
@@ -147,6 +148,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InviteTokenRoute = InviteTokenRouteImport.update({
+  id: '/invite/$token',
+  path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
@@ -712,6 +718,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -813,6 +820,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -916,6 +924,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
   '/_authenticated/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/_authenticated/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -1019,6 +1028,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/admin/access'
     | '/admin/ai-assistant'
     | '/admin/ai-content-sources'
@@ -1120,6 +1130,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/admin/access'
     | '/admin/ai-assistant'
     | '/admin/ai-content-sources'
@@ -1222,6 +1233,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/_authenticated/admin/access'
     | '/_authenticated/admin/ai-assistant'
     | '/_authenticated/admin/ai-content-sources'
@@ -1307,6 +1319,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   CheckoutFailedRoute: typeof CheckoutFailedRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
+  InviteTokenRoute: typeof InviteTokenRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
@@ -1366,6 +1379,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invite/$token': {
+      id: '/invite/$token'
+      path: '/invite/$token'
+      fullPath: '/invite/$token'
+      preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout/success': {
@@ -2313,6 +2333,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   CheckoutFailedRoute: CheckoutFailedRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
+  InviteTokenRoute: InviteTokenRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
