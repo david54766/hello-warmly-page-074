@@ -135,10 +135,6 @@ export function AdminEventForm({
           </Select>
         </Field>
       </div>
-      <div className="flex justify-end">
-        <Button onClick={submit} disabled={saving}>{saving ? "Saving…" : initial ? "Save changes" : "Create event"}</Button>
-      </div>
-
       {showLive && (
         <div className="space-y-4 rounded-2xl border border-dashed p-4">
           <h3 className="text-sm font-semibold">Livestream & webinar settings</h3>
@@ -195,6 +191,10 @@ export function AdminEventForm({
           </div>
         </div>
       )}
+
+      <div className="flex justify-end">
+        <Button onClick={submit} disabled={saving}>{saving ? "Saving…" : initial ? "Save changes" : "Create event"}</Button>
+      </div>
     </div>
   );
 }
