@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 export type EventType =
   | "in_person"
   | "virtual"
+  | "livestream"
+  | "webinar"
   | "workshop"
   | "community_call"
   | "course_session"
@@ -12,6 +14,19 @@ export type EventVisibility = "public" | "members_only" | "space_members" | "hid
 export type EventAccess = "free" | "preview" | "paid" | "paid_placeholder";
 export type EventStatus = "draft" | "published" | "canceled" | "completed";
 export type RsvpStatus = "going" | "not_going" | "waitlist";
+
+export type LivestreamProvider =
+  | "zoom"
+  | "google_meet"
+  | "youtube_live"
+  | "vimeo"
+  | "streamyard"
+  | "livekit_placeholder"
+  | "custom";
+
+export type AttendanceStatus = "attended" | "no_show" | "unknown";
+
+export interface AgendaItem { time?: string; title: string; description?: string }
 
 export interface EventRow {
   id: string;
@@ -32,6 +47,14 @@ export interface EventRow {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  livestream_provider?: LivestreamProvider | null;
+  livestream_embed_url?: string | null;
+  livestream_join_url?: string | null;
+  replay_url?: string | null;
+  live_chat_enabled?: boolean | null;
+  calendar_url_placeholder?: string | null;
+  attendance_tracking_enabled?: boolean | null;
+  event_agenda_json?: AgendaItem[] | null;
 }
 
 export interface RsvpRow {
@@ -46,11 +69,33 @@ export interface RsvpRow {
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
   in_person: "In person",
   virtual: "Virtual",
+  livestream: "Livestream",
+  webinar: "Webinar",
   workshop: "Workshop",
   community_call: "Community call",
   course_session: "Course session",
   livestream_placeholder: "Livestream (soon)",
 };
+
+export const LIVESTREAM_PROVIDER_LABELS: Record<LivestreamProvider, string> = {
+  zoom: "Zoom",
+  google_meet: "Google Meet",
+  youtube_live: "YouTube Live",
+  vimeo: "Vimeo",
+  streamyard: "StreamYard",
+  livekit_placeholder: "LiveKit (placeholder)",
+  custom: "Custom URL",
+};
+
+export const ATTENDANCE_LABELS: Record<AttendanceStatus, string> = {
+  attended: "Attended",
+  no_show: "No show",
+  unknown: "Unknown",
+};
+
+export function isLivestreamLike(t: EventType) {
+  return t === "livestream" || t === "webinar" || t === "virtual";
+}
 
 export const EVENT_STATUS_LABELS: Record<EventStatus, string> = {
   draft: "Draft",
