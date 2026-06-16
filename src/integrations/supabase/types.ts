@@ -1461,6 +1461,44 @@ export type Database = {
         }
         Relationships: []
       }
+      event_attendance: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          marked_at: string | null
+          marked_by: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          marked_at?: string | null
+          marked_by?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          marked_at?: string | null
+          marked_by?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendance_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_rsvps: {
         Row: {
           created_at: string
@@ -1499,14 +1537,22 @@ export type Database = {
       events: {
         Row: {
           access_level: Database["public"]["Enums"]["event_access"]
+          attendance_tracking_enabled: boolean
+          calendar_url_placeholder: string | null
           cover_image_url: string | null
           created_at: string
           created_by: string | null
           description: string | null
           end_time: string
+          event_agenda_json: Json | null
           event_type: Database["public"]["Enums"]["event_type"]
           id: string
+          live_chat_enabled: boolean
+          livestream_embed_url: string | null
+          livestream_join_url: string | null
+          livestream_provider: string | null
           location: string | null
+          replay_url: string | null
           rsvp_limit: number | null
           space_id: string
           start_time: string
@@ -1519,14 +1565,22 @@ export type Database = {
         }
         Insert: {
           access_level?: Database["public"]["Enums"]["event_access"]
+          attendance_tracking_enabled?: boolean
+          calendar_url_placeholder?: string | null
           cover_image_url?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           end_time: string
+          event_agenda_json?: Json | null
           event_type?: Database["public"]["Enums"]["event_type"]
           id?: string
+          live_chat_enabled?: boolean
+          livestream_embed_url?: string | null
+          livestream_join_url?: string | null
+          livestream_provider?: string | null
           location?: string | null
+          replay_url?: string | null
           rsvp_limit?: number | null
           space_id: string
           start_time: string
@@ -1539,14 +1593,22 @@ export type Database = {
         }
         Update: {
           access_level?: Database["public"]["Enums"]["event_access"]
+          attendance_tracking_enabled?: boolean
+          calendar_url_placeholder?: string | null
           cover_image_url?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           end_time?: string
+          event_agenda_json?: Json | null
           event_type?: Database["public"]["Enums"]["event_type"]
           id?: string
+          live_chat_enabled?: boolean
+          livestream_embed_url?: string | null
+          livestream_join_url?: string | null
+          livestream_provider?: string | null
           location?: string | null
+          replay_url?: string | null
           rsvp_limit?: number | null
           space_id?: string
           start_time?: string
@@ -2309,43 +2371,61 @@ export type Database = {
       }
       platform_settings: {
         Row: {
+          button_style: string | null
+          card_style: string | null
           cover_image_url: string | null
           created_at: string
           description: string | null
+          favicon_url: string | null
           id: string
+          login_bg_url: string | null
           logo_url: string | null
           platform_name: string
           primary_color: string | null
           privacy_level: string
+          role_display_names: Json | null
           secondary_color: string | null
+          sidebar_style: string | null
           support_email: string | null
           tagline: string | null
           updated_at: string
         }
         Insert: {
+          button_style?: string | null
+          card_style?: string | null
           cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          favicon_url?: string | null
           id?: string
+          login_bg_url?: string | null
           logo_url?: string | null
           platform_name?: string
           primary_color?: string | null
           privacy_level?: string
+          role_display_names?: Json | null
           secondary_color?: string | null
+          sidebar_style?: string | null
           support_email?: string | null
           tagline?: string | null
           updated_at?: string
         }
         Update: {
+          button_style?: string | null
+          card_style?: string | null
           cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          favicon_url?: string | null
           id?: string
+          login_bg_url?: string | null
           logo_url?: string | null
           platform_name?: string
           primary_color?: string | null
           privacy_level?: string
+          role_display_names?: Json | null
           secondary_color?: string | null
+          sidebar_style?: string | null
           support_email?: string | null
           tagline?: string | null
           updated_at?: string
@@ -3925,6 +4005,8 @@ export type Database = {
         | "community_call"
         | "course_session"
         | "livestream_placeholder"
+        | "livestream"
+        | "webinar"
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
       invitation_status: "pending" | "accepted" | "expired" | "canceled"
       invoice_status: "draft" | "open" | "paid" | "uncollectible" | "void"
@@ -4344,6 +4426,8 @@ export const Constants = {
         "community_call",
         "course_session",
         "livestream_placeholder",
+        "livestream",
+        "webinar",
       ],
       event_visibility: ["public", "members_only", "space_members", "hidden"],
       invitation_status: ["pending", "accepted", "expired", "canceled"],
