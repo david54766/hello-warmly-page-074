@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminStatCard, DashboardCard, EmptyState } from "@/components/app/DashboardCard";
-import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star, Tag, Clock, Zap, AlertTriangle, FileText, Megaphone, Layers, BookOpen } from "lucide-react";
+import { Users, UserPlus, Activity, Settings, Users2, GraduationCap, Calendar, CreditCard, Bot, Sparkles, FolderTree, Plus, ArrowRight, MessageSquare, Shield, CalendarCheck, UserX, BarChart3, ShieldAlert, ListChecks, Award, Trophy, Star, Tag, Clock, Zap, AlertTriangle, FileText, Megaphone, Layers, BookOpen, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getIcon, type Space } from "@/lib/spaces";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const { isAdmin, loading } = useAuth();
   const navigate = useNavigate();
-  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0, events: 0, upcomingEvents: 0, rsvps: 0, suspended: 0, newMonth: 0, openReports: 0, totalPlans: 0, activePlans: 0, featuredPlan: "—", billingConfigured: false, totalAutomations: 0, activeAutomations: 0, failedLogs: 0, activeSegments: 0, sentAnnouncements: 0, draftAnnouncements: 0, aiOutlines: 0, aiLessons: 0, aiConverted: 0 });
+  const [stats, setStats] = useState({ total: 0, newWeek: 0, active: 0, spaces: 0, collections: 0, events: 0, upcomingEvents: 0, rsvps: 0, suspended: 0, newMonth: 0, openReports: 0, totalPlans: 0, activePlans: 0, featuredPlan: "—", billingConfigured: false, totalAutomations: 0, activeAutomations: 0, failedLogs: 0, activeSegments: 0, sentAnnouncements: 0, draftAnnouncements: 0, aiOutlines: 0, aiLessons: 0, aiConverted: 0, pendingInvites: 0, inviteLinks: 0, certsIssued: 0 });
   const [recent, setRecent] = useState<Space[]>([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function AdminPage() {
       const weekAgo = new Date(Date.now() - 7 * 86400_000).toISOString();
       const monthAgo = new Date(Date.now() - 30 * 86400_000).toISOString();
       const nowIso = new Date().toISOString();
-      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }, { count: eventsCount }, { count: upcomingCount }, { count: rsvpCount }, { count: suspended }, { count: newMonth }, { count: openReports }, { data: plansData }, { data: billingData }, { count: totalAutomations }, { count: activeAutomations }, { count: failedLogs }, { count: activeSegments }, { count: sentAnnouncements }, { count: draftAnnouncements }, { count: aiOutlines }, { count: aiLessons }, { count: aiConverted }] = await Promise.all([
+      const [{ count: total }, { count: newWeek }, { count: active }, { count: spacesCount }, { count: collectionsCount }, { data: recentSpaces }, { count: eventsCount }, { count: upcomingCount }, { count: rsvpCount }, { count: suspended }, { count: newMonth }, { count: openReports }, { data: plansData }, { data: billingData }, { count: totalAutomations }, { count: activeAutomations }, { count: failedLogs }, { count: activeSegments }, { count: sentAnnouncements }, { count: draftAnnouncements }, { count: aiOutlines }, { count: aiLessons }, { count: aiConverted }, { count: pendingInvites }, { count: inviteLinks }, { count: certsIssued }] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("created_at", weekAgo),
         supabase.from("profiles").select("*", { count: "exact", head: true }).gte("last_active_at", weekAgo),
@@ -52,6 +52,9 @@ function AdminPage() {
         (supabase as any).from("ai_course_generations").select("*", { count: "exact", head: true }),
         (supabase as any).from("ai_lesson_generations").select("*", { count: "exact", head: true }),
         (supabase as any).from("ai_course_generations").select("*", { count: "exact", head: true }).eq("status", "converted"),
+        (supabase as any).from("invitations").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        (supabase as any).from("invite_links").select("*", { count: "exact", head: true }).eq("active", true),
+        (supabase as any).from("user_certificates").select("*", { count: "exact", head: true }),
       ]);
       const plans = (plansData ?? []) as { name: string; active: boolean; featured: boolean }[];
       setStats({
@@ -79,6 +82,9 @@ function AdminPage() {
         aiOutlines: aiOutlines ?? 0,
         aiLessons: aiLessons ?? 0,
         aiConverted: aiConverted ?? 0,
+        pendingInvites: pendingInvites ?? 0,
+        inviteLinks: inviteLinks ?? 0,
+        certsIssued: certsIssued ?? 0,
       });
       setRecent((recentSpaces ?? []) as Space[]);
     })();
@@ -132,6 +138,8 @@ function AdminPage() {
           <Button variant="outline" asChild><Link to="/admin/ai-helper-settings"><Bot className="size-4 mr-2" />AI Helper Settings</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/resources"><BookOpen className="size-4 mr-2" />Resources</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/resource-folders"><FolderTree className="size-4 mr-2" />Resource Folders</Link></Button>
+          <Button asChild><Link to="/admin/invitations"><Mail className="size-4 mr-1.5" />Invite Member</Link></Button>
+          <Button asChild><Link to="/admin/certificates"><Award className="size-4 mr-1.5" />Create Certificate</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/settings"><Settings className="size-4 mr-2" />Settings</Link></Button>
         </div>
       </header>
@@ -159,6 +167,9 @@ function AdminPage() {
         <AdminStatCard label="AI Course Outlines" value={stats.aiOutlines} icon={<Sparkles className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="AI Lesson Drafts" value={stats.aiLessons} icon={<Sparkles className="size-4 text-muted-foreground" />} />
         <AdminStatCard label="AI Outlines Converted" value={stats.aiConverted} icon={<GraduationCap className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Pending Invitations" value={stats.pendingInvites} icon={<Mail className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Active Invite Links" value={stats.inviteLinks} icon={<Mail className="size-4 text-muted-foreground" />} />
+        <AdminStatCard label="Certificates Issued" value={stats.certsIssued} icon={<Award className="size-4 text-muted-foreground" />} />
       </div>
 
       <section className="space-y-3">

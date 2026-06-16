@@ -17,9 +17,11 @@ import { Route as BundlesRouteImport } from './routes/bundles'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 import { Route as CheckoutFailedRouteImport } from './routes/checkout.failed'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPlansRouteImport } from './routes/_authenticated/plans'
@@ -40,6 +42,7 @@ import { Route as AuthenticatedSpacesIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedResourcesIndexRouteImport } from './routes/_authenticated/resources.index'
 import { Route as AuthenticatedMembersIndexRouteImport } from './routes/_authenticated/members.index'
 import { Route as AuthenticatedCoursesIndexRouteImport } from './routes/_authenticated/courses.index'
+import { Route as AuthenticatedCertificatesIndexRouteImport } from './routes/_authenticated/certificates.index'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedSpacesSpaceIdRouteImport } from './routes/_authenticated/spaces.$spaceId'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings.notifications'
@@ -51,6 +54,7 @@ import { Route as AuthenticatedHashtagsTagRouteImport } from './routes/_authenti
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events.$eventId'
 import { Route as AuthenticatedCoursesCourseIdRouteImport } from './routes/_authenticated/courses.$courseId'
 import { Route as AuthenticatedComingSoonAreaRouteImport } from './routes/_authenticated/coming-soon.$area'
+import { Route as AuthenticatedCertificatesCertificateIdRouteImport } from './routes/_authenticated/certificates.$certificateId'
 import { Route as AuthenticatedAnnouncementsAnnouncementIdRouteImport } from './routes/_authenticated/announcements.$announcementId'
 import { Route as AuthenticatedAdminTrialsRouteImport } from './routes/_authenticated/admin.trials'
 import { Route as AuthenticatedAdminTransactionsRouteImport } from './routes/_authenticated/admin.transactions'
@@ -63,9 +67,11 @@ import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminPointsRouteImport } from './routes/_authenticated/admin.points'
 import { Route as AuthenticatedAdminPaymentEventsRouteImport } from './routes/_authenticated/admin.payment-events'
 import { Route as AuthenticatedAdminModerationRouteImport } from './routes/_authenticated/admin.moderation'
+import { Route as AuthenticatedAdminInvitationsRouteImport } from './routes/_authenticated/admin.invitations'
 import { Route as AuthenticatedAdminCouponsRouteImport } from './routes/_authenticated/admin.coupons'
 import { Route as AuthenticatedAdminCollectionsRouteImport } from './routes/_authenticated/admin.collections'
 import { Route as AuthenticatedAdminChecklistRouteImport } from './routes/_authenticated/admin.checklist'
+import { Route as AuthenticatedAdminCertificatesRouteImport } from './routes/_authenticated/admin.certificates'
 import { Route as AuthenticatedAdminBillingSettingsRouteImport } from './routes/_authenticated/admin.billing-settings'
 import { Route as AuthenticatedAdminBadgesRouteImport } from './routes/_authenticated/admin.badges'
 import { Route as AuthenticatedAdminAutomationLogsRouteImport } from './routes/_authenticated/admin.automation-logs'
@@ -147,6 +153,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InviteTokenRoute = InviteTokenRouteImport.update({
+  id: '/invite/$token',
+  path: '/invite/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
   id: '/checkout/success',
   path: '/checkout/success',
@@ -160,6 +171,11 @@ const CheckoutFailedRoute = CheckoutFailedRouteImport.update({
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
@@ -270,6 +286,12 @@ const AuthenticatedCoursesIndexRoute =
     path: '/courses/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCertificatesIndexRoute =
+  AuthenticatedCertificatesIndexRouteImport.update({
+    id: '/certificates/',
+    path: '/certificates/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
   id: '/api/public/stripe-webhook',
   path: '/api/public/stripe-webhook',
@@ -333,6 +355,12 @@ const AuthenticatedComingSoonAreaRoute =
   AuthenticatedComingSoonAreaRouteImport.update({
     id: '/coming-soon/$area',
     path: '/coming-soon/$area',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCertificatesCertificateIdRoute =
+  AuthenticatedCertificatesCertificateIdRouteImport.update({
+    id: '/certificates/$certificateId',
+    path: '/certificates/$certificateId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAnnouncementsAnnouncementIdRoute =
@@ -406,6 +434,12 @@ const AuthenticatedAdminModerationRoute =
     path: '/moderation',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminInvitationsRoute =
+  AuthenticatedAdminInvitationsRouteImport.update({
+    id: '/invitations',
+    path: '/invitations',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminCouponsRoute =
   AuthenticatedAdminCouponsRouteImport.update({
     id: '/coupons',
@@ -422,6 +456,12 @@ const AuthenticatedAdminChecklistRoute =
   AuthenticatedAdminChecklistRouteImport.update({
     id: '/checklist',
     path: '/checklist',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCertificatesRoute =
+  AuthenticatedAdminCertificatesRouteImport.update({
+    id: '/certificates',
+    path: '/certificates',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminBillingSettingsRoute =
@@ -695,9 +735,11 @@ export interface FileRoutesByFullPath {
   '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -710,9 +752,11 @@ export interface FileRoutesByFullPath {
   '/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
+  '/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -725,6 +769,7 @@ export interface FileRoutesByFullPath {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -736,6 +781,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/certificates/': typeof AuthenticatedCertificatesIndexRoute
   '/courses/': typeof AuthenticatedCoursesIndexRoute
   '/members/': typeof AuthenticatedMembersIndexRoute
   '/resources/': typeof AuthenticatedResourcesIndexRoute
@@ -794,9 +840,11 @@ export interface FileRoutesByTo {
   '/plans': typeof AuthenticatedPlansRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/admin/access': typeof AuthenticatedAdminAccessRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -809,9 +857,11 @@ export interface FileRoutesByTo {
   '/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
   '/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
+  '/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -824,6 +874,7 @@ export interface FileRoutesByTo {
   '/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -835,6 +886,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/certificates': typeof AuthenticatedCertificatesIndexRoute
   '/courses': typeof AuthenticatedCoursesIndexRoute
   '/members': typeof AuthenticatedMembersIndexRoute
   '/resources': typeof AuthenticatedResourcesIndexRoute
@@ -895,9 +947,11 @@ export interface FileRoutesById {
   '/_authenticated/plans': typeof AuthenticatedPlansRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
+  '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/checkout/failed': typeof CheckoutFailedRoute
   '/checkout/success': typeof CheckoutSuccessRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/_authenticated/admin/access': typeof AuthenticatedAdminAccessRoute
   '/_authenticated/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/_authenticated/admin/ai-content-sources': typeof AuthenticatedAdminAiContentSourcesRoute
@@ -910,9 +964,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/automation-logs': typeof AuthenticatedAdminAutomationLogsRoute
   '/_authenticated/admin/badges': typeof AuthenticatedAdminBadgesRoute
   '/_authenticated/admin/billing-settings': typeof AuthenticatedAdminBillingSettingsRoute
+  '/_authenticated/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/_authenticated/admin/checklist': typeof AuthenticatedAdminChecklistRoute
   '/_authenticated/admin/collections': typeof AuthenticatedAdminCollectionsRoute
   '/_authenticated/admin/coupons': typeof AuthenticatedAdminCouponsRoute
+  '/_authenticated/admin/invitations': typeof AuthenticatedAdminInvitationsRoute
   '/_authenticated/admin/moderation': typeof AuthenticatedAdminModerationRoute
   '/_authenticated/admin/payment-events': typeof AuthenticatedAdminPaymentEventsRoute
   '/_authenticated/admin/points': typeof AuthenticatedAdminPointsRoute
@@ -925,6 +981,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/transactions': typeof AuthenticatedAdminTransactionsRoute
   '/_authenticated/admin/trials': typeof AuthenticatedAdminTrialsRoute
   '/_authenticated/announcements/$announcementId': typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  '/_authenticated/certificates/$certificateId': typeof AuthenticatedCertificatesCertificateIdRoute
   '/_authenticated/coming-soon/$area': typeof AuthenticatedComingSoonAreaRoute
   '/_authenticated/courses/$courseId': typeof AuthenticatedCoursesCourseIdRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
@@ -936,6 +993,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/spaces/$spaceId': typeof AuthenticatedSpacesSpaceIdRouteWithChildren
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/_authenticated/certificates/': typeof AuthenticatedCertificatesIndexRoute
   '/_authenticated/courses/': typeof AuthenticatedCoursesIndexRoute
   '/_authenticated/members/': typeof AuthenticatedMembersIndexRoute
   '/_authenticated/resources/': typeof AuthenticatedResourcesIndexRoute
@@ -996,9 +1054,11 @@ export interface FileRouteTypes {
     | '/plans'
     | '/profile'
     | '/saved'
+    | '/search'
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/admin/access'
     | '/admin/ai-assistant'
     | '/admin/ai-content-sources'
@@ -1011,9 +1071,11 @@ export interface FileRouteTypes {
     | '/admin/automation-logs'
     | '/admin/badges'
     | '/admin/billing-settings'
+    | '/admin/certificates'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/coupons'
+    | '/admin/invitations'
     | '/admin/moderation'
     | '/admin/payment-events'
     | '/admin/points'
@@ -1026,6 +1088,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/trials'
     | '/announcements/$announcementId'
+    | '/certificates/$certificateId'
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
@@ -1037,6 +1100,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/certificates/'
     | '/courses/'
     | '/members/'
     | '/resources/'
@@ -1095,9 +1159,11 @@ export interface FileRouteTypes {
     | '/plans'
     | '/profile'
     | '/saved'
+    | '/search'
     | '/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/admin/access'
     | '/admin/ai-assistant'
     | '/admin/ai-content-sources'
@@ -1110,9 +1176,11 @@ export interface FileRouteTypes {
     | '/admin/automation-logs'
     | '/admin/badges'
     | '/admin/billing-settings'
+    | '/admin/certificates'
     | '/admin/checklist'
     | '/admin/collections'
     | '/admin/coupons'
+    | '/admin/invitations'
     | '/admin/moderation'
     | '/admin/payment-events'
     | '/admin/points'
@@ -1125,6 +1193,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/trials'
     | '/announcements/$announcementId'
+    | '/certificates/$certificateId'
     | '/coming-soon/$area'
     | '/courses/$courseId'
     | '/events/$eventId'
@@ -1136,6 +1205,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/certificates'
     | '/courses'
     | '/members'
     | '/resources'
@@ -1195,9 +1265,11 @@ export interface FileRouteTypes {
     | '/_authenticated/plans'
     | '/_authenticated/profile'
     | '/_authenticated/saved'
+    | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/checkout/failed'
     | '/checkout/success'
+    | '/invite/$token'
     | '/_authenticated/admin/access'
     | '/_authenticated/admin/ai-assistant'
     | '/_authenticated/admin/ai-content-sources'
@@ -1210,9 +1282,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/automation-logs'
     | '/_authenticated/admin/badges'
     | '/_authenticated/admin/billing-settings'
+    | '/_authenticated/admin/certificates'
     | '/_authenticated/admin/checklist'
     | '/_authenticated/admin/collections'
     | '/_authenticated/admin/coupons'
+    | '/_authenticated/admin/invitations'
     | '/_authenticated/admin/moderation'
     | '/_authenticated/admin/payment-events'
     | '/_authenticated/admin/points'
@@ -1225,6 +1299,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/transactions'
     | '/_authenticated/admin/trials'
     | '/_authenticated/announcements/$announcementId'
+    | '/_authenticated/certificates/$certificateId'
     | '/_authenticated/coming-soon/$area'
     | '/_authenticated/courses/$courseId'
     | '/_authenticated/events/$eventId'
@@ -1236,6 +1311,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/spaces/$spaceId'
     | '/api/public/stripe-webhook'
+    | '/_authenticated/certificates/'
     | '/_authenticated/courses/'
     | '/_authenticated/members/'
     | '/_authenticated/resources/'
@@ -1282,6 +1358,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   CheckoutFailedRoute: typeof CheckoutFailedRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
+  InviteTokenRoute: typeof InviteTokenRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
@@ -1343,6 +1420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invite/$token': {
+      id: '/invite/$token'
+      path: '/invite/$token'
+      fullPath: '/invite/$token'
+      preLoaderRoute: typeof InviteTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout/success': {
       id: '/checkout/success'
       path: '/checkout/success'
@@ -1362,6 +1446,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/search': {
+      id: '/_authenticated/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthenticatedSearchRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/saved': {
@@ -1504,6 +1595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCoursesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/certificates/': {
+      id: '/_authenticated/certificates/'
+      path: '/certificates'
+      fullPath: '/certificates/'
+      preLoaderRoute: typeof AuthenticatedCertificatesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/stripe-webhook': {
       id: '/api/public/stripe-webhook'
       path: '/api/public/stripe-webhook'
@@ -1579,6 +1677,13 @@ declare module '@tanstack/react-router' {
       path: '/coming-soon/$area'
       fullPath: '/coming-soon/$area'
       preLoaderRoute: typeof AuthenticatedComingSoonAreaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificates/$certificateId': {
+      id: '/_authenticated/certificates/$certificateId'
+      path: '/certificates/$certificateId'
+      fullPath: '/certificates/$certificateId'
+      preLoaderRoute: typeof AuthenticatedCertificatesCertificateIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/announcements/$announcementId': {
@@ -1665,6 +1770,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminModerationRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/invitations': {
+      id: '/_authenticated/admin/invitations'
+      path: '/invitations'
+      fullPath: '/admin/invitations'
+      preLoaderRoute: typeof AuthenticatedAdminInvitationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/coupons': {
       id: '/_authenticated/admin/coupons'
       path: '/coupons'
@@ -1684,6 +1796,13 @@ declare module '@tanstack/react-router' {
       path: '/checklist'
       fullPath: '/admin/checklist'
       preLoaderRoute: typeof AuthenticatedAdminChecklistRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/certificates': {
+      id: '/_authenticated/admin/certificates'
+      path: '/certificates'
+      fullPath: '/admin/certificates'
+      preLoaderRoute: typeof AuthenticatedAdminCertificatesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/billing-settings': {
@@ -2034,9 +2153,11 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAutomationLogsRoute: typeof AuthenticatedAdminAutomationLogsRoute
   AuthenticatedAdminBadgesRoute: typeof AuthenticatedAdminBadgesRoute
   AuthenticatedAdminBillingSettingsRoute: typeof AuthenticatedAdminBillingSettingsRoute
+  AuthenticatedAdminCertificatesRoute: typeof AuthenticatedAdminCertificatesRoute
   AuthenticatedAdminChecklistRoute: typeof AuthenticatedAdminChecklistRoute
   AuthenticatedAdminCollectionsRoute: typeof AuthenticatedAdminCollectionsRoute
   AuthenticatedAdminCouponsRoute: typeof AuthenticatedAdminCouponsRoute
+  AuthenticatedAdminInvitationsRoute: typeof AuthenticatedAdminInvitationsRoute
   AuthenticatedAdminModerationRoute: typeof AuthenticatedAdminModerationRoute
   AuthenticatedAdminPaymentEventsRoute: typeof AuthenticatedAdminPaymentEventsRoute
   AuthenticatedAdminPointsRoute: typeof AuthenticatedAdminPointsRoute
@@ -2093,9 +2214,11 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBadgesRoute: AuthenticatedAdminBadgesRoute,
   AuthenticatedAdminBillingSettingsRoute:
     AuthenticatedAdminBillingSettingsRoute,
+  AuthenticatedAdminCertificatesRoute: AuthenticatedAdminCertificatesRoute,
   AuthenticatedAdminChecklistRoute: AuthenticatedAdminChecklistRoute,
   AuthenticatedAdminCollectionsRoute: AuthenticatedAdminCollectionsRoute,
   AuthenticatedAdminCouponsRoute: AuthenticatedAdminCouponsRoute,
+  AuthenticatedAdminInvitationsRoute: AuthenticatedAdminInvitationsRoute,
   AuthenticatedAdminModerationRoute: AuthenticatedAdminModerationRoute,
   AuthenticatedAdminPaymentEventsRoute: AuthenticatedAdminPaymentEventsRoute,
   AuthenticatedAdminPointsRoute: AuthenticatedAdminPointsRoute,
@@ -2206,8 +2329,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPlansRoute: typeof AuthenticatedPlansRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
+  AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
   AuthenticatedAnnouncementsAnnouncementIdRoute: typeof AuthenticatedAnnouncementsAnnouncementIdRoute
+  AuthenticatedCertificatesCertificateIdRoute: typeof AuthenticatedCertificatesCertificateIdRoute
   AuthenticatedComingSoonAreaRoute: typeof AuthenticatedComingSoonAreaRoute
   AuthenticatedCoursesCourseIdRoute: typeof AuthenticatedCoursesCourseIdRoute
   AuthenticatedHashtagsTagRoute: typeof AuthenticatedHashtagsTagRoute
@@ -2216,6 +2341,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPostsPostIdRoute: typeof AuthenticatedPostsPostIdRoute
   AuthenticatedResourcesResourceIdRoute: typeof AuthenticatedResourcesResourceIdRoute
   AuthenticatedSpacesSpaceIdRoute: typeof AuthenticatedSpacesSpaceIdRouteWithChildren
+  AuthenticatedCertificatesIndexRoute: typeof AuthenticatedCertificatesIndexRoute
   AuthenticatedCoursesIndexRoute: typeof AuthenticatedCoursesIndexRoute
   AuthenticatedMembersIndexRoute: typeof AuthenticatedMembersIndexRoute
   AuthenticatedResourcesIndexRoute: typeof AuthenticatedResourcesIndexRoute
@@ -2239,9 +2365,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPlansRoute: AuthenticatedPlansRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSavedRoute: AuthenticatedSavedRoute,
+  AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
   AuthenticatedAnnouncementsAnnouncementIdRoute:
     AuthenticatedAnnouncementsAnnouncementIdRoute,
+  AuthenticatedCertificatesCertificateIdRoute:
+    AuthenticatedCertificatesCertificateIdRoute,
   AuthenticatedComingSoonAreaRoute: AuthenticatedComingSoonAreaRoute,
   AuthenticatedCoursesCourseIdRoute: AuthenticatedCoursesCourseIdRoute,
   AuthenticatedHashtagsTagRoute: AuthenticatedHashtagsTagRoute,
@@ -2250,6 +2379,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPostsPostIdRoute: AuthenticatedPostsPostIdRoute,
   AuthenticatedResourcesResourceIdRoute: AuthenticatedResourcesResourceIdRoute,
   AuthenticatedSpacesSpaceIdRoute: AuthenticatedSpacesSpaceIdRouteWithChildren,
+  AuthenticatedCertificatesIndexRoute: AuthenticatedCertificatesIndexRoute,
   AuthenticatedCoursesIndexRoute: AuthenticatedCoursesIndexRoute,
   AuthenticatedMembersIndexRoute: AuthenticatedMembersIndexRoute,
   AuthenticatedResourcesIndexRoute: AuthenticatedResourcesIndexRoute,
@@ -2270,6 +2400,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   CheckoutFailedRoute: CheckoutFailedRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
+  InviteTokenRoute: InviteTokenRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport

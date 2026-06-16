@@ -13,6 +13,7 @@ import {
 import { LogOut, User, Settings, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { GlobalSearchBar } from "@/components/search/GlobalSearchBar";
 
 export function TopBar() {
   const { profile, user, isAdmin, signOut } = useAuth();
@@ -40,7 +41,10 @@ export function TopBar() {
         <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">M</div>
         <span className="font-semibold">MemberHub</span>
       </Link>
-      <div className="flex-1" />
+      <div className="flex-1 max-w-md hidden sm:block">
+        <GlobalSearchBar />
+      </div>
+      <div className="flex-1 sm:hidden" />
       <NotificationBell />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

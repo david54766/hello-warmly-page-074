@@ -981,6 +981,50 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          active: boolean
+          course_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          template_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          template_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          template_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       checkout_sessions: {
         Row: {
           checkout_url: string | null
@@ -1567,6 +1611,115 @@ export type Database = {
           usage_count?: number
         }
         Relationships: []
+      }
+      invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          created_at: string
+          email: string
+          expires_at: string | null
+          id: string
+          invited_by: string | null
+          personal_message: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          space_id: string | null
+          status: Database["public"]["Enums"]["invitation_status"]
+          token: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string | null
+          id?: string
+          invited_by?: string | null
+          personal_message?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          token?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string | null
+          id?: string
+          invited_by?: string | null
+          personal_message?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+          token?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitations_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invite_links: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          max_uses: number | null
+          name: string
+          role: Database["public"]["Enums"]["app_role"]
+          space_id: string | null
+          token: string
+          updated_at: string
+          uses_count: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          name: string
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id?: string | null
+          token?: string
+          updated_at?: string
+          uses_count?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          name?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          space_id?: string | null
+          token?: string
+          updated_at?: string
+          uses_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_links_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       invoices: {
         Row: {
@@ -2848,6 +3001,30 @@ export type Database = {
         }
         Relationships: []
       }
+      search_events: {
+        Row: {
+          created_at: string
+          filters_json: Json
+          id: string
+          query: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filters_json?: Json
+          id?: string
+          query: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          filters_json?: Json
+          id?: string
+          query?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       segment_members: {
         Row: {
           id: string
@@ -3154,6 +3331,57 @@ export type Database = {
           },
         ]
       }
+      user_certificates: {
+        Row: {
+          certificate_id: string
+          certificate_url: string | null
+          course_id: string
+          created_at: string
+          id: string
+          issued_at: string
+          status: Database["public"]["Enums"]["certificate_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          certificate_id: string
+          certificate_url?: string | null
+          course_id: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          status?: Database["public"]["Enums"]["certificate_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          certificate_id?: string
+          certificate_url?: string | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          status?: Database["public"]["Enums"]["certificate_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_certificates_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
+            referencedRelation: "certificates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           created_at: string
@@ -3400,6 +3628,8 @@ export type Database = {
       }
     }
     Functions: {
+      accept_invitation: { Args: { _token: string }; Returns: Json }
+      accept_invite_link: { Args: { _token: string }; Returns: Json }
       award_badge_by_slug: {
         Args: {
           _awarded_by?: string
@@ -3524,6 +3754,8 @@ export type Database = {
         }
         Returns: string
       }
+      lookup_invitation_by_token: { Args: { _token: string }; Returns: Json }
+      lookup_invite_link_by_token: { Args: { _token: string }; Returns: Json }
       notif_pref: {
         Args: { _flag: string; _user_id: string }
         Returns: boolean
@@ -3627,6 +3859,7 @@ export type Database = {
         | "event"
         | "community"
         | "special"
+      certificate_status: "issued" | "revoked"
       checklist_action_type:
         | "complete_profile"
         | "join_space"
@@ -3693,6 +3926,7 @@ export type Database = {
         | "course_session"
         | "livestream_placeholder"
       event_visibility: "public" | "members_only" | "space_members" | "hidden"
+      invitation_status: "pending" | "accepted" | "expired" | "canceled"
       invoice_status: "draft" | "open" | "paid" | "uncollectible" | "void"
       leaderboard_period: "all_time" | "month" | "week"
       lesson_progress_status: "not_started" | "in_progress" | "completed"
@@ -3743,6 +3977,8 @@ export type Database = {
         | "account_reactivated"
         | "report_resolved"
         | "content_restored"
+        | "invitation_accepted"
+        | "certificate_issued"
       plan_access_level: "full_access" | "preview_access" | "limited_access"
       plan_billing_interval: "free" | "monthly" | "annual" | "one_time"
       plan_item_target_type:
@@ -4036,6 +4272,7 @@ export const Constants = {
         "community",
         "special",
       ],
+      certificate_status: ["issued", "revoked"],
       checklist_action_type: [
         "complete_profile",
         "join_space",
@@ -4109,6 +4346,7 @@ export const Constants = {
         "livestream_placeholder",
       ],
       event_visibility: ["public", "members_only", "space_members", "hidden"],
+      invitation_status: ["pending", "accepted", "expired", "canceled"],
       invoice_status: ["draft", "open", "paid", "uncollectible", "void"],
       leaderboard_period: ["all_time", "month", "week"],
       lesson_progress_status: ["not_started", "in_progress", "completed"],
@@ -4160,6 +4398,8 @@ export const Constants = {
         "account_reactivated",
         "report_resolved",
         "content_restored",
+        "invitation_accepted",
+        "certificate_issued",
       ],
       plan_access_level: ["full_access", "preview_access", "limited_access"],
       plan_billing_interval: ["free", "monthly", "annual", "one_time"],
