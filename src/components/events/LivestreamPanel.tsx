@@ -21,12 +21,14 @@ export function LivestreamPanel({
   const defaultTab: Tab = hasReplay ? "replay" : "stream";
   const [tab, setTab] = useState<Tab>(defaultTab);
 
-  const tabs: { id: Tab; label: string; show: boolean }[] = [
-    { id: "stream", label: isLive ? "Live" : "Stream", show: true },
-    { id: "agenda", label: "Agenda", show: !!event.event_agenda_json?.length },
-    { id: "chat", label: "Live Chat", show: !!event.live_chat_enabled },
-    { id: "replay", label: "Replay", show: hasReplay },
-  ].filter((t) => t.show);
+  const tabs = (
+    [
+      { id: "stream" as Tab, label: isLive ? "Live" : "Stream", show: true },
+      { id: "agenda" as Tab, label: "Agenda", show: !!event.event_agenda_json?.length },
+      { id: "chat" as Tab, label: "Live Chat", show: !!event.live_chat_enabled },
+      { id: "replay" as Tab, label: "Replay", show: hasReplay },
+    ]
+  ).filter((t) => t.show);
 
   return (
     <Card className="rounded-2xl">
