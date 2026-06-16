@@ -19,7 +19,7 @@ export function UnreadChatBadge({ className }: { className?: string }) {
     };
     refresh();
     const channel = supabase
-      .channel(`unread:${user.id}`)
+      .channel(`unread:${user.id}:${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "messages" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "conversation_members", filter: `user_id=eq.${user.id}` }, refresh)
       .subscribe();
