@@ -9,9 +9,9 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MemberHub — Your private community for learning, connection, and growth" },
+      { title: "Prima Donna Social — Your private community for learning, connection, and growth" },
       { name: "description", content: "Access courses, live events, expert resources, and a supportive member community all in one place." },
-      { property: "og:title", content: "MemberHub" },
+      { property: "og:title", content: "Prima Donna Social" },
       { property: "og:description", content: "Your private community for learning, connection, and growth." },
     ],
   }),
@@ -33,8 +33,8 @@ function Landing() {
       <header className="border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">M</div>
-            <span className="font-semibold tracking-tight">MemberHub</span>
+            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+            <span className="font-semibold tracking-tight">Prima Donna Social</span>
           </Link>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost"><Link to="/auth">Member Login</Link></Button>

@@ -12,9 +12,9 @@ import { ArrowRight, Package } from "lucide-react";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Choose the membership that fits your goals | MemberHub" },
-      { name: "description", content: "Start free or unlock premium courses, events, and member-only Spaces with a MemberHub plan." },
-      { property: "og:title", content: "MemberHub Pricing" },
+      { title: "Pricing — Choose the membership that fits your goals | Prima Donna Social" },
+      { name: "description", content: "Start free or unlock premium courses, events, and member-only Spaces with a Prima Donna Social plan." },
+      { property: "og:title", content: "Prima Donna Social Pricing" },
       { property: "og:description", content: "Choose the membership that fits your goals." },
     ],
   }),
@@ -56,8 +56,8 @@ function PricingPage() {
       <header className="border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">M</div>
-            <span className="font-semibold tracking-tight">MemberHub</span>
+            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+            <span className="font-semibold tracking-tight">Prima Donna Social</span>
           </Link>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost"><Link to="/auth">Sign in</Link></Button>

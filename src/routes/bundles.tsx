@@ -9,9 +9,9 @@ import { ArrowRight, Package } from "lucide-react";
 export const Route = createFileRoute("/bundles")({
   head: () => ({
     meta: [
-      { title: "Bundles — Unlock more with a single purchase | MemberHub" },
-      { name: "description", content: "Save with curated MemberHub bundles that combine Spaces, courses, and events." },
-      { property: "og:title", content: "MemberHub Bundles" },
+      { title: "Bundles — Unlock more with a single purchase | Prima Donna Social" },
+      { name: "description", content: "Save with curated Prima Donna Social bundles that combine Spaces, courses, and events." },
+      { property: "og:title", content: "Prima Donna Social Bundles" },
       { property: "og:description", content: "Save with curated bundles of Spaces, courses, and events." },
     ],
   }),
@@ -35,8 +35,8 @@ function BundlesPage() {
       <header className="border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">M</div>
-            <span className="font-semibold tracking-tight">MemberHub</span>
+            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+            <span className="font-semibold tracking-tight">Prima Donna Social</span>
           </Link>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost"><Link to="/pricing">Pricing</Link></Button>
