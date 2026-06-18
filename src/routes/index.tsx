@@ -33,7 +33,7 @@ function Landing() {
       <header className="border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+            <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-8 rounded-lg object-cover" />
             <span className="font-semibold tracking-tight">Prima Donna Social</span>
           </Link>
           <div className="flex items-center gap-2">
