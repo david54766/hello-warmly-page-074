@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { fetchChecklistItems, fetchChecklistProgress, type ChecklistItem } from "@/lib/onboarding";
 import { ChecklistProgressBar } from "./ChecklistProgressBar";
 
-const DISMISS_KEY = "memberhub:welcome-checklist-dismissed";
+const DISMISS_KEY = "prima-donna-social:welcome-checklist-dismissed";
 
 export function WelcomeChecklistWidget() {
   const { user } = useAuth();
