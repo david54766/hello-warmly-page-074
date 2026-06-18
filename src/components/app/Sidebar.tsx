@@ -45,7 +45,7 @@ export function Sidebar() {
     <aside className="hidden md:flex w-64 flex-col border-r border-border bg-sidebar h-screen sticky top-0">
       <div className="px-6 h-16 flex items-center border-b border-border">
         <Link to="/dashboard" className="flex items-center gap-2">
-          <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+          <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-8 rounded-lg object-cover" />
           <span className="font-semibold tracking-tight">Prima Donna Social</span>
         </Link>
       </div>
