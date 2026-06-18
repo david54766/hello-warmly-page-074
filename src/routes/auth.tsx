@@ -27,7 +27,7 @@ function AuthPage() {
     <div className="min-h-screen grid place-items-center bg-gradient-to-br from-background via-background to-accent/30 px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <Link to="/" className="flex items-center justify-center gap-2">
-          <div className="size-9 rounded-xl bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+          <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-9 rounded-xl object-cover" />
           <span className="text-lg font-semibold tracking-tight">Prima Donna Social</span>
         </Link>
         <Card className="rounded-2xl shadow-lg">

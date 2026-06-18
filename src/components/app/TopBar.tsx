@@ -38,7 +38,7 @@ export function TopBar() {
   return (
     <header className="h-16 border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30 flex items-center px-4 sm:px-6 lg:px-8 gap-4">
       <Link to="/dashboard" className="md:hidden flex items-center gap-2">
-        <div className="size-8 rounded-lg bg-primary grid place-items-center text-primary-foreground font-bold">P</div>
+        <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-8 rounded-lg object-cover" />
         <span className="font-semibold">Prima Donna Social</span>
       </Link>
       <div className="flex-1 max-w-md hidden sm:block">
