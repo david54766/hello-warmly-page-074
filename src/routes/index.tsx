@@ -102,7 +102,7 @@ function Landing() {
 
       <footer className="border-t border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} MemberHub</span>
+          <span>© {new Date().getFullYear()} Prima Donna Social</span>
           <Link to="/auth" className="hover:text-foreground">Sign in</Link>
         </div>
       </footer>
