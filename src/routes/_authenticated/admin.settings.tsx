@@ -125,7 +125,7 @@ function PlatformSettingsPage() {
               <div className="size-12 rounded-xl border" style={{ background: row.primary_color ?? "#6366f1" }} aria-label="Primary" />
               <div className="size-12 rounded-xl border" style={{ background: row.secondary_color ?? "#0ea5e9" }} aria-label="Secondary" />
               <div className="rounded-lg border px-3 py-1.5 text-sm font-medium" style={{ background: row.primary_color ?? "#6366f1", color: "white" }}>
-                {row.platform_name || "MemberHub"}
+                {row.platform_name || "Prima Donna Social"}
               </div>
               <span className="text-xs text-muted-foreground">{row.button_style ?? "rounded"} buttons · {row.card_style ?? "rounded"} cards · {row.sidebar_style ?? "default"} sidebar</span>
             </div>
