@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Prima Donna</string>
+    <string name="title_activity_main">Prima Donna</string>
+    <string name="package_name">com.primadonnasocial.community</string>
+    <string name="custom_url_scheme">com.primadonnasocial.community</string>
+</resources>
