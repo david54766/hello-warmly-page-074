@@ -10,10 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User, Settings, Shield } from "lucide-react";
+import { LogOut, User, Settings, Shield, Search } from "lucide-react";
 import { toast } from "sonner";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { GlobalSearchBar } from "@/components/search/GlobalSearchBar";
+import { BrandLogo } from "@/components/app/BrandLogo";
 
 export function TopBar() {
   const { profile, user, isAdmin, signOut } = useAuth();
@@ -36,15 +37,23 @@ export function TopBar() {
   };
 
   return (
-    <header className="h-16 border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30 flex items-center px-4 sm:px-6 lg:px-8 gap-4">
-      <Link to="/dashboard" className="md:hidden flex items-center gap-2">
-        <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-8 rounded-lg object-cover" />
-        <span className="font-semibold">Prima Donna Social</span>
+    <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30 pt-[env(safe-area-inset-top)]">
+      <div className="h-16 flex items-center px-4 sm:px-6 lg:px-8 gap-3">
+      <Link to="/dashboard" className="md:hidden flex items-center gap-2 min-w-0">
+        <BrandLogo className="size-8 rounded-lg shrink-0" />
+        <span className="font-semibold truncate">Prima Donna Social</span>
       </Link>
       <div className="flex-1 max-w-md hidden sm:block">
         <GlobalSearchBar />
       </div>
       <div className="flex-1 sm:hidden" />
+      <Link
+        to="/search"
+        aria-label="Search"
+        className="sm:hidden inline-flex size-11 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
+      >
+        <Search className="size-5" />
+      </Link>
       <NotificationBell />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -78,6 +87,7 @@ export function TopBar() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      </div>
     </header>
   );
 }

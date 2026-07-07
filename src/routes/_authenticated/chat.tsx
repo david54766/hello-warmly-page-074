@@ -57,7 +57,7 @@ function ChatPage() {
 
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8 -mt-4 md:-mt-6 lg:-mt-8">
-      <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)] flex bg-background border-t border-border">
+      <div className="h-[calc(100dvh-4rem-3.5rem-env(safe-area-inset-top)-env(safe-area-inset-bottom))] md:h-[calc(100dvh-4rem-env(safe-area-inset-top))] flex bg-background border-t border-border">
         {/* Conversation list */}
         <aside className={cn(
           "w-full md:w-80 lg:w-96 border-r border-border flex flex-col bg-card/40",

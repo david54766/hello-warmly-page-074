@@ -6,10 +6,24 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// MOBILE_BUILD=1 produces a fully static SPA bundle (no SSR server) that the
+// Capacitor Android shell loads from local files. The default build is
+// unchanged and still targets Lovable/Cloudflare SSR hosting.
+const isMobileBuild = process.env.MOBILE_BUILD === "1";
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    ...(isMobileBuild
+      ? {
+          spa: {
+            enabled: true,
+            prerender: { outputPath: "/index.html", crawlLinks: false },
+          },
+        }
+      : {}),
   },
+  ...(isMobileBuild ? { nitro: false } : {}),
 });

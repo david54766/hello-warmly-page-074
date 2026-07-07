@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "@/components/ui/sonner";
+import { NativeBootstrap } from "@/components/native/NativeBootstrap";
 
 function NotFoundComponent() {
   return (
@@ -78,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Prima Donna Social — Community, courses, and connection" },
       { name: "description", content: "A private community for learning, connection, and growth." },
       { property: "og:title", content: "Prima Donna Social — Community, courses, and connection" },
@@ -98,8 +99,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "icon", type: "image/png", href: "/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" },
-      { rel: "apple-touch-icon", href: "/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" },
+      { rel: "icon", type: "image/png", href: "/icon-512.png" },
+      { rel: "apple-touch-icon", href: "/icon-512.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -129,6 +130,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Outlet />
+        <NativeBootstrap />
         <Toaster richColors position="top-right" />
       </AuthProvider>
     </QueryClientProvider>

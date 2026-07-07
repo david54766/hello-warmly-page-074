@@ -43,13 +43,16 @@ function OnboardingPage() {
     if (!user) return;
     if (!name.trim()) return toast.error("Please enter your name");
     setSaving(true);
-    const { error } = await supabase.from("profiles").update({
+    // Upsert (not update): if the handle_new_user trigger didn't create the
+    // profile row, this creates it — RLS allows inserting your own row.
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
       full_name: name.trim(),
       avatar_url: avatar || null,
       bio: bio || null,
       location: location || null,
       onboarding_completed: true,
-    }).eq("id", user.id);
+    });
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Welcome aboard!");

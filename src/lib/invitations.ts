@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
 const db: any = supabase;
 
@@ -106,6 +107,5 @@ export async function acceptInviteLinkToken(token: string) {
 }
 
 export function buildInviteUrl(token: string) {
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
-  return `${origin}/invite/${token}`;
+  return `${getPublicSiteUrl()}/invite/${token}`;
 }

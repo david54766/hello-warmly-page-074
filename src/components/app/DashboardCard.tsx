@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContext, type ReactNode } from "react";
+import { Card, CardContent, CardHeader, CardTitle, InsideCardContext } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export function DashboardCard({
@@ -16,7 +16,7 @@ export function DashboardCard({
   className?: string;
 }) {
   return (
-    <Card className={cn("rounded-2xl shadow-sm hover:shadow-md transition-shadow", className)}>
+    <Card className={cn("rounded-2xl shadow-card hover:shadow-card-hover transition-shadow", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
           {icon}
@@ -45,7 +45,7 @@ export function AdminStatCard({
   icon?: ReactNode;
 }) {
   return (
-    <Card className="rounded-2xl shadow-sm">
+    <Card className="rounded-2xl shadow-card">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm text-muted-foreground">{label}</CardTitle>
         {icon}
@@ -63,14 +63,24 @@ export function EmptyState({
   description,
   icon,
   action,
+  boxed,
 }: {
   title: string;
   description?: string;
   icon?: ReactNode;
   action?: ReactNode;
+  /** Force the bordered box on/off. Defaults to on unless already inside a Card. */
+  boxed?: boolean;
 }) {
+  const insideCard = useContext(InsideCardContext);
+  const showBox = boxed ?? !insideCard;
   return (
-    <div className="flex flex-col items-center justify-center text-center py-10 px-6">
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center text-center py-10 px-6",
+        showBox && "rounded-2xl border border-dashed border-border bg-card/60",
+      )}
+    >
       {icon && <div className="size-12 rounded-full bg-accent text-accent-foreground grid place-items-center mb-3">{icon}</div>}
       <h3 className="font-medium">{title}</h3>
       {description && <p className="text-sm text-muted-foreground mt-1 max-w-sm">{description}</p>}

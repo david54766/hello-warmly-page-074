@@ -16,7 +16,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Sidebar />
         <div className="flex-1 min-w-0 flex flex-col min-h-screen">
           <TopBar />
-          <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 pb-24 md:pb-8 max-w-7xl w-full mx-auto">
+          <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8 max-w-7xl w-full mx-auto">
             {suspended && (
               <div className="mb-4 rounded-2xl border border-destructive/40 bg-destructive/5 p-5">
                 <div className="flex items-start gap-3">

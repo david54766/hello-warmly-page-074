@@ -10,7 +10,7 @@ export function AIHelperButton() {
   return (
     <Link
       to="/ai-helper"
-      className="fixed bottom-20 md:bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-3 text-sm font-medium hover:opacity-90"
+      className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] md:bottom-6 right-4 md:right-6 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-3 text-sm font-medium hover:opacity-90"
     >
       <Sparkles className="size-4" /> Ask AI Helper
     </Link>

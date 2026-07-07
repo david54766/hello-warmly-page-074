@@ -99,7 +99,7 @@ function AdminPage() {
           <h1 className="text-3xl font-semibold tracking-tight">Platform Dashboard</h1>
           <p className="text-muted-foreground mt-1">Manage members, settings, content, engagement, and platform growth from one central dashboard.</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:flex-wrap">
           <Button asChild><Link to="/admin/spaces"><Plus className="size-4 mr-1.5" />Create Space</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/collections"><Plus className="size-4 mr-1.5" />Create Collection</Link></Button>
           <Button variant="outline" asChild><Link to="/admin/members"><Users className="size-4 mr-2" />Manage Members</Link></Button>

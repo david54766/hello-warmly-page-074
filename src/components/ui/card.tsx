@@ -2,13 +2,20 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+// True for anything rendered inside a Card. Lets primitives like EmptyState
+// suppress their own bordered box when they already sit inside a card, so we
+// never get a box-in-a-box.
+export const InsideCardContext = React.createContext(false);
+
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("rounded-xl border bg-card text-card-foreground shadow", className)}
-      {...props}
-    />
+    <InsideCardContext.Provider value={true}>
+      <div
+        ref={ref}
+        className={cn("rounded-2xl border bg-card text-card-foreground shadow-card", className)}
+        {...props}
+      />
+    </InsideCardContext.Provider>
   ),
 );
 Card.displayName = "Card";

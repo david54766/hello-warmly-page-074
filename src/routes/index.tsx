@@ -1,6 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Capacitor } from "@capacitor/core";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { BrandLogo } from "@/components/app/BrandLogo";
 import {
   Users2, GraduationCap, Calendar, BookOpen, UserCircle2, TrendingUp,
   ArrowRight, Sparkles,
@@ -28,12 +31,24 @@ const features = [
 ];
 
 function Landing() {
+  const navigate = useNavigate();
+
+  // In the native app the marketing landing page isn't the entry point —
+  // send users straight to /auth (which itself forwards signed-in users on to
+  // the dashboard). Rendering nothing until the redirect avoids a flash of the
+  // web landing page behind the splash screen.
+  const isNative = Capacitor.isNativePlatform();
+  useEffect(() => {
+    if (isNative) navigate({ to: "/auth", replace: true });
+  }, [isNative, navigate]);
+  if (isNative) return <div className="min-h-screen bg-background" />;
+
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/__l5e/assets-v1/8d0850e1-b7e9-498f-bdc6-7dd95163bd4e/prima-donna-logo.png" alt="Prima Donna Social" className="size-8 rounded-lg object-cover" />
+            <BrandLogo className="size-8 rounded-lg" />
             <span className="font-semibold tracking-tight">Prima Donna Social</span>
           </Link>
           <div className="flex items-center gap-2">
